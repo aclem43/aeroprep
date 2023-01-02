@@ -7,34 +7,34 @@
 </script>
 
 <template>
-  <v-main>
-    <div class="group center">
-      <v-hover>
-        <template v-slot:default="{ isHovering, props }">
-          <v-sheet
-            v-bind="props"
-            rounded="xl"
-            class="button mx-auto prevent-select"
-            elevation="12"
-            :color="isHovering ? 'blue-lighten-3' : 'blue-lighten-2'"
-            @click="goToPrep()"
-          >
-            <strong class="buttonText">PREP</strong>
-          </v-sheet>
-        </template>
-      </v-hover>
+  <div>
+    <v-main>
+      <div class="d-flex height align-center">
+        <v-hover>
+          <template v-slot:default="{ isHovering, props }">
+            <v-sheet
+              v-bind="props"
+              rounded="xl"
+              class="button mx-auto prevent-select"
+              elevation="12"
+              :color="isHovering ? 'blue-lighten-3' : 'blue-lighten-2'"
+              @click="goToPrep()"
+            >
+              <strong class="buttonText">PREP</strong>
+            </v-sheet>
+          </template>
+        </v-hover>
 
-      <v-sheet rounded="xl" class="button mx-auto" color="green-lighten-3">
-      </v-sheet>
-    </div>
-  </v-main>
+        <v-sheet rounded="xl" class="button mx-auto" color="green-lighten-3">
+        </v-sheet>
+      </div>
+    </v-main>
+  </div>
 </template>
 
 <style scoped>
-  .group {
-    display: flex;
-    align-items: center;
-    height: 100%;
+  .height {
+    height: 100vh;
   }
 
   .button {

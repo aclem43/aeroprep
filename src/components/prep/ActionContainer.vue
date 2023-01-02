@@ -1,19 +1,26 @@
 <script setup lang="ts">
+  import { page } from '@/scripts/prep/actionpage'
   import { ref } from 'vue'
-
-  const tab = ref()
+  import FuelAction from './actions/FuelAction.vue'
+  import WeatherAction from './actions/WeatherAction.vue'
 </script>
 
 <template>
-  <v-card>
-    <v-tabs v-model="tab" color="primary">
+  <v-card elevation="12">
+    <v-tabs v-model="page" color="primary">
       <v-tab value="one">1</v-tab>
-      <v-tab value="two">2</v-tab>
+      <v-tab value="weather">Weather</v-tab>
+      <v-tab value="fuel">Fuel</v-tab>
     </v-tabs>
     <v-card-item>
-      <v-window v-model="tab">
-        <v-window-item value="one">One</v-window-item>
-        <v-window-item value="two">Two</v-window-item>
+      <v-window v-model="page">
+        <v-window-item value="2">One</v-window-item>
+        <v-window-item value="weather">
+          <WeatherAction></WeatherAction>
+        </v-window-item>
+        <v-window-item value="fuel">
+          <FuelAction></FuelAction>
+        </v-window-item>
       </v-window>
     </v-card-item>
   </v-card>

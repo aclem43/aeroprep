@@ -23,10 +23,11 @@
 <style>
   .container {
     display: flex;
-    padding-top: 10px;
+    padding: 10px;
   }
   .left {
     flex-grow: 1;
+    margin-right: 10px;
   }
 
   .right {

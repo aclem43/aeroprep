@@ -1,6 +1,10 @@
 <script setup lang="ts">
   import router from '@/router'
+  import { getAllAircraft, getCurrentAircraft } from '@/scripts/aircraft'
+  import { ref } from 'vue'
+  const aircraft = getAllAircraft()
 
+  const currentAircraft = getCurrentAircraft()
   const goHome = () => {
     router.push('/')
   }
@@ -22,6 +26,10 @@
       class="aircraftSelect"
       variant="solo"
       label="Aircraft"
+      v-model="currentAircraft"
+      :items="aircraft"
+      item-title="name"
+      return-object
       hide-details
     ></v-select>
   </v-app-bar>

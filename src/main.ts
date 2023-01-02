@@ -22,7 +22,7 @@ const vuetify = createVuetify({
 })
 
 import './assets/main.css'
-import { lightTheme } from './scripts/themes'
+import { lightTheme } from '@/scripts/utils/themes'
 
 const app = createApp(App)
 
