@@ -1,7 +1,10 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  import { setupListeners } from '@/scripts/listeners'
+  setupListeners()
+</script>
 
 <template>
-  <v-app>
+  <v-app theme="">
     <RouterView />
   </v-app>
 </template>
