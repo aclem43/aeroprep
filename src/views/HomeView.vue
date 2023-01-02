@@ -7,32 +7,34 @@
 </script>
 
 <template>
-  <div class="group center">
-    <v-hover>
-      <template v-slot:default="{ isHovering, props }">
-        <v-sheet
-          v-bind="props"
-          rounded="xl"
-          class="button mx-auto prevent-select"
-          elevation="12"
-          :color="isHovering ? 'blue-lighten-3' : 'blue-lighten-2'"
-          @click="goToPrep()"
-        >
-          <strong>Prep</strong>
-        </v-sheet>
-      </template>
-    </v-hover>
+  <v-main>
+    <div class="group center">
+      <v-hover>
+        <template v-slot:default="{ isHovering, props }">
+          <v-sheet
+            v-bind="props"
+            rounded="xl"
+            class="button mx-auto prevent-select"
+            elevation="12"
+            :color="isHovering ? 'blue-lighten-3' : 'blue-lighten-2'"
+            @click="goToPrep()"
+          >
+            <strong class="buttonText">PREP</strong>
+          </v-sheet>
+        </template>
+      </v-hover>
 
-    <v-sheet rounded="xl" class="button mx-auto" color="green-lighten-3">
-    </v-sheet>
-  </div>
+      <v-sheet rounded="xl" class="button mx-auto" color="green-lighten-3">
+      </v-sheet>
+    </div>
+  </v-main>
 </template>
 
 <style scoped>
   .group {
     display: flex;
     align-items: center;
-    height: 100vh;
+    height: 100%;
   }
 
   .button {
@@ -43,9 +45,8 @@
     cursor: pointer;
   }
   .buttonText {
-  }
-
-  .button :hover {
+    font-family: 'roboto';
+    font-size: x-large;
   }
 
   @media only screen and (max-width: 1000px) {
