@@ -1,7 +1,30 @@
 <script setup lang="ts">
-  import { ref } from 'vue'
+  // Basics Done
+  import { getWeather } from '@/scripts/prep/weatheraction'
+  import { ref, type Ref } from 'vue'
+  import type { Weather } from '@/models/WeatherModels'
 
-  const tafHours = ref('2')
+  const airport = ref()
+  const nearest = ref()
+
+  const metar = ref()
+  const taf = ref()
+
+  const weather: Ref<Weather | null> = ref(null)
+  const showCard = ref(false)
+  const loading = ref(false)
+
+  const get = async () => {
+    if (airport.value == undefined || airport.value == null) {
+      return
+    }
+    showCard.value = true
+    loading.value = true
+    weather.value = null
+
+    weather.value = await getWeather(airport.value, nearest.value)
+    loading.value = false
+  }
 </script>
 
 <template>
@@ -9,40 +32,56 @@
     <div>
       <div class="d-flex align-center">
         <div class="airportSearch mr-3">
-          <v-autocomplete
+          <v-text-field
             variant="solo"
             label="Airport"
             hide-details
             density="compact"
-          ></v-autocomplete>
+            v-model="airport"
+            clearable
+          ></v-text-field>
         </div>
-        <v-btn icon="mdi-magnify"></v-btn>
-        <v-radio-group
-          v-model="tafHours"
-          label="TAF Duration"
-          hide-details
-          inline
-        >
-          <v-radio label="2hrs" value="2"></v-radio>
-          <v-radio label="4hrs" value="4"></v-radio>
-          <v-radio label="6hrs" value="6"></v-radio>
-          <v-radio label="8hrs" value="8"></v-radio>
-          <v-radio label="24hrs" value="24"></v-radio>
-        </v-radio-group>
+        <v-btn icon="mdi-magnify" @click="get"></v-btn>
       </div>
       <div class="">
+        <div class="d-flex align-end">
+          <v-checkbox
+            hide-details
+            v-model="nearest"
+            label="Search Nearest Airports"
+          >
+          </v-checkbox>
+        </div>
         <v-chip-group selected-class="text-primary">
           <v-chip variant="elevated" @click="'test'">YBAF</v-chip>
           <v-chip variant="elevated" @click="'test'">YBBN</v-chip>
         </v-chip-group>
       </div>
     </div>
-    <v-card elevation="8">
-      <v-card-title> YBAF - ArcherField Airport </v-card-title>
+    <v-card
+      v-if="showCard"
+      :loading="loading"
+      elevation="8"
+      class="weather-card"
+    >
+      <template v-slot:loader="{ isActive }">
+        <v-progress-linear
+          :active="isActive"
+          color="blue-lighten-3"
+          height="4"
+          indeterminate
+        ></v-progress-linear>
+      </template>
+      <v-card-title> {{ weather?.station.name }} </v-card-title>
+
       <v-card-text>
-        <strong>Terminal Area Forecast</strong> <br />290 5kts etc..
+        <strong>METAR</strong> <br />
+        {{ weather?.metar.raw_text }}
       </v-card-text>
-      <v-card-text> <strong>METAR</strong> <br />290 5kts etc.. </v-card-text>
+      <v-card-text>
+        <strong>Terminal Area Forecast</strong> <br />
+        {{ weather?.taf.raw_text }}
+      </v-card-text>
       <v-card-subtitle></v-card-subtitle>
     </v-card>
   </div>
@@ -57,5 +96,9 @@
   .airportChips {
     padding: 5px;
     gap: 5px;
+  }
+
+  .weather_card {
+    max-width: 60%;
   }
 </style>

@@ -1,24 +1,23 @@
 <script setup lang="ts">
   import router from '@/router'
   import { getAllAircraft, getCurrentAircraft } from '@/scripts/aircraft'
-  import { ref } from 'vue'
   const aircraft = getAllAircraft()
 
   const currentAircraft = getCurrentAircraft()
-  const goHome = () => {
-    router.push('/')
+  const goTo = (route: string) => {
+    router.push(route)
   }
 </script>
 <template>
   <v-app-bar class="">
     <v-app-bar-title>
-      <v-btn variant="plain" icon @click="goHome">
+      <v-btn variant="plain" icon @click="goTo('/')">
         <v-icon>mdi-home</v-icon>
       </v-btn>
       <v-btn variant="plain" icon>
         <v-icon>mdi-wifi</v-icon>
       </v-btn>
-      <v-btn variant="plain" icon>
+      <v-btn variant="plain" icon @click="goTo('/settings')">
         <v-icon>mdi-cog</v-icon>
       </v-btn>
     </v-app-bar-title>
