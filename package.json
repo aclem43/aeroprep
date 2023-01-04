@@ -17,6 +17,7 @@
     "@capacitor/geolocation": "^4.1.0",
     "@capacitor/network": "^4.1.0",
     "@capacitor/preferences": "^4.0.2",
+    "cordova-res": "^0.15.4",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
     "vuetify": "3.0.6"
