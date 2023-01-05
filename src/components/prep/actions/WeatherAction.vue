@@ -1,14 +1,12 @@
 <script setup lang="ts">
   // Basics Done
-  import { getWeather } from '@/scripts/prep/weatheraction'
-  import { ref, type Ref } from 'vue'
+  import { setApiKey, getWeather } from '@/scripts/prep/weatheraction'
+  import { onMounted, ref, type Ref } from 'vue'
   import type { Weather } from '@/models/WeatherModels'
+  import { getWeatherApiKey } from '@/scripts/settings/settings'
 
   const airport = ref()
   const nearest = ref()
-
-  const metar = ref()
-  const taf = ref()
 
   const weather: Ref<Weather | null> = ref(null)
   const showCard = ref(false)
@@ -25,6 +23,9 @@
     weather.value = await getWeather(airport.value, nearest.value)
     loading.value = false
   }
+  onMounted(async () => {
+    setApiKey((await getWeatherApiKey()) ?? '')
+  })
 </script>
 
 <template>
