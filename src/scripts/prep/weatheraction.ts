@@ -9,6 +9,9 @@ import type {
   ResponseMetar,
   Weather,
 } from '@/models/WeatherModels'
+import { getWeatherApiKey } from '../settings/apiKeys'
+const apiKey = await getWeatherApiKey()
+
 export const getMetar = (
   airportCode: string,
   nearest?: boolean
@@ -20,9 +23,10 @@ export const getMetar = (
   if (nearest) {
     url = `https://api.checkwx.com/metar/${airportCode}/nearest/decoded`
   }
+
   const options: HttpOptions = {
     url: url,
-    headers: { 'X-API-Key': apiKey },
+    headers: { 'X-API-Key': apiKey ?? 'NOAPIKEY' },
   }
   return CapacitorHttp.get(options)
 }
@@ -38,9 +42,10 @@ export const getTaf = (
   if (nearest) {
     url = `https://api.checkwx.com/taf/${airportCode}/nearest/decoded`
   }
+
   const options: HttpOptions = {
     url: url,
-    headers: { 'X-API-Key': apiKey },
+    headers: { 'X-API-Key': apiKey ?? 'NOAPIKEY' },
   }
   return CapacitorHttp.get(options)
 }

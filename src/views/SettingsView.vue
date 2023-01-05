@@ -1,11 +1,14 @@
 <script setup lang="ts">
   import AppBar from '@/components/AppBar.vue'
+
   import {
     getWeatherApiKey,
     setWeatherApiKey,
   } from '@/scripts/settings/apiKeys'
   import { onMounted, ref } from 'vue'
+
   const weatherApiKey = ref()
+
   const saveWeatherApiKey = async () => {
     console.log('Test')
     await setWeatherApiKey(weatherApiKey.value)
@@ -29,7 +32,7 @@
             variant="underlined"
             v-model="weatherApiKey"
           ></v-text-field>
-          <v-btn prepend-icon="mdi-content-save" @cick="saveWeatherApiKey()">
+          <v-btn prepend-icon="mdi-content-save" @click="saveWeatherApiKey()">
             Save
           </v-btn>
         </div>
