@@ -9,7 +9,7 @@ import type {
   ResponseMetar,
   Weather,
 } from '@/models/WeatherModels'
-import { getWeatherApiKey } from '../settings/apiKeys'
+import { getWeatherApiKey } from '../settings/settings'
 const apiKey = await getWeatherApiKey()
 
 export const getMetar = (

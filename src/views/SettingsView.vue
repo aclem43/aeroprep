@@ -3,9 +3,11 @@
 
   import {
     getWeatherApiKey,
+    setTheme,
     setWeatherApiKey,
-  } from '@/scripts/settings/apiKeys'
-  import { onMounted, ref } from 'vue'
+  } from '@/scripts/settings/settings'
+  import { getCurrentTheme } from '@/scripts/utils/themes'
+  import { onMounted, ref, watch } from 'vue'
 
   const weatherApiKey = ref()
 
@@ -18,6 +20,12 @@
   onMounted(async () => {
     weatherApiKey.value = await getWeatherApiKey()
   })
+
+  const theme = getCurrentTheme()
+
+  watch(theme, async () => {
+    await setTheme(theme.value)
+  })
 </script>
 
 <template>
@@ -26,6 +34,12 @@
     <v-card>
       <v-card-title> Settings </v-card-title>
       <v-card-item>
+        <v-switch
+          true-value="darkTheme"
+          false-value="lightTheme"
+          :label="`Theme: ${theme}`"
+          v-model="theme"
+        ></v-switch>
         <div class="d-flex">
           <v-text-field
             label="Weather Api Key"
