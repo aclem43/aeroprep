@@ -1,6 +1,5 @@
 import { ref, type Ref } from 'vue'
 import type { ThemeDefinition } from 'vuetify'
-import { getTheme } from '../settings/settings'
 
 export const lightTheme: ThemeDefinition = {
   dark: false,
@@ -35,7 +34,7 @@ export const darkTheme: ThemeDefinition = {
 }
 export type ThemeType = 'darkTheme' | 'lightTeme'
 
-const currentTheme: Ref<ThemeType> = ref((await getTheme()) ?? 'darkTheme')
+const currentTheme: Ref<ThemeType> = ref('darkTheme')
 
 export const getCurrentTheme = () => {
   return currentTheme
