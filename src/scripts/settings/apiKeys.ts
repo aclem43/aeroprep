@@ -1,6 +1,6 @@
 import { getDataByKey, setDataByKey } from '../database'
 
-export const getWeatherApiKey = async (): Promise<String | null> => {
+export const getWeatherApiKey = async (): Promise<string | null> => {
   return await getDataByKey('weather_api_key')
 }
 

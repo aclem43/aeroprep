@@ -4,7 +4,7 @@
 </script>
 
 <template>
-  <v-app theme="">
+  <v-app>
     <RouterView />
   </v-app>
 </template>
