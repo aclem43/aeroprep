@@ -7,7 +7,7 @@
 
 <template>
   <v-card elevation="12">
-    <v-tabs v-model="page" color="primary">
+    <v-tabs v-model="page" bg-color="primary">
       <v-tab value="one">1</v-tab>
       <v-tab value="weather">Weather</v-tab>
       <v-tab value="fuel">Fuel</v-tab>

@@ -9,20 +9,20 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import { lightTheme, darkTheme } from '@/scripts/utils/themes'
 
 const vuetify = createVuetify({
   components,
   directives,
   theme: {
-    defaultTheme: 'lightTheme',
     themes: {
       lightTheme,
+      darkTheme,
     },
   },
 })
 
 import './assets/main.css'
-import { lightTheme } from '@/scripts/utils/themes'
 
 const app = createApp(App)
 

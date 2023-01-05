@@ -72,6 +72,7 @@
           indeterminate
         ></v-progress-linear>
       </template>
+      <v-card-title v-if="loading"> Loading...</v-card-title>
       <v-card-title> {{ weather?.station.name }} </v-card-title>
 
       <v-card-text>
