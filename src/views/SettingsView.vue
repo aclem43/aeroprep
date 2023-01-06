@@ -8,6 +8,7 @@
   } from '@/scripts/settings/settings'
   import { getCurrentTheme } from '@/scripts/utils/themes'
   import { onMounted, ref, watch } from 'vue'
+  import AircraftCreationOverlay from '@/components/settings/AircraftCreationOverlay.vue'
 
   const weatherApiKey = ref()
 
@@ -22,6 +23,8 @@
 
   const theme = getCurrentTheme()
 
+  const aircraftCreationOverlay = ref()
+
   watch(theme, async () => {
     await setTheme(theme.value)
   })
@@ -30,6 +33,9 @@
 <template>
   <AppBar />
   <v-main>
+    <AircraftCreationOverlay
+      ref="aircraftCreationOverlay"
+    ></AircraftCreationOverlay>
     <v-card>
       <v-card-title> Settings </v-card-title>
       <v-card-item>
@@ -48,6 +54,9 @@
           <v-btn prepend-icon="mdi-content-save" @click="saveWeatherApiKey()">
             Save
           </v-btn>
+        </div>
+        <div>
+          <v-btn @click="aircraftCreationOverlay.open">Add Aircraft</v-btn>
         </div>
       </v-card-item>
     </v-card>
