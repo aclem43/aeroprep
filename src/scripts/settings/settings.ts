@@ -1,3 +1,4 @@
+import type { Aircraft } from '../aircraft'
 import { getDataByKey, setDataByKey } from '../database'
 import type { ThemeType } from '../utils/themes'
 
@@ -15,4 +16,16 @@ export const getTheme = async (): Promise<ThemeType> => {
 }
 export const setTheme = async (theme: string) => {
   await setDataByKey('settings_theme', theme)
+}
+
+export const getAircraft = async (): Promise<Aircraft | null> => {
+  const aircraft = await getDataByKey('settings_current_aircraft')
+  if (aircraft == null) {
+    return null
+  }
+  return JSON.parse(aircraft)
+}
+
+export const setAircraft = async (aircraft: Aircraft) => {
+  await setDataByKey('settings_current_aircraft', JSON.stringify(aircraft))
 }

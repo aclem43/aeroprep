@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import AppBar from '@/components/AppBar.vue'
-
+  import { openAlert } from '@/scripts/utils/alert'
   import {
     getWeatherApiKey,
     setTheme,
@@ -12,9 +12,8 @@
   const weatherApiKey = ref()
 
   const saveWeatherApiKey = async () => {
-    console.log('Test')
     await setWeatherApiKey(weatherApiKey.value)
-    console.log(getWeatherApiKey())
+    openAlert('Api Key Saved', 2000)
   }
 
   onMounted(async () => {

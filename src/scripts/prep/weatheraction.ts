@@ -9,9 +9,13 @@ import type {
   ResponseMetar,
   Weather,
 } from '@/models/WeatherModels'
-import { getWeatherApiKey } from '../settings/settings'
-const apiKey = await getWeatherApiKey()
+import { ref } from 'vue'
 
+const apiKey = ref('')
+
+export const setApiKey = (key: string) => {
+  apiKey.value = key
+}
 export const getMetar = (
   airportCode: string,
   nearest?: boolean
@@ -26,7 +30,7 @@ export const getMetar = (
 
   const options: HttpOptions = {
     url: url,
-    headers: { 'X-API-Key': apiKey ?? 'NOAPIKEY' },
+    headers: { 'X-API-Key': apiKey.value ?? 'NOAPIKEY' },
   }
   return CapacitorHttp.get(options)
 }
@@ -45,7 +49,7 @@ export const getTaf = (
 
   const options: HttpOptions = {
     url: url,
-    headers: { 'X-API-Key': apiKey ?? 'NOAPIKEY' },
+    headers: { 'X-API-Key': apiKey.value ?? 'NOAPIKEY' },
   }
   return CapacitorHttp.get(options)
 }
