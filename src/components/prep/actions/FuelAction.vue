@@ -98,7 +98,7 @@
               v-model="row.fuelData.litre.value"
               inputmode="numeric"
               @input="inputChangeLitre(idx)"
-              @keyup.enter="removeFocus($event)"
+              @keydown.enter="removeFocus($event)"
             />
           </td>
         </tr>

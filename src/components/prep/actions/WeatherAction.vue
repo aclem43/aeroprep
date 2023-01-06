@@ -39,6 +39,7 @@
             hide-details
             density="compact"
             v-model="airport"
+            @keyup.enter="get"
             clearable
           ></v-text-field>
         </div>

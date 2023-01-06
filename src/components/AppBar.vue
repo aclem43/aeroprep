@@ -20,6 +20,17 @@
       <v-btn variant="plain" icon @click="goTo('/settings')">
         <v-icon>mdi-cog</v-icon>
       </v-btn>
+      <v-btn
+        variant="plain"
+        icon
+        @click="goTo('/prep')"
+        style="margin-left: 10px"
+      >
+        <v-icon>mdi-clipboard</v-icon>
+      </v-btn>
+      <v-btn variant="plain" icon @click="goTo('/fly')">
+        <v-icon>mdi-airplane-takeoff</v-icon>
+      </v-btn>
     </v-app-bar-title>
     <v-select
       class="aircraftSelect"
