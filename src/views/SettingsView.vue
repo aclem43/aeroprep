@@ -7,8 +7,13 @@
     setWeatherApiKey,
   } from '@/scripts/settings/settings'
   import { getCurrentTheme } from '@/scripts/utils/themes'
-  import { onMounted, ref, watch } from 'vue'
+  import { computed, onMounted, ref, watch } from 'vue'
   import AircraftCreationOverlay from '@/components/settings/AircraftCreationOverlay.vue'
+  import {
+    deleteAircraft,
+    getAllAircraft,
+    type Aircraft,
+  } from '@/scripts/aircraft'
 
   const weatherApiKey = ref()
 
@@ -24,6 +29,24 @@
   const theme = getCurrentTheme()
 
   const aircraftCreationOverlay = ref()
+
+  const aircraftList = getAllAircraft()
+
+  const removeAircraft = async (aircraft: Aircraft) => {
+    const value = await confirm('Are you sure you want to delete the Aircraft?')
+    if (value) {
+      await deleteAircraft(aircraft)
+      openAlert('Aircraft Deleted', 2000)
+    }
+  }
+
+  const themeIcon = computed(() => {
+    if (theme.value == 'darkTheme') {
+      return 'mdi-weather-night'
+    } else {
+      return 'mdi-weather-sunny'
+    }
+  })
 
   watch(theme, async () => {
     await setTheme(theme.value)
@@ -42,7 +65,8 @@
         <v-switch
           true-value="darkTheme"
           false-value="lightTheme"
-          :label="`Theme: ${theme}`"
+          :prepend-icon="themeIcon"
+          label="Theme"
           v-model="theme"
         ></v-switch>
         <div class="d-flex">
@@ -55,10 +79,26 @@
             Save
           </v-btn>
         </div>
-        <div>
-          <v-btn @click="aircraftCreationOverlay.open">Add Aircraft</v-btn>
+        <div class="d-flex text-center settings_chip_gap">
+          <div v-for="aircraft in aircraftList" :key="aircraft.name">
+            <v-chip
+              variant="elevated"
+              @click="removeAircraft(aircraft)"
+              append-icon="mdi-close-circle"
+            >
+              {{ aircraft.name }}</v-chip
+            >
+          </div>
+          <v-btn @click="aircraftCreationOverlay.open()">Add Aircraft</v-btn>
         </div>
       </v-card-item>
     </v-card>
   </v-main>
 </template>
+
+<style>
+  .settings_chip_gap {
+    gap: 10px;
+    padding: 10px;
+  }
+</style>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  import { addAircraft } from '@/scripts/aircraft'
+  import { openAlert } from '@/scripts/utils/alert'
   import { ref } from 'vue'
 
   const dialog = ref()
@@ -8,34 +10,46 @@
   }
 
   defineExpose({ open })
+
+  const aircraftName = ref('')
+  const aircraftFuelBurn = ref(0)
+
+  const createAircraft = () => {
+    addAircraft({ name: aircraftName.value, fuelBurn: aircraftFuelBurn.value })
+    openAlert('Aircraft Created', 2000)
+    dialog.value = false
+    aircraftName.value = ''
+    aircraftFuelBurn.value = 0
+  }
 </script>
 
 <template>
   <v-dialog v-model="dialog" persistent class="aircraftCreationDialog">
     <v-card>
       <v-card-title> Create aircraft </v-card-title>
-      <v-card-items>
+      <v-card-item>
         <div class="aircraftCreationDialog_form">
           <v-text-field
             variant="solo"
             hide-details
             label="Aircraft Name"
+            v-model="aircraftName"
           ></v-text-field>
           <v-text-field
             variant="solo"
             hide-details
             label="Fuel Burn (l/h)"
+            v-model="aircraftFuelBurn"
             type="number"
             inputmode="numeric"
             pattern="[0-9]*"
           ></v-text-field>
         </div>
-        <div class="aircraftCreationDialog_form_right">
-          <v-btn>Create</v-btn>
-        </div>
-      </v-card-items>
-      <v-card-actions>
+        <div class="aircraftCreationDialog_form_right"></div>
+      </v-card-item>
+      <v-card-actions class="justify-space-between">
         <v-btn @click="dialog = false"> Close</v-btn>
+        <v-btn @click="createAircraft">Create</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
