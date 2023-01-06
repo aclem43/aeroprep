@@ -21,6 +21,10 @@ export const getAllAircraft = () => {
   return allAircraft
 }
 
-export const getCurrentAircraft = (): Ref<Aircraft> => {
+export const getCurrentAircraft = (): Ref<Aircraft | null> => {
   return currentAircraft
+}
+
+export const setCurrentAircarft = (aircraft: Aircraft) => {
+  currentAircraft.value = aircraft
 }

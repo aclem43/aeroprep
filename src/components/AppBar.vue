@@ -1,11 +1,24 @@
 <script setup lang="ts">
   import router from '@/router'
   import { getAllAircraft, getCurrentAircraft } from '@/scripts/aircraft'
+  import { setAircraft, getAircraft } from '@/scripts/settings/settings'
+  import { onMounted } from 'vue'
   const aircraft = getAllAircraft()
 
   const currentAircraft = getCurrentAircraft()
   const goTo = (route: string) => {
     router.push(route)
+  }
+
+  onMounted(async () => {
+    currentAircraft.value = await getAircraft()
+  })
+
+  const onAircraftChange = async () => {
+    if (currentAircraft.value == null) {
+      return
+    }
+    await setAircraft(currentAircraft.value)
   }
 </script>
 <template>
@@ -41,6 +54,7 @@
       item-title="name"
       return-object
       hide-details
+      @update:model-value="onAircraftChange"
     ></v-select>
   </v-app-bar>
 </template>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { getCurrentAircraft } from '@/scripts/aircraft'
+  import { openAlert } from '@/scripts/utils/alert'
   import { computed } from 'vue'
   import { type Ref, ref } from 'vue'
 
@@ -34,11 +35,19 @@
   ]
 
   const inputChangeMin = (index: number) => {
+    if (currentAircraft.value == null) {
+      openAlert('Pick a Aircraft', 2000)
+      return
+    }
     const min = fuelRows[index].fuelData.min
     const litre = fuelRows[index].fuelData.litre
     litre.value = (min.value / 60) * currentAircraft.value.fuelBurn
   }
   const inputChangeLitre = (index: number) => {
+    if (currentAircraft.value == null) {
+      openAlert('Pick a Aircraft', 2000)
+      return
+    }
     const min = fuelRows[index].fuelData.min
     const litre = fuelRows[index].fuelData.litre
     min.value = (litre.value / currentAircraft.value.fuelBurn) * 60
