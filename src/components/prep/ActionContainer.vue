@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import { page } from '@/scripts/prep/actionpage'
-  import { ref } from 'vue'
   import FuelAction from './actions/FuelAction.vue'
   import WeatherAction from './actions/WeatherAction.vue'
 </script>
@@ -8,8 +7,14 @@
 <template>
   <v-card elevation="12">
     <v-tabs v-model="page" bg-color="primary">
-      <v-tab value="weather">Weather</v-tab>
-      <v-tab value="fuel">Fuel</v-tab>
+      <v-tab value="weather">
+        <v-icon style="margin-right: 10px">mdi-cloud</v-icon>
+        Weather
+      </v-tab>
+      <v-tab value="fuel">
+        <v-icon style="margin-right: 10px">mdi-fuel</v-icon>
+        Fuel
+      </v-tab>
     </v-tabs>
     <v-card-item>
       <v-window v-model="page">
