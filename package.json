@@ -1,6 +1,6 @@
 {
   "name": "aeroprep",
-  "version": "0.0.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -20,7 +20,7 @@
     "cordova-res": "^0.15.4",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
-    "vuetify": "3.0.6"
+    "vuetify": "3.1.0"
   },
   "devDependencies": {
     "@capacitor/cli": "^4.6.1",
@@ -38,7 +38,7 @@
     "typescript": "~4.9.4",
     "vite": "^4.0.4",
     "vue-eslint-parser": "^9.1.0",
-    "vue-tsc": "^1.0.20"
+    "vue-tsc": "^1.0.22"
   },
   "packageManager": "yarn@3.3.1"
 }
