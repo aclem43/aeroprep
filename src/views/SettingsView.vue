@@ -14,6 +14,7 @@
     getAllAircraft,
     type Aircraft,
   } from '@/scripts/aircraft'
+  import { getVersion } from '@/scripts/utils/version'
 
   const weatherApiKey = ref()
 
@@ -61,6 +62,7 @@
     ></AircraftCreationOverlay>
     <v-card>
       <v-card-title> Settings </v-card-title>
+      <v-card-subtitle>AeroPrep Version: {{ getVersion() }}</v-card-subtitle>
       <v-card-item>
         <v-switch
           true-value="darkTheme"
