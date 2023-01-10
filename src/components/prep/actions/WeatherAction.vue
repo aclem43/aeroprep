@@ -4,6 +4,7 @@
   import { onMounted, ref, type Ref } from 'vue'
   import type { Weather } from '@/models/WeatherModels'
   import { getWeatherApiKey } from '@/scripts/settings/settings'
+  import { openAlert } from '@/scripts/utils/alert'
 
   const airport = ref()
   const nearest = ref()
@@ -21,8 +22,21 @@
     weather.value = null
 
     weather.value = await getWeather(airport.value, nearest.value)
+    if (weather.value.station == null) {
+      openAlert(
+        'Airport not found or not avalible, try with the nearest airport Checked',
+        3000
+      )
+      showCard.value = false
+    }
     loading.value = false
   }
+
+  const chipGet = async (value: String) => {
+    airport.value = value
+    await get()
+  }
+
   onMounted(async () => {
     setApiKey((await getWeatherApiKey()) ?? '')
   })
@@ -55,8 +69,8 @@
           </v-checkbox>
         </div>
         <v-chip-group selected-class="text-primary">
-          <v-chip variant="elevated" @click="'test'">YBAF</v-chip>
-          <v-chip variant="elevated" @click="'test'">YBBN</v-chip>
+          <v-chip variant="elevated" @click="chipGet('YBAF')">YBAF</v-chip>
+          <v-chip variant="elevated" @click="chipGet('YBBN')">YBBN</v-chip>
         </v-chip-group>
       </div>
     </div>
@@ -75,15 +89,25 @@
         ></v-progress-linear>
       </template>
       <v-card-title v-if="loading"> Loading...</v-card-title>
-      <v-card-title> {{ weather?.station.name }} </v-card-title>
+      <v-card-title> {{ weather?.station?.name }} </v-card-title>
 
       <v-card-text>
-        <strong>METAR</strong> <br />
-        {{ weather?.metar.raw_text }}
+        <h3>METAR</h3>
+        <h4>Key Factors</h4>
+        <p>Flight Category: {{ weather?.metar?.flight_category }}</p>
+        <p>Temperature: {{ weather?.metar?.temperature.celsius }}</p>
+        <p>Visibilty : {{ weather?.metar?.visibility.meters_float }}</p>
+        <p>
+          Wind: {{ weather?.metar?.wind.degrees }}
+          {{ weather?.metar?.wind.speed_kts + 'kts' }}
+        </p>
+
+        <h4>Raw Metar</h4>
+        {{ weather?.metar?.raw_text }}
       </v-card-text>
       <v-card-text>
-        <strong>Terminal Area Forecast</strong> <br />
-        {{ weather?.taf.raw_text }}
+        <h3>Terminal Area Forecast</h3>
+        {{ weather?.taf?.raw_text }}
       </v-card-text>
       <v-card-subtitle></v-card-subtitle>
     </v-card>
