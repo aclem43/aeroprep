@@ -1,10 +1,8 @@
 <script setup lang="ts">
   import { getCurrentFlight } from '@/scripts/prep/flightaction'
-  import { ref } from 'vue'
-
-  const dual = ref(false)
 
   const currentFlight = getCurrentFlight()
+  const dual = currentFlight.dual
 </script>
 
 <template>

@@ -1,7 +1,16 @@
 <script setup lang="ts">
-  import { getDefualtRiskList } from '@/scripts/prep/riskaction'
+  import { getCurrentFlight } from '@/scripts/prep/flightaction'
+  import { getDefualtRiskList, type Risk } from '@/scripts/prep/riskaction'
 
   const defaultRisk = getDefualtRiskList()
+  const currentFlight = getCurrentFlight()
+  const dual = currentFlight.dual
+
+  const getScore = (risk: Risk) => {
+    if (dual.value && risk.score.dual != null) {
+      return risk.score.dual
+    } else return risk.score.solo
+  }
 </script>
 
 <template>
@@ -17,7 +26,7 @@
       <tbody>
         <tr v-for="risk in defaultRisk" :key="risk.name">
           <td>{{ risk.name }}</td>
-          <td>{{ risk.score }}</td>
+          <td>{{ getScore(risk) }}</td>
         </tr>
       </tbody>
     </v-table>
