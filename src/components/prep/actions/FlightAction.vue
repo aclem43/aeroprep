@@ -1,7 +1,10 @@
 <script setup lang="ts">
+  import { getCurrentFlight } from '@/scripts/prep/flightaction'
   import { ref } from 'vue'
 
   const dual = ref(false)
+
+  const currentFlight = getCurrentFlight()
 </script>
 
 <template>
@@ -18,8 +21,11 @@
         ></v-switch>
         <v-fade-transition>
           <div v-if="dual" class="flight_action_flight_row">
-            <v-checkbox density="compact" hide-details label="CFI"></v-checkbox>
-
+            <v-checkbox
+              density="compact"
+              hide-details
+              label="Passenger"
+            ></v-checkbox>
             <v-text-field
               hide-details
               density="compact"
@@ -49,5 +55,6 @@
   .flight_action_flight_row {
     display: flex;
     gap: 10px;
+    min-height: 42px;
   }
 </style>
