@@ -49,9 +49,9 @@ export interface Taf {
 }
 
 export interface Weather {
-  station: Station
-  metar: Metar
-  taf: Taf
+  station: Station | null
+  metar: Metar | null
+  taf: Taf | null
 }
 
 interface Station {

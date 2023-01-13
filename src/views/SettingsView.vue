@@ -93,6 +93,9 @@
           </div>
           <v-btn @click="aircraftCreationOverlay.open()">Add Aircraft</v-btn>
         </div>
+        <div class="d-flex text-center settings_chip_gap">
+          <div></div>
+        </div>
       </v-card-item>
     </v-card>
   </v-main>
