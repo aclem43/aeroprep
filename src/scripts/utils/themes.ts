@@ -1,12 +1,13 @@
 import { ref, type Ref } from 'vue'
 import type { ThemeDefinition } from 'vuetify'
+import { getTheme } from '../settings/settings'
 
 export const lightTheme: ThemeDefinition = {
   dark: false,
   colors: {
     background: '#FFFFFF',
     surface: '#f7f7f7',
-    primary: '#2d23e8',
+    primary: '#1877f2',
     'primary-darken-1': '#3700B3',
     secondary: '#12a60d',
     'secondary-darken-1': '#018786',
@@ -32,7 +33,7 @@ export const darkTheme: ThemeDefinition = {
     warning: '#FB8C00',
   },
 }
-export type ThemeType = 'darkTheme' | 'lightTeme'
+export type ThemeType = 'darkTheme' | 'lightTheme'
 
 const currentTheme: Ref<ThemeType> = ref('darkTheme')
 
@@ -42,4 +43,12 @@ export const getCurrentTheme = () => {
 
 export const setCurrentTheme = (theme: ThemeType) => {
   currentTheme.value = theme
+}
+
+export const initalizeTheme = async () => {
+  const savedTheme = await getTheme()
+  if (savedTheme == null) {
+    return
+  }
+  setCurrentTheme(savedTheme)
 }

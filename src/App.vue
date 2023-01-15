@@ -2,14 +2,13 @@
   import { setupListeners } from '@/scripts/listeners'
   import { onMounted } from 'vue'
   import { getAllAircraft, initAircraft } from './scripts/aircraft'
-  import { getTheme, setTheme } from './scripts/settings/settings'
   import { getAlert, getAlertRef } from './scripts/utils/alert'
-  import { getCurrentTheme } from './scripts/utils/themes'
+  import { getCurrentTheme, initalizeTheme } from './scripts/utils/themes'
   setupListeners()
   const currentTheme = getCurrentTheme()
 
   onMounted(async () => {
-    setTheme((await getTheme()) ?? 'darkTheme')
+    await initalizeTheme()
   })
   const alert = getAlert()
   const alertRef = getAlertRef()
