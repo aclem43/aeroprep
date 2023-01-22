@@ -2,6 +2,7 @@
   import { page } from '@/scripts/prep/actionpage'
   import FlightAction from './actions/FlightAction.vue'
   import FuelAction from './actions/FuelAction.vue'
+  import NoteAction from './actions/NoteAction.vue'
   import RiskAction from './actions/RiskAction.vue'
   import WeatherAction from './actions/WeatherAction.vue'
 </script>
@@ -24,6 +25,10 @@
         </v-icon>
         Risk assessment
       </v-tab>
+      <v-tab value="note">
+        <v-icon style="margin-right: 10px"> mdi-note </v-icon>
+        Notes
+      </v-tab>
     </v-tabs>
     <v-card-item>
       <v-window v-model="page">
@@ -38,6 +43,9 @@
         </v-window-item>
         <v-window-item value="risk">
           <RiskAction></RiskAction>
+        </v-window-item>
+        <v-window-item value="note">
+          <NoteAction></NoteAction>
         </v-window-item>
       </v-window>
     </v-card-item>
