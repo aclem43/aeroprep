@@ -1,5 +1,6 @@
 import { ref, type Ref } from 'vue'
 import type { ThemeDefinition } from 'vuetify'
+import { addInitializer } from '../initialize'
 import { getTheme } from '../settings/settings'
 
 export const lightTheme: ThemeDefinition = {
@@ -45,10 +46,12 @@ export const setCurrentTheme = (theme: ThemeType) => {
   currentTheme.value = theme
 }
 
-export const initalizeTheme = async () => {
+const initalizeTheme = async () => {
   const savedTheme = await getTheme()
   if (savedTheme == null) {
     return
   }
   setCurrentTheme(savedTheme)
 }
+
+addInitializer(initalizeTheme)
