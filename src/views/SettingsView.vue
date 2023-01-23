@@ -2,7 +2,9 @@
   import AppBar from '@/components/AppBar.vue'
   import { openAlert } from '@/scripts/utils/alert'
   import {
+    getDefaultPilotWeight,
     getWeatherApiKey,
+    setDefaultPilotWeight,
     setTheme,
     setWeatherApiKey,
   } from '@/scripts/settings/settings'
@@ -24,13 +26,17 @@
   } from '@/scripts/airport'
 
   const weatherApiKey = ref()
-
+  const defaultPilotWeight = ref()
   const saveWeatherApiKey = async () => {
     await setWeatherApiKey(weatherApiKey.value)
     openAlert('Api Key Saved', 2000)
   }
-
+  const saveDefaultPilotWeight = async () => {
+    await setDefaultPilotWeight(defaultPilotWeight.value)
+    openAlert('Pilot Weight Saved', 2000)
+  }
   onMounted(async () => {
+    defaultPilotWeight.value = await getDefaultPilotWeight()
     weatherApiKey.value = await getWeatherApiKey()
   })
 
@@ -103,10 +109,29 @@
             variant="underlined"
             v-model="weatherApiKey"
           ></v-text-field>
-          <v-btn prepend-icon="mdi-content-save" @click="saveWeatherApiKey()">
+          <v-btn prepend-icon="mdi-content-save" @click="saveWeatherApiKey">
             Save
           </v-btn>
         </div>
+        <div class="d-flex">
+          <v-text-field
+            label="Default Pilot Weight"
+            variant="underlined"
+            v-model="defaultPilotWeight"
+            type="number"
+            pattern="[0-9]*"
+            inputmode="numeric"
+          ></v-text-field>
+          <v-btn
+            prepend-icon="mdi-content-save"
+            @click="saveDefaultPilotWeight"
+          >
+            Save
+          </v-btn>
+        </div>
+      </v-card-item>
+      <v-card-subtitle>Groups</v-card-subtitle>
+      <v-card-item>
         <div class="d-flex text-center settings_chip_gap">
           <div v-for="aircraft in aircraftList" :key="aircraft.name">
             <v-chip
