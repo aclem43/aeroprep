@@ -1,5 +1,5 @@
 import { ref, type Ref } from 'vue'
-import { getDataByKey, setDataByKey } from '../database'
+import { getSimpleDataByKey, setSimpleDataByKey } from '../database'
 import { addInitializer } from '../initialize'
 
 const notes: Ref<string> = ref('')
@@ -9,7 +9,7 @@ export const getNotes = (): Ref<string> => {
 }
 
 export const initNotes = async () => {
-  const note = await getDataByKey('action_note')
+  const note = await getSimpleDataByKey('action_note')
 
   if (note == null) {
     notes.value = ''
@@ -20,7 +20,7 @@ export const initNotes = async () => {
 
 export const setNotes = async (note: string) => {
   notes.value = note
-  await setDataByKey('action_note', note)
+  await setSimpleDataByKey('action_note', note)
 }
 
 addInitializer(initNotes)
