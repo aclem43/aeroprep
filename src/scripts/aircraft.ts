@@ -1,5 +1,6 @@
 import { ref, type Ref } from 'vue'
 import { getDataByKey, setDataByKey } from './database'
+import { addInitializer } from './initialize'
 
 export interface Aircraft {
   name: string
@@ -28,6 +29,12 @@ export const initAircraft = async (): Promise<Aircraft[]> => {
   }
   return JSON.parse(aircraft)
 }
+
+const initializeAircraft = async () => {
+  const aircraft = getAllAircraft()
+  aircraft.value = await initAircraft()
+}
+addInitializer(initializeAircraft)
 
 export const addAircraft = async (aircraft: Aircraft) => {
   allAircraft.value.push(aircraft)
