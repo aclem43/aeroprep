@@ -23,9 +23,10 @@
 
 <template>
   <v-card>
-    <v-card-actions class="flex-row-reverse">
+    <v-card-title class="d-flex justify-space-between">
+      Notes
       <v-btn icon="mdi-pencil" variant="tonal" @click="openDialog"></v-btn>
-    </v-card-actions>
+    </v-card-title>
 
     <v-card-text>{{ notes }}</v-card-text>
   </v-card>
@@ -40,9 +41,9 @@
           v-model="newNotes"
         ></v-textarea>
       </v-card-item>
-      <v-card-actions>
-        <v-btn color="primary" @click="cancelDialog"> Cancel </v-btn>
-        <v-btn color="primary" @click="saveDialog"> Save </v-btn>
+      <v-card-actions class="justify-space-between">
+        <v-btn @click="cancelDialog"> Cancel </v-btn>
+        <v-btn @click="saveDialog"> Save </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
