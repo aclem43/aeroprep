@@ -5,9 +5,11 @@
   import type { Weather } from '@/models/WeatherModels'
   import { getWeatherApiKey } from '@/scripts/settings/settings'
   import { openAlert } from '@/scripts/utils/alert'
+  import { getAirportsRef, type Airport } from '@/scripts/airport'
 
   const airport = ref()
   const nearest = ref()
+  const airports: Ref<Airport[]> = getAirportsRef()
 
   const weather: Ref<Weather | null> = ref(null)
   const showCard = ref(false)
@@ -68,9 +70,16 @@
           >
           </v-checkbox>
         </div>
+
         <v-chip-group selected-class="text-primary">
-          <v-chip variant="elevated" @click="chipGet('YBAF')">YBAF</v-chip>
-          <v-chip variant="elevated" @click="chipGet('YBBN')">YBBN</v-chip>
+          <v-chip
+            variant="elevated"
+            @click="chipGet(airport.code)"
+            v-for="airport in airports"
+            :key="airport.code"
+            ><v-icon v-if="airport.home">mdi-home</v-icon>
+            {{ airport.code }}</v-chip
+          >
         </v-chip-group>
       </div>
     </div>

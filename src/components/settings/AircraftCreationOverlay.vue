@@ -32,12 +32,14 @@
           <v-text-field
             variant="solo"
             hide-details
+            density="compact"
             label="Aircraft Name"
             v-model="aircraftName"
           ></v-text-field>
           <v-text-field
             variant="solo"
             hide-details
+            density="compact"
             label="Fuel Burn (l/h)"
             v-model="aircraftFuelBurn"
             type="number"
@@ -47,9 +49,9 @@
         </div>
         <div class="aircraftCreationDialog_form_right"></div>
       </v-card-item>
-      <v-card-actions class="justify-space-between">
-        <v-btn @click="dialog = false"> Close</v-btn>
-        <v-btn @click="createAircraft">Create</v-btn>
+      <v-card-actions class="justify-space-between ms-4">
+        <v-btn @click="dialog = false" variant="tonal"> Close</v-btn>
+        <v-btn @click="createAircraft" variant="tonal">Create</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
