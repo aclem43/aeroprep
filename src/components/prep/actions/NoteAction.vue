@@ -1,7 +1,8 @@
 <script setup lang="ts">
   import { getNotes, setNotes } from '@/scripts/prep/notesaction'
+  import { markdownParser } from '@/scripts/utils/markdown'
+  import { computed } from 'vue'
   import { ref } from 'vue'
-
   const notes = getNotes()
 
   const editDialog = ref(false)
@@ -19,6 +20,9 @@
     editDialog.value = false
     newNotes.value = ''
   }
+  const markedNotes = computed(() => {
+    return markdownParser(notes.value)
+  })
 </script>
 
 <template>
@@ -28,7 +32,7 @@
       <v-btn icon="mdi-pencil" variant="tonal" @click="openDialog"></v-btn>
     </v-card-title>
 
-    <v-card-text>{{ notes }}</v-card-text>
+    <v-card-text><div v-html="markedNotes"></div></v-card-text>
   </v-card>
 
   <v-dialog v-model="editDialog">
