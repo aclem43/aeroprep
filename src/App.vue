@@ -5,6 +5,7 @@
   import { getAlert, getAlertRef } from './scripts/utils/alert'
   import { getCurrentTheme } from './scripts/utils/themes'
   import { SplashScreen } from '@capacitor/splash-screen'
+
   setupListeners()
   const currentTheme = getCurrentTheme()
 
