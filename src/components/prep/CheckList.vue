@@ -38,12 +38,14 @@
 
 <template>
   <v-card title="CheckList" elevation="12">
-    <v-card-item v-for="item in CheckListItems" :key="item.id">
+    <v-list density="comfortable">
       <CheckListItem
+        v-for="item in CheckListItems"
+        :key="item.id"
         :title="item.title"
         :description="item.description"
         :link="item.link"
       ></CheckListItem>
-    </v-card-item>
+    </v-list>
   </v-card>
 </template>

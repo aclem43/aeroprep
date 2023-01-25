@@ -7,7 +7,10 @@
     description: string
     link?: string
   }>()
-  const show = ref(false)
+  const visible = ref(false)
+  const toggleVisibilty = () => {
+    visible.value = !visible.value
+  }
   let showLink = false
 
   if (props.link != undefined) {
@@ -19,25 +22,21 @@
 </script>
 
 <template>
-  <v-card>
-    <v-card-title class="d-flex justify-space-between">
-      <v-checkbox :label="title" hide-details></v-checkbox>
-      <v-btn
-        :icon="show ? 'mdi-chevron-up' : 'mdi-chevron-down'"
-        variant="plain"
-        @click="show = !show"
-      ></v-btn
-    ></v-card-title>
-    <v-expand-transition>
-      <div v-show="show">
-        <v-divider></v-divider>
-        <v-card-text>
-          {{ description }}
-        </v-card-text>
-        <v-card-actions v-if="showLink" class="justify-end">
-          <v-btn variant="elevated" elevation="4" @click="goTo">Go To</v-btn>
-        </v-card-actions>
+  <v-list-item>
+    <v-list-item-title>
+      <div class="d-flex justify-start">
+        <v-checkbox hide-details density="compact" :label="title"></v-checkbox>
+        <v-btn
+          @click="toggleVisibilty"
+          :icon="visible ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+        ></v-btn>
       </div>
-    </v-expand-transition>
-  </v-card>
+    </v-list-item-title>
+    <v-fade-transition>
+      <v-list-item-subtitle v-if="visible" class="d-flex justify-space-between"
+        >{{ description }}
+        <v-btn v-if="showLink" variant="outlined" @click="goTo">Go To</v-btn>
+      </v-list-item-subtitle>
+    </v-fade-transition>
+  </v-list-item>
 </template>
