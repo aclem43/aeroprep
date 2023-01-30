@@ -111,7 +111,7 @@
           label="Theme"
           v-model="theme"
         ></v-switch>
-        <div class="d-flex">
+        <div class="settings_input_row">
           <v-text-field
             label="Weather Api Key"
             variant="underlined"
@@ -121,7 +121,7 @@
             Save
           </v-btn>
         </div>
-        <div class="d-flex">
+        <div class="settings_input_row">
           <v-text-field
             label="Default Pilot Weight"
             variant="underlined"
@@ -168,7 +168,7 @@
         </div>
         <v-card-subtitle>Tracking</v-card-subtitle>
         <v-card-item>
-          <div class="d-flex">
+          <div class="settings_input_row">
             <v-text-field
               v-model="trackingInterval"
               label="Tracking"
@@ -193,6 +193,10 @@
 </template>
 
 <style>
+  .settings_input_row {
+    display: flex;
+    gap: 10px;
+  }
   .settings_chip_gap {
     gap: 10px;
     padding: 10px;
