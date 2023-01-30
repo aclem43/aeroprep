@@ -3,9 +3,11 @@
   import { openAlert } from '@/scripts/utils/alert'
   import {
     getDefaultPilotWeight,
+    getTrackingInterval,
     getWeatherApiKey,
     setDefaultPilotWeight,
     setTheme,
+    setTrackingInterval,
     setWeatherApiKey,
   } from '@/scripts/settings/settings'
   import { getCurrentTheme } from '@/scripts/utils/themes'
@@ -27,6 +29,7 @@
 
   const weatherApiKey = ref()
   const defaultPilotWeight = ref()
+  const trackingInterval = ref()
   const saveWeatherApiKey = async () => {
     await setWeatherApiKey(weatherApiKey.value)
     openAlert('Api Key Saved', 2000)
@@ -35,9 +38,14 @@
     await setDefaultPilotWeight(defaultPilotWeight.value)
     openAlert('Pilot Weight Saved', 2000)
   }
+  const saveTrackingInterval = async () => {
+    await setTrackingInterval(trackingInterval.value * 1000)
+    openAlert('Tracking Interval Saved', 2000)
+  }
   onMounted(async () => {
     defaultPilotWeight.value = await getDefaultPilotWeight()
     weatherApiKey.value = await getWeatherApiKey()
+    trackingInterval.value = (await getTrackingInterval()) / 1000
   })
 
   const theme = getCurrentTheme()
@@ -117,6 +125,7 @@
           <v-text-field
             label="Default Pilot Weight"
             variant="underlined"
+            suffix="kg"
             v-model="defaultPilotWeight"
             type="number"
             pattern="[0-9]*"
@@ -157,6 +166,27 @@
           </div>
           <v-btn @click="airportAdditionOverlay.open()">Add Airport</v-btn>
         </div>
+        <v-card-subtitle>Tracking</v-card-subtitle>
+        <v-card-item>
+          <div class="d-flex">
+            <v-text-field
+              v-model="trackingInterval"
+              label="Tracking"
+              hint="Time between getting GPS points"
+              suffix="Seconds"
+              variant="underlined"
+              type="number"
+              pattern="[0-9]*"
+              inputmode="numeric"
+            ></v-text-field>
+            <v-btn
+              prepend-icon="mdi-content-save"
+              @click="saveTrackingInterval()"
+            >
+              Save
+            </v-btn>
+          </div>
+        </v-card-item>
       </v-card-item>
     </v-card>
   </v-main>

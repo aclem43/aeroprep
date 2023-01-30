@@ -1,5 +1,6 @@
 import type { Aircraft } from '../aircraft'
 import { getSimpleDataByKey, setSimpleDataByKey } from '../database'
+import { defaultTrackingInterval } from '../flight/tracking'
 import type { ThemeType } from '../utils/themes'
 
 export const getWeatherApiKey = async (): Promise<string | null> => {
@@ -27,7 +28,10 @@ export const getAircraft = async (): Promise<Aircraft | null> => {
 }
 
 export const setAircraft = async (aircraft: Aircraft) => {
-  await setSimpleDataByKey('settings_current_aircraft', JSON.stringify(aircraft))
+  await setSimpleDataByKey(
+    'settings_current_aircraft',
+    JSON.stringify(aircraft)
+  )
 }
 
 export const getDefaultPilotWeight = async (): Promise<number> => {
@@ -39,4 +43,18 @@ export const getDefaultPilotWeight = async (): Promise<number> => {
 }
 export const setDefaultPilotWeight = async (weight: number) => {
   await setSimpleDataByKey('settings_default_weight', weight)
+}
+
+export const getTrackingInterval = async (): Promise<number> => {
+  const trackingInterval = await getSimpleDataByKey(
+    'settings_tracking_interval'
+  )
+  if (trackingInterval == null) {
+    return defaultTrackingInterval
+  }
+  return parseInt(trackingInterval)
+}
+
+export const setTrackingInterval = async (trackingInterval: number) => {
+  await setSimpleDataByKey('settings_tracking_interval', trackingInterval)
 }

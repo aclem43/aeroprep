@@ -25,7 +25,6 @@
   const networkStatus = getNetworkStatus()
 
   const networkIcon = computed(() => {
-    console.log(networkStatus.value.connectionType)
     if (networkStatus.value.connectionType == 'wifi')
       if (networkStatus.value.connected) {
         return 'mdi-wifi'

@@ -7,9 +7,10 @@ import {
   getSimpleDataByKey,
   setSimpleDataByKey,
 } from '../database'
+import { getTrackingInterval } from '../settings/settings'
 
 let lastSaveLength = 0
-
+export const defaultTrackingInterval = 5000
 const currentFlightData: Ref<Flight | null> = ref(null)
 let currentFlightInterval: number = -1
 
@@ -51,7 +52,7 @@ const recordFlightData = async () => {
   }
 }
 
-export const startFlight = () => {
+export const startFlight = async () => {
   const aircraft = getCurrentAircraft().value
   if (aircraft == null) {
     return
@@ -62,8 +63,8 @@ export const startFlight = () => {
     time: { startTime: new Date().getTime(), endTime: null },
     flightPath: [],
   }
-
-  currentFlightInterval = setInterval(recordFlightData, 5000)
+  const interval = await getTrackingInterval()
+  currentFlightInterval = setInterval(recordFlightData, interval)
 }
 
 export const stopFlight = () => {
