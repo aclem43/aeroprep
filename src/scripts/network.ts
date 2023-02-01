@@ -4,6 +4,7 @@ import {
   type ConnectionStatus,
   type ConnectionType,
 } from '@capacitor/network'
+import { addInitializer } from './initialize'
 
 const networkStatus: Ref<ConnectionStatus> = ref({
   connected: false,
@@ -13,9 +14,13 @@ const networkStatus: Ref<ConnectionStatus> = ref({
 const updateStatus = async (status: ConnectionStatus) => {
   networkStatus.value = status
 }
+const initializeStatus = async () => {
+  networkStatus.value = await Network.getStatus()
+}
 
 Network.addListener('networkStatusChange', updateStatus)
 
+addInitializer(initializeStatus)
 export const getNetworkStatus = (): Ref<ConnectionStatus> => {
   return networkStatus
 }
