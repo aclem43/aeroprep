@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { ref } from 'vue'
   import CheckListItem from './CheckListItem.vue'
 
   interface CheckListItemType {

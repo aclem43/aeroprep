@@ -11,7 +11,15 @@ import { getTrackingInterval } from '../settings/settings'
 
 let lastSaveLength = 0
 export const defaultTrackingInterval = 5000
-const currentFlightData: Ref<Flight | null> = ref(null)
+const currentFlightData: Ref<Flight> = ref({
+  running: false,
+  time: {
+    startTime: 0,
+    endTime: null,
+  },
+  aircraft: { name: 'null', fuelBurn: 0 },
+  flightPath: [],
+})
 let currentFlightInterval: number = -1
 
 export const getCurrentFlightData = () => {
@@ -23,16 +31,15 @@ const getCurrentFlightLocation = async (): Promise<FlightLocation> => {
     enableHighAccuracy: true,
   })
   const flightLoc: FlightLocation = {
-    alitude: geoLoc.coords.altitude,
-    speed: geoLoc.coords.speed,
-    heading: geoLoc.coords.heading,
+    alitude: geoLoc.coords.altitude ?? 0,
+    speed: geoLoc.coords.speed ?? 0,
+    heading: geoLoc.coords.heading ?? 0,
     time: geoLoc.timestamp,
     cord: {
       lattitude: geoLoc.coords.latitude,
       longitude: geoLoc.coords.longitude,
     },
   }
-
   return flightLoc
 }
 
@@ -45,7 +52,7 @@ const recordFlightData = async () => {
     return
   }
   currentFlightData.value.flightPath.push(await getCurrentFlightLocation())
-  lastSaveLength += 1
+  lastSaveLength = lastSaveLength + 1
   if (lastSaveLength > 5) {
     saveFlight()
     lastSaveLength = 0
@@ -57,12 +64,12 @@ export const startFlight = async () => {
   if (aircraft == null) {
     return
   }
-  currentFlightData.value = {
+  Object.assign(currentFlightData.value, {
     aircraft: aircraft,
     running: true,
     time: { startTime: new Date().getTime(), endTime: null },
     flightPath: [],
-  }
+  })
   const interval = await getTrackingInterval()
   currentFlightInterval = setInterval(recordFlightData, interval)
 }
@@ -91,15 +98,14 @@ export const getAllPastFlights = async (): Promise<Flight[]> => {
   const flightKeys: string[] = []
   const flights: Flight[] = []
   keys.forEach((key) => {
-    if (key.startsWith('flight_save-')) {
+    if (key.startsWith('flight_save')) {
       flightKeys.push(key)
     }
   })
   flightKeys.forEach(async (key) => {
     const flight = await getSimpleDataByKey(key)
-    if (flight !== null) {
-      flights.push(JSON.parse(flight))
-    }
+    flights.push(JSON.parse(flight as string))
   })
+
   return flights
 }
