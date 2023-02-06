@@ -1,14 +1,12 @@
 <script setup lang="ts">
   import type { Flight } from '@/models/Flight'
-  import { computed, ref } from 'vue'
-  const view = ref()
-  const center = ref([40, 40])
+  import { computed, onMounted, ref } from 'vue'
 
-  const zoom = ref(0)
-  const rotation = ref(0)
+  import 'leaflet/dist/leaflet.css'
+  import { LMap, LTileLayer, LPolyline } from '@vue-leaflet/vue-leaflet'
 
   const props = defineProps<{ flight: Flight | null }>()
-
+  const zoom = ref(2)
   const generateLineFromFlight = computed(() => {
     const testLine = [[-27.502808641996534, 152.9606629798137]]
     if (props.flight == null) {
@@ -18,40 +16,19 @@
     props.flight.flightPath.forEach((d) => {
       line.push([d.cord.longitude * 100000, d.cord.lattitude * 10000])
     })
-    console.log(testLine)
     return testLine
   })
-
-  const strokeWidth = ref(10)
-  const strokeColor = ref('red')
 </script>
 
 <template>
-  <ol-map
-    :loadTilesWhileAnimating="true"
-    :loadTilesWhileInteracting="true"
-    style="height: 100%"
-  >
-    <ol-view ref="view" :center="center" :rotation="rotation" :zoom="zoom" />
-    <ol-mouseposition-control></ol-mouseposition-control>
-    <ol-tile-layer>
-      <ol-source-osm />
-    </ol-tile-layer>
-
-    <ol-vector-layer>
-      <ol-source-vector>
-        <ol-feature>
-          <ol-geom-line-string
-            :coordinates="generateLineFromFlight"
-          ></ol-geom-line-string>
-          <ol-style>
-            <ol-style-stroke
-              :color="strokeColor"
-              :width="strokeWidth"
-            ></ol-style-stroke>
-          </ol-style>
-        </ol-feature>
-      </ol-source-vector>
-    </ol-vector-layer>
-  </ol-map>
+  <div style="height: 100%; width: 100%">
+    <l-map ref="map" v-model:zoom="zoom" :center="[47.41322, -1.219482]">
+      <l-tile-layer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        layer-type="base"
+        name="OpenStreetMap"
+      ></l-tile-layer>
+      <l-polyline :lat-lngs="generateLineFromFlight" color="green"></l-polyline>
+    </l-map>
+  </div>
 </template>
