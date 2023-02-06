@@ -5,6 +5,7 @@ import { getCurrentAircraft } from '../aircraft'
 import {
   getAllSimpleDataKeys,
   getSimpleDataByKey,
+  removeSimpleDataByKey,
   setSimpleDataByKey,
 } from '../database'
 import { getTrackingInterval } from '../settings/settings'
@@ -108,4 +109,8 @@ export const getAllPastFlights = async (): Promise<Flight[]> => {
   })
 
   return flights
+}
+
+export const deleteFlight = async (flight: Flight) => {
+  await removeSimpleDataByKey(`flight_save-${flight.time.startTime}`)
 }

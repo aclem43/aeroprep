@@ -2,15 +2,14 @@
   import AppBar from '@/components/AppBar.vue'
   import FlightSaveOverlay from '@/components/flight/FlightSaveOverlay.vue'
   import TrackingMap from '@/components/flight/TrackingMap.vue'
-  import type { Flight, FlightLocation } from '@/models/Flight'
+  import type { FlightLocation } from '@/models/Flight'
   import {
     getCurrentFlightData,
-    getAllPastFlights,
     startFlight,
     stopFlight,
   } from '@/scripts/flight/tracking'
   import { getNetworkStatus } from '@/scripts/network'
-  import { computed, onMounted, ref, type Ref } from 'vue'
+  import { computed, ref } from 'vue'
 
   const currentFlightData = getCurrentFlightData()
   const connection = getNetworkStatus()
@@ -21,7 +20,6 @@
       return false
     } else return currentFlightData.value.running
   })
-  const pastflights: Ref<Flight[]> = ref([])
 
   const latestFlightLoc = computed((): FlightLocation => {
     if (!currentFlightData.value) {
@@ -45,9 +43,6 @@
         currentFlightData.value.flightPath.length - 1
       ]
     }
-  })
-  onMounted(async () => {
-    pastflights.value = await getAllPastFlights()
   })
 </script>
 <template>
@@ -85,7 +80,9 @@
                   >
                 </div>
                 <div>
-                  <v-btn variant="tonal"><v-icon>mdi-menu</v-icon></v-btn>
+                  <v-btn variant="tonal" @click="flightSaveOverlay.open()"
+                    ><v-icon>mdi-menu</v-icon></v-btn
+                  >
                 </div>
               </div>
             </v-card-item>

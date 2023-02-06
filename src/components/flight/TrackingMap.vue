@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import type { Flight } from '@/models/Flight'
-  import { computed, onMounted, ref } from 'vue'
+  import { computed, ref } from 'vue'
 
   import 'leaflet/dist/leaflet.css'
   import { LMap, LTileLayer, LPolyline } from '@vue-leaflet/vue-leaflet'
