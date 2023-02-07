@@ -1,5 +1,5 @@
 import { ref, type Ref } from 'vue'
-import { getDataByKey, setDataByKey } from './database'
+import { getSimpleDataByKey, setSimpleDataByKey } from './database'
 import { addInitializer } from './initialize'
 
 export interface Airport {
@@ -18,7 +18,7 @@ export const getAirportsRef = () => {
 }
 
 export const getAirports = async (): Promise<Airport[]> => {
-  const rawAirports = await getDataByKey('airports')
+  const rawAirports = await getSimpleDataByKey('airports')
   if (rawAirports == null) {
     return []
   }
@@ -36,7 +36,7 @@ export const addAirport = async (airport: Airport) => {
     })
   }
   airports.push(airport)
-  await setDataByKey('airports', JSON.stringify(airports))
+  await setSimpleDataByKey('airports', JSON.stringify(airports))
   await getAirports()
 }
 
@@ -51,6 +51,6 @@ export const deleteAirport = async (airport: Airport) => {
   if (index > -1) {
     airports.splice(index)
   }
-  await setDataByKey('airports', JSON.stringify(airports))
+  await setSimpleDataByKey('airports', JSON.stringify(airports))
   await getAirports()
 }

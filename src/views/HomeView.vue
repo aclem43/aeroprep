@@ -4,6 +4,9 @@
   const goToPrep = () => {
     router.push('prep')
   }
+  const goToFly = () => {
+    router.push('/fly')
+  }
 </script>
 
 <template>
@@ -24,9 +27,20 @@
             </v-sheet>
           </template>
         </v-hover>
-
-        <v-sheet rounded="xl" class="button mx-auto" color="green-lighten-3">
-        </v-sheet>
+        <v-hover>
+          <template v-slot:default="{ isHovering, props }">
+            <v-sheet
+              v-bind="props"
+              rounded="xl"
+              class="button mx-auto prevent-select"
+              elevation="12"
+              :color="isHovering ? 'green-lighten-3' : 'green-lighten-2'"
+              @click="goToFly()"
+            >
+              <strong class="buttonText">FLY</strong>
+            </v-sheet>
+          </template>
+        </v-hover>
       </div>
     </v-main>
   </div>
