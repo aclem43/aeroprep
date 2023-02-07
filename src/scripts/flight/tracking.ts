@@ -114,3 +114,7 @@ export const getAllPastFlights = async (): Promise<Flight[]> => {
 export const deleteFlight = async (flight: Flight) => {
   await removeSimpleDataByKey(`flight_save-${flight.time.startTime}`)
 }
+
+export const setCurrentFlight = (flight: Flight) => {
+  currentFlightData.value = flight
+}

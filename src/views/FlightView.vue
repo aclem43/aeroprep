@@ -20,7 +20,9 @@
       return false
     } else return currentFlightData.value.running
   })
-
+  const openFlightSaveOverlay = async () => {
+    await flightSaveOverlay.value.open()
+  }
   const latestFlightLoc = computed((): FlightLocation => {
     if (!currentFlightData.value) {
       return {
@@ -80,7 +82,7 @@
                   >
                 </div>
                 <div>
-                  <v-btn variant="tonal" @click="flightSaveOverlay.open()"
+                  <v-btn variant="tonal" @click="openFlightSaveOverlay()"
                     ><v-icon>mdi-menu</v-icon></v-btn
                   >
                 </div>

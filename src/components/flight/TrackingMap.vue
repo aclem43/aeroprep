@@ -8,15 +8,19 @@
   const props = defineProps<{ flight: Flight | null }>()
   const zoom = ref(2)
   const generateLineFromFlight = computed(() => {
-    const testLine = [[-27.502808641996534, 152.9606629798137]]
-    if (props.flight == null) {
-      return testLine
-    }
     const line: number[][] = []
+
+    if (props.flight == null) {
+      return line
+    }
     props.flight.flightPath.forEach((d) => {
-      line.push([d.cord.longitude * 100000, d.cord.lattitude * 10000])
+      line.push([
+        parseFloat(d.cord.lattitude.toFixed(4)),
+        parseFloat(d.cord.longitude.toFixed(4)),
+      ])
     })
-    return testLine
+    console.log(line)
+    return line
   })
 </script>
 
@@ -30,5 +34,9 @@
       ></l-tile-layer>
       <l-polyline :lat-lngs="generateLineFromFlight" color="green"></l-polyline>
     </l-map>
+    <div v-if="generateLineFromFlight.length > 0">
+      test
+      {{ generateLineFromFlight }}
+    </div>
   </div>
 </template>
