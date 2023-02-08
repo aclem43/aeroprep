@@ -14,7 +14,7 @@
 
   const open = async () => {
     dialog.value = true
-    // await updatePastFlights()
+    await updatePastFlights()
   }
 
   const getDateInfo = (flight: Flight) => {
@@ -28,12 +28,9 @@
     const returnData = `${dateInfo} ${flightTime}min`
     return returnData
   }
-  onMounted(async () => {
-    await updatePastFlights()
-  })
+
   const updatePastFlights = async () => {
     pastFlights.value = await getAllPastFlights()
-    console.log('Done')
   }
   const deleteSave = async (flight: Flight) => {
     const { value } = await Dialog.confirm({
@@ -42,9 +39,8 @@
     })
     if (value) {
       await deleteFlight(flight)
-
-      openAlert('Flight Save deleted', 2000)
       await updatePastFlights()
+      openAlert('Flight Save deleted', 2000)
     }
   }
   const loadSave = (flight: Flight) => {

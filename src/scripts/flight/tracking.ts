@@ -103,11 +103,10 @@ export const getAllPastFlights = async (): Promise<Flight[]> => {
       flightKeys.push(key)
     }
   })
-  flightKeys.forEach(async (key) => {
+  for (const key of flightKeys) {
     const flight = await getSimpleDataByKey(key)
     flights.push(JSON.parse(flight as string))
-  })
-
+  }
   return flights
 }
 
