@@ -61,6 +61,9 @@ export const getWeather = async (
   const metar: ResponseMetar = await (await getMetar(airport, nearest)).data
   const taf: ResponseTaf = await (await getTaf(airport, nearest)).data
 
+  if (metar.data[0] == undefined) {
+    return { metar: null, taf: null, station: null }
+  }
   const weather: Weather = {
     metar: metar.data[0],
     taf: taf.data[0],

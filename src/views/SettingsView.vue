@@ -2,42 +2,77 @@
   import AppBar from '@/components/AppBar.vue'
   import { openAlert } from '@/scripts/utils/alert'
   import {
+    getDefaultPilotWeight,
+    getTrackingInterval,
     getWeatherApiKey,
+    setDefaultPilotWeight,
     setTheme,
+    setTrackingInterval,
     setWeatherApiKey,
   } from '@/scripts/settings/settings'
   import { getCurrentTheme } from '@/scripts/utils/themes'
-  import { computed, onMounted, ref, watch } from 'vue'
+  import { computed, onMounted, ref, watch, type Ref } from 'vue'
   import AircraftCreationOverlay from '@/components/settings/AircraftCreationOverlay.vue'
+  import AirportAdditionOverlay from '@/components/settings/AirportAdditionOverlay.vue'
+  import { Dialog } from '@capacitor/dialog'
   import {
     deleteAircraft,
     getAllAircraft,
     type Aircraft,
   } from '@/scripts/aircraft'
   import { getVersion } from '@/scripts/utils/version'
+  import {
+    deleteAirport,
+    getAirportsRef,
+    type Airport,
+  } from '@/scripts/airport'
 
   const weatherApiKey = ref()
-
+  const defaultPilotWeight = ref()
+  const trackingInterval = ref()
   const saveWeatherApiKey = async () => {
     await setWeatherApiKey(weatherApiKey.value)
     openAlert('Api Key Saved', 2000)
   }
-
+  const saveDefaultPilotWeight = async () => {
+    await setDefaultPilotWeight(defaultPilotWeight.value)
+    openAlert('Pilot Weight Saved', 2000)
+  }
+  const saveTrackingInterval = async () => {
+    await setTrackingInterval(trackingInterval.value * 1000)
+    openAlert('Tracking Interval Saved', 2000)
+  }
   onMounted(async () => {
+    defaultPilotWeight.value = await getDefaultPilotWeight()
     weatherApiKey.value = await getWeatherApiKey()
+    trackingInterval.value = (await getTrackingInterval()) / 1000
   })
 
   const theme = getCurrentTheme()
 
   const aircraftCreationOverlay = ref()
+  const airportAdditionOverlay = ref()
 
   const aircraftList = getAllAircraft()
 
   const removeAircraft = async (aircraft: Aircraft) => {
-    const value = await confirm('Are you sure you want to delete the Aircraft?')
+    const { value } = await Dialog.confirm({
+      title: 'Confirm',
+      message: `Are you sure you want to delete the Aircraft?`,
+    })
     if (value) {
       await deleteAircraft(aircraft)
       openAlert('Aircraft Deleted', 2000)
+    }
+  }
+  const removeAirport = async (airport: Airport) => {
+    const { value } = await Dialog.confirm({
+      title: 'Confirm',
+      message: `Are you sure you want to delete the Airport?`,
+    })
+    if (value) {
+      await deleteAirport(airport)
+      openAlert('Airport Deleted', 2000)
     }
   }
 
@@ -48,6 +83,8 @@
       return 'mdi-weather-sunny'
     }
   })
+
+  const airports: Ref<Airport[]> = getAirportsRef()
 
   watch(theme, async () => {
     await setTheme(theme.value)
@@ -60,6 +97,9 @@
     <AircraftCreationOverlay
       ref="aircraftCreationOverlay"
     ></AircraftCreationOverlay>
+    <AirportAdditionOverlay
+      ref="airportAdditionOverlay"
+    ></AirportAdditionOverlay>
     <v-card>
       <v-card-title> Settings </v-card-title>
       <v-card-subtitle>AeroPrep Version: {{ getVersion() }}</v-card-subtitle>
@@ -71,16 +111,36 @@
           label="Theme"
           v-model="theme"
         ></v-switch>
-        <div class="d-flex">
+        <div class="settings_input_row">
           <v-text-field
             label="Weather Api Key"
             variant="underlined"
             v-model="weatherApiKey"
           ></v-text-field>
-          <v-btn prepend-icon="mdi-content-save" @click="saveWeatherApiKey()">
+          <v-btn prepend-icon="mdi-content-save" @click="saveWeatherApiKey">
             Save
           </v-btn>
         </div>
+        <div class="settings_input_row">
+          <v-text-field
+            label="Default Pilot Weight"
+            variant="underlined"
+            suffix="kg"
+            v-model="defaultPilotWeight"
+            type="number"
+            pattern="[0-9]*"
+            inputmode="numeric"
+          ></v-text-field>
+          <v-btn
+            prepend-icon="mdi-content-save"
+            @click="saveDefaultPilotWeight"
+          >
+            Save
+          </v-btn>
+        </div>
+      </v-card-item>
+      <v-card-subtitle>Groups</v-card-subtitle>
+      <v-card-item>
         <div class="d-flex text-center settings_chip_gap">
           <div v-for="aircraft in aircraftList" :key="aircraft.name">
             <v-chip
@@ -93,12 +153,50 @@
           </div>
           <v-btn @click="aircraftCreationOverlay.open()">Add Aircraft</v-btn>
         </div>
+        <div class="d-flex text-center settings_chip_gap">
+          <div v-for="airport in airports" :key="airport.code">
+            <v-chip
+              variant="elevated"
+              @click="removeAirport(airport)"
+              append-icon="mdi-close-circle"
+            >
+              <v-icon v-if="airport.home">mdi-home</v-icon>
+              {{ airport.code }}</v-chip
+            >
+          </div>
+          <v-btn @click="airportAdditionOverlay.open()">Add Airport</v-btn>
+        </div>
+        <v-card-subtitle>Tracking</v-card-subtitle>
+        <v-card-item>
+          <div class="settings_input_row">
+            <v-text-field
+              v-model="trackingInterval"
+              label="Tracking"
+              hint="Time between getting GPS points"
+              suffix="Seconds"
+              variant="underlined"
+              type="number"
+              pattern="[0-9]*"
+              inputmode="numeric"
+            ></v-text-field>
+            <v-btn
+              prepend-icon="mdi-content-save"
+              @click="saveTrackingInterval()"
+            >
+              Save
+            </v-btn>
+          </div>
+        </v-card-item>
       </v-card-item>
     </v-card>
   </v-main>
 </template>
 
 <style>
+  .settings_input_row {
+    display: flex;
+    gap: 10px;
+  }
   .settings_chip_gap {
     gap: 10px;
     padding: 10px;

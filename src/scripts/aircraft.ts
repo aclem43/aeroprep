@@ -1,5 +1,6 @@
 import { ref, type Ref } from 'vue'
-import { getDataByKey, setDataByKey } from './database'
+import { getSimpleDataByKey, setSimpleDataByKey } from './database'
+import { addInitializer } from './initialize'
 
 export interface Aircraft {
   name: string
@@ -22,16 +23,22 @@ export const setCurrentAircarft = (aircraft: Aircraft) => {
 }
 
 export const initAircraft = async (): Promise<Aircraft[]> => {
-  const aircraft = await getDataByKey('aircraft_all')
+  const aircraft = await getSimpleDataByKey('aircraft_all')
   if (aircraft == null) {
     return []
   }
   return JSON.parse(aircraft)
 }
 
+const initializeAircraft = async () => {
+  const aircraft = getAllAircraft()
+  aircraft.value = await initAircraft()
+}
+addInitializer(initializeAircraft)
+
 export const addAircraft = async (aircraft: Aircraft) => {
   allAircraft.value.push(aircraft)
-  await setDataByKey('aircraft_all', JSON.stringify(allAircraft.value))
+  await setSimpleDataByKey('aircraft_all', JSON.stringify(allAircraft.value))
 }
 
 export const deleteAircraft = async (aircraft: Aircraft) => {
@@ -39,5 +46,5 @@ export const deleteAircraft = async (aircraft: Aircraft) => {
   if (index > -1) {
     allAircraft.value.splice(index)
   }
-  await setDataByKey('aircraft_all', JSON.stringify(allAircraft.value))
+  await setSimpleDataByKey('aircraft_all', JSON.stringify(allAircraft.value))
 }
