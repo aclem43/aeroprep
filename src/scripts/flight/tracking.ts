@@ -73,15 +73,22 @@ export const startFlight = async () => {
   })
   const interval = await getTrackingInterval()
   currentFlightInterval = setInterval(recordFlightData, interval)
+
+  if (await KeepAwake.isSupported()) {
+    await KeepAwake.keepAwake()
+  }
 }
 
-export const stopFlight = () => {
+export const stopFlight = async () => {
   if (currentFlightData.value == null) {
     return
   }
   currentFlightData.value.running = false
   currentFlightData.value.time.endTime = new Date().getTime()
   saveFlight()
+  if (await KeepAwake.isSupported()) {
+    await KeepAwake.allowSleep()
+  }
 }
 
 const saveFlight = () => {
