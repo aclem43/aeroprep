@@ -17,3 +17,28 @@ export const removeSimpleDataByKey = async (key: string) => {
 export const getAllSimpleDataKeys = async (): Promise<string[]> => {
   return (await Preferences.keys()).keys
 }
+
+export const removeAllStorage = async () => {
+  const keys = await getAllSimpleDataKeys()
+  for (const key of keys) {
+    await removeSimpleDataByKey(key)
+  }
+}
+
+export const removeAllExceptSaves = async () => {
+  const keys = await getAllSimpleDataKeys()
+  for (const key of keys) {
+    if (!key.startsWith('flight_save')) {
+      await removeSimpleDataByKey(key)
+    }
+  }
+}
+
+export const removeAllSaves = async () => {
+  const keys = await getAllSimpleDataKeys()
+  for (const key of keys) {
+    if (key.startsWith('flight_save')) {
+      await removeSimpleDataByKey(key)
+    }
+  }
+}

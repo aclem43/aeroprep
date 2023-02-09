@@ -3,10 +3,12 @@
   import { openAlert } from '@/scripts/utils/alert'
   import {
     getDefaultPilotWeight,
+    getTrackingDecimal,
     getTrackingInterval,
     getWeatherApiKey,
     setDefaultPilotWeight,
     setTheme,
+    setTrackingDecimal,
     setTrackingInterval,
     setWeatherApiKey,
   } from '@/scripts/settings/settings'
@@ -26,10 +28,16 @@
     getAirportsRef,
     type Airport,
   } from '@/scripts/airport'
+  import {
+    removeAllExceptSaves,
+    removeAllSaves,
+    removeAllStorage,
+  } from '@/scripts/database'
 
   const weatherApiKey = ref()
   const defaultPilotWeight = ref()
   const trackingInterval = ref()
+  const trackingDecimal = ref()
   const saveWeatherApiKey = async () => {
     await setWeatherApiKey(weatherApiKey.value)
     openAlert('Api Key Saved', 2000)
@@ -45,6 +53,37 @@
   const saveTrackingDecimal = async () => {
     await setTrackingDecimal(trackingDecimal.value)
     openAlert('Tracking Decimal Saved', 2000)
+  }
+  const deleteAllData = async () => {
+    const confirm = await Dialog.confirm({
+      title: 'Confirm',
+      message: 'Are you sure that you want to delete ALL of the saved data',
+    })
+    if (confirm) {
+      await removeAllStorage()
+      openAlert('All Data Deleted', 2000)
+    } else openAlert('Canceled', 2000)
+  }
+  const deleteAllButSaves = async () => {
+    const confirm = await Dialog.confirm({
+      title: 'Confirm',
+      message:
+        'Are you sure that you want to delete ALL but the Saved Flights of the saved data',
+    })
+    if (confirm) {
+      await removeAllExceptSaves()
+      openAlert('All Data Except For Saves Deleted', 2000)
+    } else openAlert('Canceled', 2000)
+  }
+  const deleteAllSaves = async () => {
+    const confirm = await Dialog.confirm({
+      title: 'Confirm',
+      message: 'Are you sure that you want to delete ALL the saves',
+    })
+    if (confirm) {
+      await removeAllSaves()
+      openAlert('All the saves deleted', 2000)
+    } else openAlert('Canceled', 2000)
   }
   onMounted(async () => {
     defaultPilotWeight.value = await getDefaultPilotWeight()
@@ -208,6 +247,20 @@
             >
               Save
             </v-btn>
+          </div>
+        </v-card-item>
+        <v-card-subtitle>Danger Zone</v-card-subtitle>
+        <v-card-item>
+          <div class="settings_input_row">
+            <v-btn color="warning" @click="deleteAllData()"
+              ><v-icon>mdi-alert</v-icon> Delete All Stored Data</v-btn
+            >
+            <v-btn color="warning" @click="deleteAllSaves()"
+              ><v-icon>mdi-alert</v-icon> Delete All Flight Saves</v-btn
+            >
+            <v-btn color="warning" @click="deleteAllButSaves()"
+              ><v-icon>mdi-alert</v-icon> Delete All But Flight Saves</v-btn
+            >
           </div>
         </v-card-item>
       </v-card-item>
