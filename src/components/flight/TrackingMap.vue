@@ -1,12 +1,15 @@
 <script setup lang="ts">
   import type { Flight } from '@/models/Flight'
-  import { computed, ref } from 'vue'
+  import { computed, onMounted, ref } from 'vue'
 
   import 'leaflet/dist/leaflet.css'
   import { LMap, LTileLayer, LPolyline } from '@vue-leaflet/vue-leaflet'
+  import { getTrackingDecimal } from '@/scripts/settings/settings'
+  import { defaultTrackingDecimal } from '@/scripts/flight/tracking'
 
   const props = defineProps<{ flight: Flight | null }>()
   const zoom = ref(2)
+  const trackingDecimal = ref(defaultTrackingDecimal)
   const generateLineFromFlight = computed(() => {
     const line: number[][] = []
 
@@ -15,12 +18,14 @@
     }
     props.flight.flightPath.forEach((d) => {
       line.push([
-        parseFloat(d.cord.lattitude.toFixed(4)),
-        parseFloat(d.cord.longitude.toFixed(4)),
+        parseFloat(d.cord.lattitude.toFixed(trackingDecimal.value)),
+        parseFloat(d.cord.longitude.toFixed(trackingDecimal.value)),
       ])
     })
-    console.log(line)
     return line
+  })
+  onMounted(async () => {
+    trackingDecimal.value = await getTrackingDecimal()
   })
 </script>
 

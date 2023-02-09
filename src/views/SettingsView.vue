@@ -42,10 +42,15 @@
     await setTrackingInterval(trackingInterval.value * 1000)
     openAlert('Tracking Interval Saved', 2000)
   }
+  const saveTrackingDecimal = async () => {
+    await setTrackingDecimal(trackingDecimal.value)
+    openAlert('Tracking Decimal Saved', 2000)
+  }
   onMounted(async () => {
     defaultPilotWeight.value = await getDefaultPilotWeight()
     weatherApiKey.value = await getWeatherApiKey()
     trackingInterval.value = (await getTrackingInterval()) / 1000
+    trackingDecimal.value = await getTrackingDecimal()
   })
 
   const theme = getCurrentTheme()
@@ -182,6 +187,24 @@
             <v-btn
               prepend-icon="mdi-content-save"
               @click="saveTrackingInterval()"
+            >
+              Save
+            </v-btn>
+          </div>
+          <div class="settings_input_row">
+            <v-text-field
+              v-model="trackingDecimal"
+              label="Tracking Decimal"
+              hint="Accuracy of GPS points used"
+              suffix="Seconds"
+              variant="underlined"
+              type="number"
+              pattern="[0-9]*"
+              inputmode="numeric"
+            ></v-text-field>
+            <v-btn
+              prepend-icon="mdi-content-save"
+              @click="saveTrackingDecimal()"
             >
               Save
             </v-btn>

@@ -1,5 +1,6 @@
 import type { Flight, FlightLocation } from '@/models/Flight'
 import { Geolocation } from '@capacitor/geolocation'
+import { KeepAwake } from '@capacitor-community/keep-awake'
 import { ref, type Ref } from 'vue'
 import { getCurrentAircraft } from '../aircraft'
 import {
@@ -12,6 +13,7 @@ import { getTrackingInterval } from '../settings/settings'
 
 let lastSaveLength = 0
 export const defaultTrackingInterval = 5000
+export const defaultTrackingDecimal = 4
 const currentFlightData: Ref<Flight> = ref({
   running: false,
   time: {

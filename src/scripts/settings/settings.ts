@@ -1,6 +1,9 @@
 import type { Aircraft } from '../aircraft'
 import { getSimpleDataByKey, setSimpleDataByKey } from '../database'
-import { defaultTrackingInterval } from '../flight/tracking'
+import {
+  defaultTrackingDecimal,
+  defaultTrackingInterval,
+} from '../flight/tracking'
 import type { ThemeType } from '../utils/themes'
 
 export const getWeatherApiKey = async (): Promise<string | null> => {
@@ -57,4 +60,16 @@ export const getTrackingInterval = async (): Promise<number> => {
 
 export const setTrackingInterval = async (trackingInterval: number) => {
   await setSimpleDataByKey('settings_tracking_interval', trackingInterval)
+}
+
+export const getTrackingDecimal = async (): Promise<number> => {
+  const trackingDecimal = await getSimpleDataByKey('settings_tracking_decimal')
+  if (trackingDecimal == null) {
+    return defaultTrackingDecimal
+  }
+  return parseInt(trackingDecimal)
+}
+
+export const setTrackingDecimal = async (trackingDecimal: number) => {
+  await setSimpleDataByKey('settings_tracking_decimal', trackingDecimal)
 }
