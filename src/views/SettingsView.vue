@@ -47,7 +47,7 @@
     openAlert('Pilot Weight Saved', 2000)
   }
   const saveTrackingInterval = async () => {
-    await setTrackingInterval(trackingInterval.value * 1000)
+    await setTrackingInterval(trackingInterval.value)
     openAlert('Tracking Interval Saved', 2000)
   }
   const saveTrackingDecimal = async () => {
@@ -88,7 +88,7 @@
   onMounted(async () => {
     defaultPilotWeight.value = await getDefaultPilotWeight()
     weatherApiKey.value = await getWeatherApiKey()
-    trackingInterval.value = (await getTrackingInterval()) / 1000
+    trackingInterval.value = await getTrackingInterval()
     trackingDecimal.value = await getTrackingDecimal()
   })
 
@@ -217,7 +217,7 @@
               v-model="trackingInterval"
               label="Tracking"
               hint="Time between getting GPS points"
-              suffix="Seconds"
+              suffix="Milliseconds"
               variant="underlined"
               type="number"
               pattern="[0-9]*"

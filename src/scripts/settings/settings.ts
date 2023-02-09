@@ -55,7 +55,7 @@ export const getTrackingInterval = async (): Promise<number> => {
   if (trackingInterval == null) {
     return defaultTrackingInterval
   }
-  return parseInt(trackingInterval)
+  return parseFloat(trackingInterval)
 }
 
 export const setTrackingInterval = async (trackingInterval: number) => {
