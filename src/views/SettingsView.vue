@@ -55,32 +55,32 @@
     openAlert('Tracking Decimal Saved', 2000)
   }
   const deleteAllData = async () => {
-    const confirm = await Dialog.confirm({
+    const { value } = await Dialog.confirm({
       title: 'Confirm',
       message: 'Are you sure that you want to delete ALL of the saved data',
     })
-    if (confirm) {
+    if (value) {
       await removeAllStorage()
       openAlert('All Data Deleted', 2000)
     } else openAlert('Canceled', 2000)
   }
   const deleteAllButSaves = async () => {
-    const confirm = await Dialog.confirm({
+    const { value } = await Dialog.confirm({
       title: 'Confirm',
       message:
         'Are you sure that you want to delete ALL but the Saved Flights of the saved data',
     })
-    if (confirm) {
+    if (value) {
       await removeAllExceptSaves()
       openAlert('All Data Except For Saves Deleted', 2000)
     } else openAlert('Canceled', 2000)
   }
   const deleteAllSaves = async () => {
-    const confirm = await Dialog.confirm({
+    const { value } = await Dialog.confirm({
       title: 'Confirm',
       message: 'Are you sure that you want to delete ALL the saves',
     })
-    if (confirm) {
+    if (value) {
       await removeAllSaves()
       openAlert('All the saves deleted', 2000)
     } else openAlert('Canceled', 2000)
