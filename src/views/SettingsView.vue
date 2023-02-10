@@ -33,7 +33,11 @@
     removeAllSaves,
     removeAllStorage,
   } from '@/scripts/database'
-
+  import { loadStorageInfo, getStorageInfo } from '@/scripts/settings/devTools'
+  // Dev Settings/Tools
+  const devTools = ref(false)
+  const storageInfo = getStorageInfo()
+  // Main Settings
   const weatherApiKey = ref()
   const defaultPilotWeight = ref()
   const trackingInterval = ref()
@@ -210,59 +214,77 @@
           </div>
           <v-btn @click="airportAdditionOverlay.open()">Add Airport</v-btn>
         </div>
-        <v-card-subtitle>Tracking</v-card-subtitle>
-        <v-card-item>
-          <div class="settings_input_row">
-            <v-text-field
-              v-model="trackingInterval"
-              label="Tracking"
-              hint="Time between getting GPS points"
-              suffix="Milliseconds"
-              variant="underlined"
-              type="number"
-              pattern="[0-9]*"
-              inputmode="numeric"
-            ></v-text-field>
-            <v-btn
-              prepend-icon="mdi-content-save"
-              @click="saveTrackingInterval()"
-            >
-              Save
-            </v-btn>
-          </div>
-          <div class="settings_input_row">
-            <v-text-field
-              v-model="trackingDecimal"
-              label="Tracking Decimal"
-              hint="Accuracy of GPS points used"
-              suffix="Seconds"
-              variant="underlined"
-              type="number"
-              pattern="[0-9]*"
-              inputmode="numeric"
-            ></v-text-field>
-            <v-btn
-              prepend-icon="mdi-content-save"
-              @click="saveTrackingDecimal()"
-            >
-              Save
-            </v-btn>
-          </div>
-        </v-card-item>
-        <v-card-subtitle>Danger Zone</v-card-subtitle>
-        <v-card-item>
-          <div class="settings_input_row">
-            <v-btn color="warning" @click="deleteAllData()"
-              ><v-icon>mdi-alert</v-icon> Delete All Stored Data</v-btn
-            >
-            <v-btn color="warning" @click="deleteAllSaves()"
-              ><v-icon>mdi-alert</v-icon> Delete All Flight Saves</v-btn
-            >
-            <v-btn color="warning" @click="deleteAllButSaves()"
-              ><v-icon>mdi-alert</v-icon> Delete All But Flight Saves</v-btn
-            >
-          </div>
-        </v-card-item>
+      </v-card-item>
+      <v-card-subtitle
+        ><v-icon>mdi-crosshairs-gps</v-icon>Tracking</v-card-subtitle
+      >
+      <v-card-item>
+        <div class="settings_input_row">
+          <v-text-field
+            v-model="trackingInterval"
+            label="Tracking"
+            hint="Time between getting GPS points"
+            suffix="Milliseconds"
+            variant="underlined"
+            type="number"
+            pattern="[0-9]*"
+            inputmode="numeric"
+          ></v-text-field>
+          <v-btn
+            prepend-icon="mdi-content-save"
+            @click="saveTrackingInterval()"
+          >
+            Save
+          </v-btn>
+        </div>
+        <div class="settings_input_row">
+          <v-text-field
+            v-model="trackingDecimal"
+            label="Tracking Decimal"
+            hint="Accuracy of GPS points used"
+            suffix="Seconds"
+            variant="underlined"
+            type="number"
+            pattern="[0-9]*"
+            inputmode="numeric"
+          ></v-text-field>
+          <v-btn prepend-icon="mdi-content-save" @click="saveTrackingDecimal()">
+            Save
+          </v-btn>
+        </div>
+      </v-card-item>
+      <v-card-subtitle><v-icon>mdi-alert</v-icon>Danger Zone</v-card-subtitle>
+      <v-card-item>
+        <div class="settings_input_row">
+          <v-btn color="warning" @click="deleteAllData()"
+            ><v-icon>mdi-alert</v-icon> Delete All Stored Data</v-btn
+          >
+          <v-btn color="warning" @click="deleteAllSaves()"
+            ><v-icon>mdi-alert</v-icon> Delete All Flight Saves</v-btn
+          >
+          <v-btn color="warning" @click="deleteAllButSaves()"
+            ><v-icon>mdi-alert</v-icon> Delete All But Flight Saves</v-btn
+          >
+        </div>
+      </v-card-item>
+      <v-card-subtitle><v-icon>mdi-tools</v-icon>Dev Tools </v-card-subtitle>
+      <v-card-item>
+        <div class="settings_input_row">
+          <v-switch
+            v-model="devTools"
+            color="warning"
+            hide-details
+            :label="devTools ? 'Disable' : 'Enable'"
+          ></v-switch>
+        </div>
+        <div v-if="devTools" class="settings_input_row">
+          <v-btn color="info" @click="loadStorageInfo"
+            ><v-icon>mdi-reload</v-icon> Load Data</v-btn
+          >
+          <v-btn color="info" v-clipboard:copy="storageInfo"
+            ><v-icon>mdi-clipboard</v-icon>Storage To Clip Board</v-btn
+          >
+        </div>
       </v-card-item>
     </v-card>
   </v-main>
