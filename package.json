@@ -20,6 +20,7 @@
     "@capacitor/network": "^4.1.0",
     "@capacitor/preferences": "^4.0.2",
     "@capacitor/splash-screen": "^4.1.4",
+    "@soerenmartius/vue3-clipboard": "^0.1.2",
     "@vue-leaflet/vue-leaflet": "^0.8.2",
     "cordova-res": "^0.15.4",
     "leaflet": "^1.9.3",

@@ -76,7 +76,7 @@
 </script>
 
 <template>
-  <div>
+  <div class="fuel_container">
     <table class="fuel_table">
       <thead>
         <tr>
@@ -120,10 +120,19 @@
         </tr>
       </tbody>
     </table>
+    <v-card variant="text">
+      <v-card-item>
+        <v-btn>Save Default</v-btn>
+      </v-card-item>
+    </v-card>
   </div>
 </template>
 
 <style>
+  .fuel_container {
+    display: flex;
+    justify-content: space-between;
+  }
   .fuel_table {
     border-collapse: collapse;
     border: black solid 2px;
