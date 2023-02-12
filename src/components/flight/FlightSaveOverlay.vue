@@ -66,7 +66,7 @@
           v-for="flight in pastFlights"
           :key="flight.time.startTime"
           density="compact"
-          :variant="isCurrentFlight(flight) ? 'tonal' : ''"
+          :variant="isCurrentFlight(flight) ? 'tonal' : 'flat'"
         >
           <v-list-item-title class="d-flex justify-space-between">
             {{ getDateInfo(flight) }}

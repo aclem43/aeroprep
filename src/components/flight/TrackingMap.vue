@@ -1,32 +1,17 @@
 <script setup lang="ts">
   import type { Flight } from '@/models/Flight'
-  import { computed, onMounted, ref } from 'vue'
+  import { ref } from 'vue'
 
   import 'leaflet/dist/leaflet.css'
-  import { LMap, LTileLayer, LPolyline } from '@vue-leaflet/vue-leaflet'
-  import { getTrackingDecimal } from '@/scripts/settings/settings'
-  import { defaultTrackingDecimal } from '@/scripts/flight/tracking/trackingConstants'
+  import {
+    LMap,
+    LTileLayer,
+    LPolyline,
+    LControlScale,
+  } from '@vue-leaflet/vue-leaflet'
+  import { generateLine } from '@/scripts/flight/tracking/map'
 
-  const props = defineProps<{ flight: Flight | null }>()
   const zoom = ref(2)
-  const trackingDecimal = ref(defaultTrackingDecimal)
-  const generateLineFromFlight = computed(() => {
-    const line: number[][] = []
-
-    if (props.flight == null) {
-      return line
-    }
-    props.flight.flightPath.forEach((d) => {
-      line.push([
-        parseFloat(d.cord.lattitude.toFixed(trackingDecimal.value)),
-        parseFloat(d.cord.longitude.toFixed(trackingDecimal.value)),
-      ])
-    })
-    return line
-  })
-  onMounted(async () => {
-    trackingDecimal.value = await getTrackingDecimal()
-  })
 </script>
 
 <template>
@@ -37,11 +22,8 @@
         layer-type="base"
         name="OpenStreetMap"
       ></l-tile-layer>
-      <l-polyline :lat-lngs="generateLineFromFlight" color="green"></l-polyline>
+      <l-polyline :lat-lngs="generateLine" color="green"></l-polyline>
+      <l-control-scale></l-control-scale>
     </l-map>
-    <div v-if="generateLineFromFlight.length > 0">
-      test
-      {{ generateLineFromFlight }}
-    </div>
   </div>
 </template>

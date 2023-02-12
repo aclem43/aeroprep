@@ -5,6 +5,8 @@ import { getTrackingInterval } from '@/scripts/settings/settings'
 import { KeepAwake } from '@capacitor-community/keep-awake'
 import { Geolocation } from '@capacitor/geolocation'
 import { type Ref, ref } from 'vue'
+import { verifyFlightLocation } from './datapoint'
+import { updateTrackingConstants } from './trackingConstants'
 
 let lastSaveLength = 0
 
@@ -27,12 +29,12 @@ const recordFlightData = async () => {
     clearInterval(currentFlightInterval)
     return
   }
-  currentFlightData.value.flightPath.push(await getCurrentFlightLocation())
-  lastSaveLength = lastSaveLength + 1
-  if (lastSaveLength > 5) {
-    saveFlight()
-    lastSaveLength = 0
+  const currentFlightLocation = await getCurrentFlightLocation()
+  if (!verifyFlightLocation(currentFlightLocation)) {
+    return
   }
+  currentFlightData.value.flightPath.push(currentFlightLocation)
+  await autoSave()
 }
 
 export const startFlight = async () => {
@@ -40,6 +42,7 @@ export const startFlight = async () => {
   if (aircraft == null) {
     return
   }
+  await updateTrackingConstants() // Update Constants
   Object.assign(currentFlightData.value, {
     aircraft: aircraft,
     running: true,
@@ -66,11 +69,11 @@ export const stopFlight = async () => {
   }
 }
 
-const saveFlight = () => {
+const saveFlight = async () => {
   if (currentFlightData.value == null) {
     return
   }
-  setSimpleDataByKey(
+  await setSimpleDataByKey(
     `flight_save-${currentFlightData.value.time.startTime}`,
     JSON.stringify(currentFlightData.value)
   )
@@ -99,4 +102,12 @@ const getCurrentFlightLocation = async (): Promise<FlightLocation> => {
 
 export const setCurrentFlight = (flight: Flight) => {
   currentFlightData.value = flight
+}
+
+const autoSave = async () => {
+  lastSaveLength = lastSaveLength + 1
+  if (lastSaveLength > 5) {
+    await saveFlight()
+    lastSaveLength = 0
+  }
 }
