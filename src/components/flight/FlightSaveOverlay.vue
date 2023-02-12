@@ -1,13 +1,10 @@
 <script setup lang="ts">
   import type { Flight } from '@/models/Flight'
-  import {
-    getAllPastFlights,
-    deleteFlight,
-    setCurrentFlight,
-  } from '@/scripts/flight/tracking'
+  import { setCurrentFlight } from '@/scripts/flight/tracking/recording'
+  import { getAllPastFlights, deleteFlight } from '@/scripts/flight/flights'
   import { openAlert } from '@/scripts/utils/alert'
   import { Dialog } from '@capacitor/dialog'
-  import { ref, onMounted, type Ref } from 'vue'
+  import { ref, type Ref } from 'vue'
 
   const dialog = ref()
   const pastFlights: Ref<Flight[]> = ref([])

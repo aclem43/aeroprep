@@ -5,7 +5,7 @@
   import 'leaflet/dist/leaflet.css'
   import { LMap, LTileLayer, LPolyline } from '@vue-leaflet/vue-leaflet'
   import { getTrackingDecimal } from '@/scripts/settings/settings'
-  import { defaultTrackingDecimal } from '@/scripts/flight/tracking'
+  import { defaultTrackingDecimal } from '@/scripts/flight/tracking/trackingConstants'
 
   const props = defineProps<{ flight: Flight | null }>()
   const zoom = ref(2)
