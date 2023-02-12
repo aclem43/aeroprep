@@ -242,7 +242,7 @@
             v-model="trackingDecimal"
             label="Tracking Decimal"
             hint="Accuracy of GPS points used"
-            suffix="Seconds"
+            suffix="Decimal Places"
             variant="underlined"
             type="number"
             pattern="[0-9]*"
