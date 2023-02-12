@@ -3,7 +3,7 @@ import { getSimpleDataByKey, setSimpleDataByKey } from '../database'
 import {
   defaultTrackingDecimal,
   defaultTrackingInterval,
-} from '../flight/tracking'
+} from '@/scripts/flight/tracking/trackingConstants'
 import type { ThemeType } from '../utils/themes'
 
 export const getWeatherApiKey = async (): Promise<string | null> => {

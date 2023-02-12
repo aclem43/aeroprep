@@ -1,19 +1,13 @@
 import type { Flight, FlightLocation } from '@/models/Flight'
-import { Geolocation } from '@capacitor/geolocation'
+import { getCurrentAircraft } from '@/scripts/aircraft'
+import { setSimpleDataByKey } from '@/scripts/database'
+import { getTrackingInterval } from '@/scripts/settings/settings'
 import { KeepAwake } from '@capacitor-community/keep-awake'
-import { ref, type Ref } from 'vue'
-import { getCurrentAircraft } from '../aircraft'
-import {
-  getAllSimpleDataKeys,
-  getSimpleDataByKey,
-  removeSimpleDataByKey,
-  setSimpleDataByKey,
-} from '../database'
-import { getTrackingInterval } from '../settings/settings'
+import { Geolocation } from '@capacitor/geolocation'
+import { type Ref, ref } from 'vue'
 
 let lastSaveLength = 0
-export const defaultTrackingInterval = 5000
-export const defaultTrackingDecimal = 4
+
 const currentFlightData: Ref<Flight> = ref({
   running: false,
   time: {
@@ -24,27 +18,6 @@ const currentFlightData: Ref<Flight> = ref({
   flightPath: [],
 })
 let currentFlightInterval: number = -1
-
-export const getCurrentFlightData = () => {
-  return currentFlightData
-}
-
-const getCurrentFlightLocation = async (): Promise<FlightLocation> => {
-  const geoLoc = await Geolocation.getCurrentPosition({
-    enableHighAccuracy: true,
-  })
-  const flightLoc: FlightLocation = {
-    alitude: geoLoc.coords.altitude ?? 0,
-    speed: geoLoc.coords.speed ?? 0,
-    heading: geoLoc.coords.heading ?? 0,
-    time: geoLoc.timestamp,
-    cord: {
-      lattitude: geoLoc.coords.latitude,
-      longitude: geoLoc.coords.longitude,
-    },
-  }
-  return flightLoc
-}
 
 const recordFlightData = async () => {
   if (
@@ -103,24 +76,25 @@ const saveFlight = () => {
   )
 }
 
-export const getAllPastFlights = async (): Promise<Flight[]> => {
-  const keys = await getAllSimpleDataKeys()
-  const flightKeys: string[] = []
-  const flights: Flight[] = []
-  keys.forEach((key) => {
-    if (key.startsWith('flight_save')) {
-      flightKeys.push(key)
-    }
-  })
-  for (const key of flightKeys) {
-    const flight = await getSimpleDataByKey(key)
-    flights.push(JSON.parse(flight as string))
-  }
-  return flights
+export const getCurrentFlightData = () => {
+  return currentFlightData
 }
 
-export const deleteFlight = async (flight: Flight) => {
-  await removeSimpleDataByKey(`flight_save-${flight.time.startTime}`)
+const getCurrentFlightLocation = async (): Promise<FlightLocation> => {
+  const geoLoc = await Geolocation.getCurrentPosition({
+    enableHighAccuracy: true,
+  })
+  const flightLoc: FlightLocation = {
+    alitude: geoLoc.coords.altitude ?? 0,
+    speed: geoLoc.coords.speed ?? 0,
+    heading: geoLoc.coords.heading ?? 0,
+    time: geoLoc.timestamp,
+    cord: {
+      lattitude: geoLoc.coords.latitude,
+      longitude: geoLoc.coords.longitude,
+    },
+  }
+  return flightLoc
 }
 
 export const setCurrentFlight = (flight: Flight) => {

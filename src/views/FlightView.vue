@@ -7,7 +7,7 @@
     getCurrentFlightData,
     startFlight,
     stopFlight,
-  } from '@/scripts/flight/tracking'
+  } from '@/scripts/flight/tracking/recording'
   import { getNetworkStatus } from '@/scripts/network'
   import { computed, ref } from 'vue'
 
