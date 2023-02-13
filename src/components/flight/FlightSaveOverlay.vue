@@ -21,12 +21,10 @@
     const dateInfo = new Date(flight.time.startTime).toLocaleString()
     let flightTime = '0'
     if (flight.time.endTime) {
-      flightTime = new Date(flight.time.endTime - flight.time.startTime)
-        .getMinutes()
-        .toString()
+      const date = new Date(flight.time.endTime - flight.time.startTime)
+      flightTime = date.getUTCHours() + 'h ' + date.getUTCMinutes() + 'm'
     }
-    const returnData = `${dateInfo} ${flightTime}min`
-    return returnData
+    return `${dateInfo} - ${flightTime}`
   }
 
   const updatePastFlights = async () => {
