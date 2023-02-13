@@ -6,9 +6,10 @@ import {
 } from '@/scripts/settings/settings'
 import { ref } from 'vue'
 
-export const defaultTrackingInterval = 5000
+export const defaultTrackingInterval = 1000
 export const defaultTrackingDecimal = 4
 export const defaultMinimumDistance = 0.5 // NM
+export const defaultHeadingChange = 5
 
 const currentTrackingInterval = ref(defaultMinimumDistance)
 export const getCurrentTrackingInterval = () => {
@@ -25,6 +26,10 @@ export const getCurrentMinimumDistance = () => {
   return currentMinimumDistance.value
 }
 
+const currentHeadingChange = ref(defaultHeadingChange)
+export const getCurrentHeadingChange = () => {
+  return currentHeadingChange.value
+}
 export const updateTrackingConstants = async () => {
   currentTrackingInterval.value = await getTrackingInterval()
   currentTrackingDecimal.value = await getTrackingDecimal()

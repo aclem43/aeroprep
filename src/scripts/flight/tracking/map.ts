@@ -1,10 +1,7 @@
 import type { Flight } from '@/models/Flight'
 import { computed, ref, type Ref } from 'vue'
 import { getCurrentFlightData } from './recording'
-import {
-  defaultTrackingDecimal,
-  getCurrentTrackingDecimal,
-} from './trackingConstants'
+import { getCurrentTrackingDecimal } from './trackingConstants'
 const lineMode: Ref<'basic' | 'altitude'> = ref('basic')
 
 export const generateLine = computed((flight: Flight) => {
