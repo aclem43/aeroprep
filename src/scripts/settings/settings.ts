@@ -1,9 +1,10 @@
 import type { Aircraft } from '../aircraft'
 import { getSimpleDataByKey, setSimpleDataByKey } from '../database'
 import {
+  defaultMinimumDistance,
   defaultTrackingDecimal,
   defaultTrackingInterval,
-} from '../flight/tracking'
+} from '@/scripts/flight/tracking/trackingConstants'
 import type { ThemeType } from '../utils/themes'
 
 export const getWeatherApiKey = async (): Promise<string | null> => {
@@ -72,4 +73,18 @@ export const getTrackingDecimal = async (): Promise<number> => {
 
 export const setTrackingDecimal = async (trackingDecimal: number) => {
   await setSimpleDataByKey('settings_tracking_decimal', trackingDecimal)
+}
+
+export const getMinimumDistance = async (): Promise<number> => {
+  const minimumDistance = await getSimpleDataByKey(
+    'settings_tracking_min_distance'
+  )
+  if (minimumDistance == null) {
+    return defaultMinimumDistance
+  }
+  return parseInt(minimumDistance)
+}
+
+export const setMinimumDistance = async (minimumDistance: number) => {
+  await setSimpleDataByKey('settings_tracking_min_distance', minimumDistance)
 }

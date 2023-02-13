@@ -3,19 +3,15 @@
   import { openAlert } from '@/scripts/utils/alert'
   import {
     getDefaultPilotWeight,
-    getTrackingDecimal,
-    getTrackingInterval,
     getWeatherApiKey,
     setDefaultPilotWeight,
     setTheme,
-    setTrackingDecimal,
-    setTrackingInterval,
     setWeatherApiKey,
   } from '@/scripts/settings/settings'
   import { getCurrentTheme } from '@/scripts/utils/themes'
   import { computed, onMounted, ref, watch, type Ref } from 'vue'
-  import AircraftCreationOverlay from '@/components/settings/AircraftCreationOverlay.vue'
-  import AirportAdditionOverlay from '@/components/settings/AirportAdditionOverlay.vue'
+  import AircraftCreationOverlay from '@/components/settings/overlays/AircraftCreationOverlay.vue'
+  import AirportAdditionOverlay from '@/components/settings/overlays/AirportAdditionOverlay.vue'
   import { Dialog } from '@capacitor/dialog'
   import {
     deleteAircraft,
@@ -33,15 +29,11 @@
     removeAllSaves,
     removeAllStorage,
   } from '@/scripts/database'
-  import { loadStorageInfo, getStorageInfo } from '@/scripts/settings/devTools'
-  // Dev Settings/Tools
-  const devTools = ref(false)
-  const storageInfo = getStorageInfo()
+  import TrackingSettings from '@/components/settings/TrackingSettings.vue'
+
   // Main Settings
   const weatherApiKey = ref()
   const defaultPilotWeight = ref()
-  const trackingInterval = ref()
-  const trackingDecimal = ref()
   const saveWeatherApiKey = async () => {
     await setWeatherApiKey(weatherApiKey.value)
     openAlert('Api Key Saved', 2000)
@@ -49,14 +41,6 @@
   const saveDefaultPilotWeight = async () => {
     await setDefaultPilotWeight(defaultPilotWeight.value)
     openAlert('Pilot Weight Saved', 2000)
-  }
-  const saveTrackingInterval = async () => {
-    await setTrackingInterval(trackingInterval.value)
-    openAlert('Tracking Interval Saved', 2000)
-  }
-  const saveTrackingDecimal = async () => {
-    await setTrackingDecimal(trackingDecimal.value)
-    openAlert('Tracking Decimal Saved', 2000)
   }
   const deleteAllData = async () => {
     const { value } = await Dialog.confirm({
@@ -92,8 +76,6 @@
   onMounted(async () => {
     defaultPilotWeight.value = await getDefaultPilotWeight()
     weatherApiKey.value = await getWeatherApiKey()
-    trackingInterval.value = await getTrackingInterval()
-    trackingDecimal.value = await getTrackingDecimal()
   })
 
   const theme = getCurrentTheme()
@@ -219,39 +201,7 @@
         ><v-icon>mdi-crosshairs-gps</v-icon>Tracking</v-card-subtitle
       >
       <v-card-item>
-        <div class="settings_input_row">
-          <v-text-field
-            v-model="trackingInterval"
-            label="Tracking"
-            hint="Time between getting GPS points"
-            suffix="Milliseconds"
-            variant="underlined"
-            type="number"
-            pattern="[0-9]*"
-            inputmode="numeric"
-          ></v-text-field>
-          <v-btn
-            prepend-icon="mdi-content-save"
-            @click="saveTrackingInterval()"
-          >
-            Save
-          </v-btn>
-        </div>
-        <div class="settings_input_row">
-          <v-text-field
-            v-model="trackingDecimal"
-            label="Tracking Decimal"
-            hint="Accuracy of GPS points used"
-            suffix="Decimal Places"
-            variant="underlined"
-            type="number"
-            pattern="[0-9]*"
-            inputmode="numeric"
-          ></v-text-field>
-          <v-btn prepend-icon="mdi-content-save" @click="saveTrackingDecimal()">
-            Save
-          </v-btn>
-        </div>
+        <TrackingSettings></TrackingSettings>
       </v-card-item>
       <v-card-subtitle><v-icon>mdi-alert</v-icon>Danger Zone</v-card-subtitle>
       <v-card-item>
@@ -268,24 +218,7 @@
         </div>
       </v-card-item>
       <v-card-subtitle><v-icon>mdi-tools</v-icon>Dev Tools </v-card-subtitle>
-      <v-card-item>
-        <div class="settings_input_row">
-          <v-switch
-            v-model="devTools"
-            color="warning"
-            hide-details
-            :label="devTools ? 'Disable' : 'Enable'"
-          ></v-switch>
-        </div>
-        <div v-if="devTools" class="settings_input_row">
-          <v-btn color="info" @click="loadStorageInfo"
-            ><v-icon>mdi-reload</v-icon> Load Data</v-btn
-          >
-          <v-btn color="info" v-clipboard:copy="storageInfo"
-            ><v-icon>mdi-clipboard</v-icon>Storage To Clip Board</v-btn
-          >
-        </div>
-      </v-card-item>
+      <v-card-item> </v-card-item>
     </v-card>
   </v-main>
 </template>

@@ -7,7 +7,7 @@
     getCurrentFlightData,
     startFlight,
     stopFlight,
-  } from '@/scripts/flight/tracking'
+  } from '@/scripts/flight/tracking/recording'
   import { getNetworkStatus } from '@/scripts/network'
   import { computed, ref } from 'vue'
 
@@ -55,7 +55,7 @@
       <v-card class="flight_card">
         <v-card-item>
           <div v-if="connection.connected" class="flight_card_map">
-            <TrackingMap :flight="currentFlightData"></TrackingMap>
+            <TrackingMap></TrackingMap>
           </div>
           <div v-else class="flight_card_map">
             Not connected to the internet, the flight will still record but to
