@@ -16,7 +16,7 @@
 
   const createAircraft = () => {
     addAircraft({ name: aircraftName.value, fuelBurn: aircraftFuelBurn.value })
-    openAlert('Aircraft Created', 2000)
+    openAlert('Aircraft Created')
     dialog.value = false
     aircraftName.value = ''
     aircraftFuelBurn.value = 0

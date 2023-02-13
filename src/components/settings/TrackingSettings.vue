@@ -16,15 +16,15 @@
 
   const saveTrackingInterval = async () => {
     await setTrackingInterval(trackingInterval.value)
-    openAlert('Tracking Interval Saved', 2000)
+    openAlert('Tracking Interval Saved')
   }
   const saveTrackingDecimal = async () => {
     await setTrackingDecimal(trackingDecimal.value)
-    openAlert('Tracking Decimal Saved', 2000)
+    openAlert('Tracking Decimal Saved')
   }
   const saveMinimumDistance = async () => {
     await setMinimumDistance(minimumDistance.value)
-    openAlert('Minimum Distance Saved', 2000)
+    openAlert('Minimum Distance Saved')
   }
   onMounted(async () => {
     trackingInterval.value = await getTrackingInterval()

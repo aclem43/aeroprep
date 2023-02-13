@@ -38,7 +38,7 @@
     if (value) {
       await deleteFlight(flight)
       await updatePastFlights()
-      openAlert('Flight Save deleted', 2000)
+      openAlert('Flight Save deleted')
     }
   }
   const isCurrentFlight = (flight: Flight): boolean => {
@@ -50,7 +50,7 @@
   }
   const loadSave = (flight: Flight) => {
     setCurrentFlight(flight)
-    openAlert('Flight Loaded', 2000)
+    openAlert('Flight Loaded')
   }
   defineExpose({ open })
 </script>

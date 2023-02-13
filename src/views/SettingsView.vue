@@ -37,11 +37,11 @@
   const defaultPilotWeight = ref()
   const saveWeatherApiKey = async () => {
     await setWeatherApiKey(weatherApiKey.value)
-    openAlert('Api Key Saved', 2000)
+    openAlert('Api Key Saved')
   }
   const saveDefaultPilotWeight = async () => {
     await setDefaultPilotWeight(defaultPilotWeight.value)
-    openAlert('Pilot Weight Saved', 2000)
+    openAlert('Pilot Weight Saved')
   }
   const deleteAllData = async () => {
     const { value } = await Dialog.confirm({
@@ -50,8 +50,8 @@
     })
     if (value) {
       await removeAllStorage()
-      openAlert('All Data Deleted', 2000)
-    } else openAlert('Canceled', 2000)
+      openAlert('All Data Deleted')
+    } else openAlert('Canceled')
   }
   const deleteAllButSaves = async () => {
     const { value } = await Dialog.confirm({
@@ -61,8 +61,8 @@
     })
     if (value) {
       await removeAllExceptSaves()
-      openAlert('All Data Except For Saves Deleted', 2000)
-    } else openAlert('Canceled', 2000)
+      openAlert('All Data Except For Saves Deleted')
+    } else openAlert('Canceled')
   }
   const deleteAllSaves = async () => {
     const { value } = await Dialog.confirm({
@@ -71,8 +71,8 @@
     })
     if (value) {
       await removeAllSaves()
-      openAlert('All the saves deleted', 2000)
-    } else openAlert('Canceled', 2000)
+      openAlert('All the saves deleted')
+    } else openAlert('Canceled')
   }
   onMounted(async () => {
     defaultPilotWeight.value = await getDefaultPilotWeight()
@@ -93,7 +93,7 @@
     })
     if (value) {
       await deleteAircraft(aircraft)
-      openAlert('Aircraft Deleted', 2000)
+      openAlert('Aircraft Deleted')
     }
   }
   const removeAirport = async (airport: Airport) => {
@@ -103,7 +103,7 @@
     })
     if (value) {
       await deleteAirport(airport)
-      openAlert('Airport Deleted', 2000)
+      openAlert('Airport Deleted')
     }
   }
 
