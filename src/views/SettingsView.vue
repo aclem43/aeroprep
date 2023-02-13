@@ -30,6 +30,7 @@
     removeAllStorage,
   } from '@/scripts/database'
   import TrackingSettings from '@/components/settings/TrackingSettings.vue'
+  import DevSettings from '@/components/settings/DevSettings.vue'
 
   // Main Settings
   const weatherApiKey = ref()
@@ -218,7 +219,9 @@
         </div>
       </v-card-item>
       <v-card-subtitle><v-icon>mdi-tools</v-icon>Dev Tools </v-card-subtitle>
-      <v-card-item> </v-card-item>
+      <v-card-item>
+        <DevSettings></DevSettings>
+      </v-card-item>
     </v-card>
   </v-main>
 </template>
