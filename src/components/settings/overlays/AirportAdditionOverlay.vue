@@ -16,7 +16,7 @@
 
   const createAirport = () => {
     addAirport({ home: homeAirport.value, code: airportCode.value })
-    openAlert('Airport added', 2000)
+    openAlert('Airport added')
     dialog.value = false
     homeAirport.value = false
     airportCode.value = ''
