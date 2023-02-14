@@ -20,7 +20,7 @@ const initFuelData = (): FuelData => {
 
 export const initFuelRows = async (): Promise<FuelRow[]> => {
   const data = await getSimpleDataByKey('action_fuel_data')
-  if (!data) {
+  if (!data || data === '[]') {
     return [
       { item: 'A', name: 'Taxi Fuel', fuelData: initFuelData() },
       { item: 'B', name: 'Trip Fuel', fuelData: initFuelData() },
@@ -40,5 +40,5 @@ export const initFuelRows = async (): Promise<FuelRow[]> => {
 }
 
 export const saveFuelRows = async (fuelRows: FuelRow[]) => {
-  await setSimpleDataByKey('action_fuel_data', JSON.stringify(fuelRows))
+  await setSimpleDataByKey('action_fuel_data', fuelRows)
 }

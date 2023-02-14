@@ -7,17 +7,18 @@
   } from '@/scripts/prep/fuelaction'
   import { openAlert } from '@/scripts/utils/alert'
   import { computed } from 'vue'
-  import { onMounted, type Ref, ref } from 'vue'
+  import { onMounted, type Ref, ref, reactive } from 'vue'
 
   const currentAircraft = getCurrentAircraft()
 
-  let fuelRows: Ref<FuelRow[]> = ref([])
+  const fuelRows = reactive<FuelRow[]>([])
   onMounted(async () => {
-    fuelRows.value = await initFuelRows()
+    const d = await initFuelRows()
+    Object.assign(fuelRows, d)
   })
 
-  const saveDefault = () => {
-    saveFuelRows(fuelRows.value)
+  const saveDefault = async () => {
+    await saveFuelRows(fuelRows)
     openAlert('Defaults Saved')
   }
   const inputChangeMin = (index: number) => {
@@ -25,31 +26,29 @@
       openAlert('Pick an Aircraft')
       return
     }
-    const min = fuelRows.value[index].fuelData.min
-    fuelRows.value[index].fuelData.litre =
-      (min / 60) * currentAircraft.value.fuelBurn
+    const min = fuelRows[index].fuelData.min
+    fuelRows[index].fuelData.litre = (min / 60) * currentAircraft.value.fuelBurn
   }
   const inputChangeLitre = (index: number) => {
     if (currentAircraft.value == null) {
       openAlert('Pick a Aircraft')
       return
     }
-    const litre = fuelRows.value[index].fuelData.litre
+    const litre = fuelRows[index].fuelData.litre
 
-    fuelRows.value[index].fuelData.min =
-      (litre / currentAircraft.value.fuelBurn) * 60
+    fuelRows[index].fuelData.min = (litre / currentAircraft.value.fuelBurn) * 60
   }
 
   const totalMin = computed(() => {
     let min = 0
-    for (const row of fuelRows.value) {
+    for (const row of fuelRows) {
       min = min + row.fuelData.min
     }
     return Math.round(min * 100) / 100
   })
   const totalLitre = computed(() => {
     let litre = 0
-    for (const row of fuelRows.value) {
+    for (const row of fuelRows) {
       litre = litre + row.fuelData.litre
     }
     return Math.round(litre * 100) / 100
@@ -74,7 +73,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(row, idx) in fuelRows" :key="row.item">
+        <tr v-for="(row, idx) in fuelRows" :key="idx">
           <td>{{ row.item }}</td>
           <td>{{ row.name }}</td>
           <td>
