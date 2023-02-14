@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { getCurrentAircraft } from '@/scripts/aircraft'
+  import { getCurrentFlight } from '@/scripts/prep/flightaction'
   import {
     type FuelRow,
     initFuelRows,
@@ -10,7 +11,7 @@
   import { onMounted, type Ref, ref, reactive } from 'vue'
 
   const currentAircraft = getCurrentAircraft()
-
+  const currentFlight = getCurrentFlight()
   const fuelRows = reactive<FuelRow[]>([])
   onMounted(async () => {
     const d = await initFuelRows()
@@ -53,7 +54,14 @@
     }
     return Math.round(litre * 100) / 100
   })
-
+  const endurance = computed(() => {
+    if (currentAircraft.value == null) {
+      return 0
+    }
+    return Math.round(
+      (currentFlight.fuel.value / currentAircraft.value.fuelBurn) * 60
+    )
+  })
   const removeFocus = (event: KeyboardEvent) => {
     if (event.target) {
       ;(event.target as HTMLInputElement).blur()
@@ -97,12 +105,25 @@
             />
           </td>
         </tr>
-        <!--  -->
         <tr>
           <td>H</td>
           <td>Fuel Required</td>
-          <td>{{ totalMin }}</td>
-          <td>{{ totalLitre }}</td>
+          <td class="bg-surface-variant">{{ totalMin }}</td>
+          <td class="bg-surface-variant">{{ totalLitre }}</td>
+        </tr>
+        <tr>
+          <td>I</td>
+          <td>Endurance</td>
+          <td class="bg-surface-variant">{{ endurance }}</td>
+          <td class="bg-surface-variant">{{ currentFlight.fuel.value }}</td>
+        </tr>
+        <tr>
+          <td>J</td>
+          <td>Margin</td>
+          <td class="bg-surface-variant">{{ endurance - totalMin }}</td>
+          <td class="bg-surface-variant">
+            {{ currentFlight.fuel.value - totalLitre }}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -125,6 +146,7 @@
     text-align: center;
     font-size: larger;
   }
+
   .fuel_table thead tr {
     border: black solid 2px;
   }

@@ -3,6 +3,7 @@
 
   const currentFlight = getCurrentFlight()
   const dual = currentFlight.dual
+  const fuel = currentFlight.fuel
 </script>
 
 <template>
@@ -38,7 +39,18 @@
     </div>
     <div>
       <h3>Aircraft Preperation</h3>
-      <div class="flight_action_flight_row">Fuel Stuff?</div>
+      <div class="flight_action_flight_row">
+        <v-text-field
+          hide-details
+          density="compact"
+          type="number"
+          variant="solo"
+          label="Fuel"
+          inputmode="numeric"
+          class="flight_action_fuel"
+          v-model="fuel"
+        ></v-text-field>
+      </div>
     </div>
   </div>
 </template>
@@ -54,5 +66,9 @@
     display: flex;
     gap: 10px;
     min-height: 42px;
+  }
+
+  .flight_action_fuel {
+    max-width: 300px;
   }
 </style>

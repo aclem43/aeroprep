@@ -8,6 +8,7 @@ export const lightTheme: ThemeDefinition = {
   colors: {
     background: '#FFFFFF',
     surface: '#f7f7f7',
+    'surface-variant': '#474747',
     primary: '#1877f2',
     'primary-darken-1': '#3700B3',
     secondary: '#12a60d',
@@ -24,6 +25,7 @@ export const darkTheme: ThemeDefinition = {
   colors: {
     background: '#121212',
     surface: '#212121',
+    'surface-variant': '#212121',
     primary: '#0b039e',
     'primary-darken-1': '#3700B3',
     secondary: '#12a60d',
