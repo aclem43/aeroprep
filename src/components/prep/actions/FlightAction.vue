@@ -18,7 +18,7 @@
     <div>
       <h3>Current Flight</h3>
       <div class="flight_action_flight_row">
-        <v-btn variant="tonal" @click="resetCurrentFlight"
+        <v-btn variant="tonal" @click="resetCurrentFlight" size="small"
           >Reset<v-icon>mdi-restart</v-icon>
         </v-btn>
       </div>
@@ -92,7 +92,7 @@
   .flight_action_flight_row {
     display: flex;
     gap: 10px;
-    min-height: 42px;
+    min-height: 24px;
   }
 
   .flight_action_input {

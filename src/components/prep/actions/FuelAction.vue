@@ -115,14 +115,14 @@
         <tr>
           <td>H</td>
           <td>Fuel Required</td>
-          <td class="bg-surface-variant">{{ totalMin }}</td>
-          <td class="bg-surface-variant">{{ totalLitre }}</td>
+          <td class="text-surface-variant">{{ totalMin }}</td>
+          <td class="text-surface-variant">{{ totalLitre }}</td>
         </tr>
         <tr>
           <td>I</td>
           <td>Endurance</td>
-          <td class="bg-surface-variant">{{ endurance }}</td>
-          <td class="bg-surface-variant">
+          <td class="text-surface-variant">{{ endurance }}</td>
+          <td class="text-surface-variant">
             {{ currentFlight.currentFuel }}
           </td>
         </tr>
