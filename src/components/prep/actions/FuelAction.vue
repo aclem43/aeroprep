@@ -67,6 +67,13 @@
       ;(event.target as HTMLInputElement).blur()
     }
   }
+
+  const fuelMarginClass = computed(() => {
+    if (endurance.value < totalMin.value) {
+      return 'text-error'
+    }
+    return 'text-success'
+  })
 </script>
 
 <template>
@@ -122,8 +129,10 @@
         <tr>
           <td>J</td>
           <td>Margin</td>
-          <td class="bg-surface-variant">{{ endurance - totalMin }}</td>
-          <td class="bg-surface-variant">
+          <td :class="fuelMarginClass">
+            {{ endurance - totalMin }}
+          </td>
+          <td :class="fuelMarginClass">
             {{ currentFlight.currentFuel - totalLitre }}
           </td>
         </tr>
