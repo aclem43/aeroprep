@@ -1,25 +1,51 @@
 <script setup lang="ts">
-  import { getCurrentFlight } from '@/scripts/prep/flightaction'
+  import {
+    getCurrentFlight,
+    saveFlight,
+    resetCurrentFlight,
+  } from '@/scripts/prep/flightaction'
+  import { watch } from 'vue'
 
   const currentFlight = getCurrentFlight()
-  const dual = currentFlight.dual
-  const fuel = currentFlight.fuel
+
+  watch(currentFlight.value, async (newFlight, oldFlight) => {
+    await saveFlight(oldFlight)
+  })
 </script>
 
 <template>
   <div class="flight_action">
     <div>
+      <h3>Current Flight</h3>
+      <div class="flight_action_flight_row">
+        <v-btn variant="tonal" @click="resetCurrentFlight" size="small"
+          >Reset<v-icon>mdi-restart</v-icon>
+        </v-btn>
+      </div>
+    </div>
+  </div>
+  <div class="flight_action">
+    <div>
       <h3>Passenger</h3>
       <div class="flight_action_flight_row">
+        <v-text-field
+          class="flight_action_input"
+          hide-details
+          density="compact"
+          type="number"
+          variant="solo"
+          label="Pilot Weight"
+          inputmode="numeric"
+        ></v-text-field>
         <v-switch
           class="flight_action_dual_switch"
-          v-model="dual"
-          :label="dual ? 'Dual' : 'Solo'"
+          v-model="currentFlight.dual"
+          :label="currentFlight.dual ? 'Dual' : 'Solo'"
           hide-details
           density="compact"
         ></v-switch>
         <v-fade-transition>
-          <div v-if="dual" class="flight_action_flight_row">
+          <div v-if="currentFlight.dual" class="flight_action_flight_row">
             <v-checkbox
               density="compact"
               hide-details
@@ -32,6 +58,7 @@
               variant="solo"
               label="Passenger Weight"
               inputmode="numeric"
+              class="flight_action_input"
             ></v-text-field>
           </div>
         </v-fade-transition>
@@ -47,8 +74,8 @@
           variant="solo"
           label="Fuel"
           inputmode="numeric"
-          class="flight_action_fuel"
-          v-model="fuel"
+          class="flight_action_input"
+          v-model="currentFlight.currentFuel"
         ></v-text-field>
       </div>
     </div>
@@ -65,10 +92,10 @@
   .flight_action_flight_row {
     display: flex;
     gap: 10px;
-    min-height: 42px;
+    min-height: 24px;
   }
 
-  .flight_action_fuel {
+  .flight_action_input {
     max-width: 300px;
   }
 </style>

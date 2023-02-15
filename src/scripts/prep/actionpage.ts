@@ -1,2 +1,6 @@
 import { ref } from 'vue'
-export const page = ref()
+const page = ref()
+
+export const getPage = () => {
+  return page
+}

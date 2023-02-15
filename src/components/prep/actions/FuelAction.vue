@@ -8,7 +8,7 @@
   } from '@/scripts/prep/fuelaction'
   import { openAlert } from '@/scripts/utils/alert'
   import { computed } from 'vue'
-  import { onMounted, type Ref, ref, reactive } from 'vue'
+  import { onMounted, reactive } from 'vue'
 
   const currentAircraft = getCurrentAircraft()
   const currentFlight = getCurrentFlight()
@@ -59,7 +59,7 @@
       return 0
     }
     return Math.round(
-      (currentFlight.fuel.value / currentAircraft.value.fuelBurn) * 60
+      (currentFlight.value.currentFuel / currentAircraft.value.fuelBurn) * 60
     )
   })
   const removeFocus = (event: KeyboardEvent) => {
@@ -67,6 +67,13 @@
       ;(event.target as HTMLInputElement).blur()
     }
   }
+
+  const fuelMarginClass = computed(() => {
+    if (endurance.value < totalMin.value) {
+      return 'text-error'
+    }
+    return 'text-success'
+  })
 </script>
 
 <template>
@@ -108,21 +115,25 @@
         <tr>
           <td>H</td>
           <td>Fuel Required</td>
-          <td class="bg-surface-variant">{{ totalMin }}</td>
-          <td class="bg-surface-variant">{{ totalLitre }}</td>
+          <td class="text-surface-variant">{{ totalMin }}</td>
+          <td class="text-surface-variant">{{ totalLitre }}</td>
         </tr>
         <tr>
           <td>I</td>
           <td>Endurance</td>
-          <td class="bg-surface-variant">{{ endurance }}</td>
-          <td class="bg-surface-variant">{{ currentFlight.fuel.value }}</td>
+          <td class="text-surface-variant">{{ endurance }}</td>
+          <td class="text-surface-variant">
+            {{ currentFlight.currentFuel }}
+          </td>
         </tr>
         <tr>
           <td>J</td>
           <td>Margin</td>
-          <td class="bg-surface-variant">{{ endurance - totalMin }}</td>
-          <td class="bg-surface-variant">
-            {{ currentFlight.fuel.value - totalLitre }}
+          <td :class="fuelMarginClass">
+            {{ endurance - totalMin }}
+          </td>
+          <td :class="fuelMarginClass">
+            {{ currentFlight.currentFuel - totalLitre }}
           </td>
         </tr>
       </tbody>
