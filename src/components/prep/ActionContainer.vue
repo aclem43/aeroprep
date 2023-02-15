@@ -1,10 +1,11 @@
 <script setup lang="ts">
-  import { page } from '@/scripts/prep/actionpage'
+  import { getPage } from '@/scripts/prep/actionpage'
   import FlightAction from './actions/FlightAction.vue'
   import FuelAction from './actions/FuelAction.vue'
   import NoteAction from './actions/NoteAction.vue'
   import RiskAction from './actions/RiskAction.vue'
   import WeatherAction from './actions/WeatherAction.vue'
+  const page = getPage()
 </script>
 
 <template>

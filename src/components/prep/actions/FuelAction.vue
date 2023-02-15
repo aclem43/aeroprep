@@ -8,7 +8,7 @@
   } from '@/scripts/prep/fuelaction'
   import { openAlert } from '@/scripts/utils/alert'
   import { computed } from 'vue'
-  import { onMounted, type Ref, ref, reactive } from 'vue'
+  import { onMounted, reactive } from 'vue'
 
   const currentAircraft = getCurrentAircraft()
   const currentFlight = getCurrentFlight()
@@ -59,7 +59,7 @@
       return 0
     }
     return Math.round(
-      (currentFlight.fuel.value / currentAircraft.value.fuelBurn) * 60
+      (currentFlight.value.currentFuel / currentAircraft.value.fuelBurn) * 60
     )
   })
   const removeFocus = (event: KeyboardEvent) => {
@@ -115,14 +115,16 @@
           <td>I</td>
           <td>Endurance</td>
           <td class="bg-surface-variant">{{ endurance }}</td>
-          <td class="bg-surface-variant">{{ currentFlight.fuel.value }}</td>
+          <td class="bg-surface-variant">
+            {{ currentFlight.currentFuel }}
+          </td>
         </tr>
         <tr>
           <td>J</td>
           <td>Margin</td>
           <td class="bg-surface-variant">{{ endurance - totalMin }}</td>
           <td class="bg-surface-variant">
-            {{ currentFlight.fuel.value - totalLitre }}
+            {{ currentFlight.currentFuel - totalLitre }}
           </td>
         </tr>
       </tbody>
