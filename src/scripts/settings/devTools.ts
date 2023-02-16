@@ -15,3 +15,13 @@ export const loadStorageInfo = async () => {
 export const getStorageInfo = () => {
   return storageInfo
 }
+declare const process: {
+  env: {
+    NODE_ENV: string
+  }
+}
+
+const checkIfDevMOde = () => {
+  return process.env.NODE_ENV === 'development'
+}
+export const devMode = checkIfDevMOde()
