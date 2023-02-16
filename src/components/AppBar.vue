@@ -3,6 +3,7 @@
   import { getAllAircraft, getCurrentAircraft } from '@/scripts/aircraft'
   import { getNetworkStatus } from '@/scripts/network'
   import { setAircraft, getAircraft } from '@/scripts/settings/settings'
+  import { getKeepAwakeIcon, toggleKeepAwake } from '@/scripts/utils/awake'
   import { computed, onMounted, ref } from 'vue'
   const aircraft = getAllAircraft()
 
@@ -40,6 +41,9 @@
     return 'mdi-web'
   })
 
+  const keepAwakeIcon = computed(() => {
+    return getKeepAwakeIcon()
+  })
   const navDrawer = ref(false)
 </script>
 <template>
@@ -75,6 +79,10 @@
     <v-divider></v-divider>
     <v-btn variant="plain" icon @click="goTo('/settings')">
       <v-icon>mdi-cog</v-icon>
+    </v-btn>
+    <v-divider></v-divider>
+    <v-btn class="align-bottom" variant="plain" icon @click="toggleKeepAwake()">
+      <v-icon>{{ keepAwakeIcon }}</v-icon>
     </v-btn>
   </v-navigation-drawer>
 </template>
