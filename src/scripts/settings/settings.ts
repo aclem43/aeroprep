@@ -20,7 +20,7 @@ export const getTheme = async (): Promise<ThemeType> => {
   return t
 }
 export const setTheme = async (theme: string) => {
-  await setSimpleDataByKey('settings_theme', theme)
+  await setSimpleDataByKey('settings_theme', theme, true)
 }
 
 export const getAircraft = async (): Promise<Aircraft | null> => {
