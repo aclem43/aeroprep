@@ -28,7 +28,7 @@ const pages: Page[] = [
     component: WeightBalanceActionVue,
   },
   {
-    name: 'Risk Assment',
+    name: 'Risk Assesment',
     shortName: 'risk',
     icon: 'mdi-order-bool-ascending-variant',
     component: RiskActionVue,
