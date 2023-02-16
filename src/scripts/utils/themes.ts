@@ -40,7 +40,7 @@ export type ThemeType = 'darkTheme' | 'lightTheme'
 
 const currentTheme: Ref<ThemeType> = ref('darkTheme')
 
-export const getCurrentTheme = () => {
+export const getCurrentTheme = (): Ref<ThemeType> => {
   return currentTheme
 }
 

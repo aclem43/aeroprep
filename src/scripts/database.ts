@@ -1,7 +1,15 @@
 import { Preferences } from '@capacitor/preferences'
 
-export const setSimpleDataByKey = async (key: string, value: any) => {
-  await Preferences.set({ key: key, value: JSON.stringify(value) })
+export const setSimpleDataByKey = async (
+  key: string,
+  value: any,
+  string?: boolean
+) => {
+  if (string) {
+    await Preferences.set({ key: key, value: value })
+  } else {
+    await Preferences.set({ key: key, value: JSON.stringify(value) })
+  }
 }
 
 export const getSimpleDataByKey = async (
