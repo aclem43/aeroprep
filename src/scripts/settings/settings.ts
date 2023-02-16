@@ -12,7 +12,7 @@ export const getWeatherApiKey = async (): Promise<string | null> => {
 }
 
 export const setWeatherApiKey = async (apiKey: string) => {
-  await setSimpleDataByKey('settings_weather_api_key', apiKey)
+  await setSimpleDataByKey('settings_weather_api_key', apiKey, true)
 }
 
 export const getTheme = async (): Promise<ThemeType> => {

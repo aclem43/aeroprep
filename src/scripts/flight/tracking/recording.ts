@@ -84,12 +84,12 @@ const getCurrentFlightLocation = async (): Promise<FlightLocation> => {
     enableHighAccuracy: true,
   })
   const flightLoc: FlightLocation = {
-    alitude: geoLoc.coords.altitude ?? 0,
+    altitude: geoLoc.coords.altitude ?? 0,
     speed: geoLoc.coords.speed ?? 0,
     heading: geoLoc.coords.heading ?? 0,
     time: geoLoc.timestamp,
     cord: {
-      lattitude: geoLoc.coords.latitude,
+      latitude: geoLoc.coords.latitude,
       longitude: geoLoc.coords.longitude,
     },
   }
