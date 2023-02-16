@@ -24,7 +24,7 @@ const pages: Page[] = [
   {
     name: 'Weight & Balance',
     shortName: 'weight',
-    icon: 'mdi-balance-scale',
+    icon: 'mdi-weight',
     component: WeightBalanceActionVue,
   },
   {
@@ -33,9 +33,6 @@ const pages: Page[] = [
     icon: 'mdi-order-bool-ascending-variant',
     component: RiskActionVue,
   },
-]
-
-const morePages: Page[] = [
   {
     name: 'Notes',
     shortName: 'notes',
@@ -51,7 +48,7 @@ const morePages: Page[] = [
 ]
 
 export const getPages = () => {
-  return { pages, morePages }
+  return pages
 }
 export const getPage = () => {
   return page
