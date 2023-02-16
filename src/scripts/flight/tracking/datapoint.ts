@@ -19,9 +19,9 @@ export const verifyFlightLocation = (
     return true
   }
   const distance = getDistanceFromLatLonInNm(
-    lastLocation.cord.lattitude,
+    lastLocation.cord.latitude,
     lastLocation.cord.longitude,
-    currentFlightLocation.cord.lattitude,
+    currentFlightLocation.cord.latitude,
     currentFlightLocation.cord.longitude
   )
   const currentMinimumDistance = getCurrentMinimumDistance()

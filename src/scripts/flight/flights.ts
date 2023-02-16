@@ -4,6 +4,7 @@ import {
   getSimpleDataByKey,
   removeSimpleDataByKey,
 } from '../database'
+import { defaultFlight } from '../defaults'
 
 export const getAllPastFlights = async (): Promise<Flight[]> => {
   const keys = await getAllSimpleDataKeys()
@@ -16,7 +17,9 @@ export const getAllPastFlights = async (): Promise<Flight[]> => {
   })
   for (const key of flightKeys) {
     const flight = await getSimpleDataByKey(key)
-    flights.push(JSON.parse(flight as string))
+    const flightData = defaultFlight()
+    Object.assign(flightData, JSON.parse(flight as string))
+    flights.push(flightData)
   }
   return flights
 }
