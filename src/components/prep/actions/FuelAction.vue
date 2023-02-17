@@ -7,15 +7,18 @@
     saveFuelRows,
   } from '@/scripts/prep/fuelaction'
   import { openAlert } from '@/scripts/utils/alert'
+  import { isMobile } from '@/scripts/utils/mobile'
   import { computed } from 'vue'
-  import { onMounted, reactive } from 'vue'
+  import { onMounted, reactive, ref } from 'vue'
 
   const currentAircraft = getCurrentAircraft()
   const currentFlight = getCurrentFlight()
   const fuelRows = reactive<FuelRow[]>([])
+  const mobile = ref(false)
   onMounted(async () => {
     const d = await initFuelRows()
     Object.assign(fuelRows, d)
+    mobile.value = isMobile()
   })
 
   const saveDefault = async () => {
@@ -81,7 +84,7 @@
     <table class="fuel_table">
       <thead>
         <tr>
-          <th>Item</th>
+          <th v-if="!mobile">Item</th>
           <th>Fuel Calculation</th>
           <th>Min</th>
           <th>L</th>
@@ -89,7 +92,7 @@
       </thead>
       <tbody>
         <tr v-for="(row, idx) in fuelRows" :key="idx">
-          <td>{{ row.item }}</td>
+          <td v-if="!mobile">{{ row.item }}</td>
           <td>{{ row.name }}</td>
           <td>
             <input
@@ -113,13 +116,13 @@
           </td>
         </tr>
         <tr>
-          <td>H</td>
+          <td v-if="!mobile">H</td>
           <td>Fuel Required</td>
           <td class="text-surface-variant">{{ totalMin }}</td>
           <td class="text-surface-variant">{{ totalLitre }}</td>
         </tr>
         <tr>
-          <td>I</td>
+          <td v-if="!mobile">I</td>
           <td>Endurance</td>
           <td class="text-surface-variant">{{ endurance }}</td>
           <td class="text-surface-variant">
@@ -127,7 +130,7 @@
           </td>
         </tr>
         <tr>
-          <td>J</td>
+          <td v-if="!mobile">J</td>
           <td>Margin</td>
           <td :class="fuelMarginClass">
             {{ endurance - totalMin }}
@@ -145,47 +148,3 @@
     </v-card>
   </div>
 </template>
-
-<style>
-  .fuel_container {
-    display: flex;
-    justify-content: space-between;
-  }
-  .fuel_table {
-    border-collapse: collapse;
-    border: black solid 2px;
-    text-align: center;
-    font-size: larger;
-  }
-
-  .fuel_table thead tr {
-    border: black solid 2px;
-  }
-  .fuel_table thead th {
-    padding: 20px 20px;
-  }
-
-  .fuel_table td {
-    border: black solid 2px;
-    width: max-content;
-    padding: 0px 20px;
-    white-space: nowrap;
-    text-align: left;
-  }
-
-  .fuel_table input {
-    outline: none;
-    width: 70px;
-    line-height: 30px;
-    margin: 0;
-    appearance: texfield;
-    -moz-appearance: textfield;
-  }
-
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-  }
-
-  /* Firefox */
-</style>

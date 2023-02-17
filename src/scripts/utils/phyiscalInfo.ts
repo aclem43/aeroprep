@@ -1,5 +1,5 @@
 export const getPhyiscalScreenSize = () => {
-  const width = window.screen.width * window.devicePixelRatio
-  const height = window.screen.height * window.devicePixelRatio
+  const width = window.screen.width
+  const height = window.screen.height
   return { width, height }
 }

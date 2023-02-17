@@ -9,7 +9,7 @@
   <div>
     <AppBar></AppBar>
     <v-main>
-      <div v-if="isMobile()" class="container">
+      <div v-if="!isMobile()" class="container">
         <div class="left">
           <ActionContainer></ActionContainer>
         </div>
