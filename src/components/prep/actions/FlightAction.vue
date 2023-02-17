@@ -81,21 +81,3 @@
     </div>
   </div>
 </template>
-
-<style>
-  .flight_action {
-    padding: 5px 15px;
-  }
-  .flight_action_dual_switch {
-    max-width: max-content;
-  }
-  .flight_action_flight_row {
-    display: flex;
-    gap: 10px;
-    min-height: 24px;
-  }
-
-  .flight_action_input {
-    max-width: 300px;
-  }
-</style>
