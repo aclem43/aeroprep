@@ -36,10 +36,7 @@ export const getAircraft = async (): Promise<Aircraft | null> => {
 }
 
 export const setAircraft = async (aircraft: Aircraft) => {
-  await setSimpleDataByKey(
-    'settings_current_aircraft',
-    JSON.stringify(aircraft)
-  )
+  await setSimpleDataByKey('settings_current_aircraft', aircraft)
 }
 
 export const getDefaultPilotWeight = async (): Promise<number> => {

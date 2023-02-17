@@ -20,7 +20,8 @@ min-height: 24px;
 }
 }
 .flight_action_input {
-max-width: 300px;
+ max-width: 300px;
+ min-width: 150px;
 }
 
 /* Fuel Action */
@@ -82,4 +83,5 @@ appearance: texfield;
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
 -webkit-appearance: none;
+-moz-inner-spin-button: none;
 }

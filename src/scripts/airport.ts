@@ -45,7 +45,7 @@ export const addAirport = async (airport: Airport) => {
     })
   }
   airports.push(airport)
-  await setSimpleDataByKey('airports', JSON.stringify(airports))
+  await setSimpleDataByKey('airports', airports)
   await getAirports()
 }
 
@@ -60,6 +60,6 @@ export const deleteAirport = async (airport: Airport) => {
   if (index > -1) {
     airports.splice(index)
   }
-  await setSimpleDataByKey('airports', JSON.stringify(airports))
+  await setSimpleDataByKey('airports', airports)
   await getAirports()
 }

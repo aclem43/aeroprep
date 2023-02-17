@@ -71,7 +71,7 @@ const saveFlight = async () => {
   }
   await setSimpleDataByKey(
     `flight_save-${currentFlightData.value.time.startTime}`,
-    JSON.stringify(currentFlightData.value)
+    currentFlightData.value
   )
 }
 
