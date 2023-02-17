@@ -7,7 +7,7 @@
     getCurrentFlightData,
     startFlight,
     stopFlight,
-  } from '@/scripts/flight/tracking'
+  } from '@/scripts/flight/tracking/recording'
   import { getNetworkStatus } from '@/scripts/network'
   import { computed, ref } from 'vue'
 
@@ -26,16 +26,16 @@
   const latestFlightLoc = computed((): FlightLocation => {
     if (!currentFlightData.value) {
       return {
-        alitude: 0,
-        cord: { lattitude: 0, longitude: 0 },
+        altitude: 0,
+        cord: { latitude: 0, longitude: 0 },
         heading: 0,
         speed: 0,
         time: 0,
       }
     } else if (currentFlightData.value.flightPath.length == 0) {
       return {
-        alitude: 0,
-        cord: { lattitude: 0, longitude: 0 },
+        altitude: 0,
+        cord: { latitude: 0, longitude: 0 },
         heading: 0,
         speed: 0,
         time: 0,
@@ -55,7 +55,7 @@
       <v-card class="flight_card">
         <v-card-item>
           <div v-if="connection.connected" class="flight_card_map">
-            <TrackingMap :flight="currentFlightData"></TrackingMap>
+            <TrackingMap></TrackingMap>
           </div>
           <div v-else class="flight_card_map">
             Not connected to the internet, the flight will still record but to
@@ -97,7 +97,7 @@
               </v-row>
               <v-row no-gutters>
                 <v-col>{{ latestFlightLoc.speed }}</v-col>
-                <v-col>{{ latestFlightLoc.alitude }}</v-col>
+                <v-col>{{ latestFlightLoc.altitude }}</v-col>
                 <v-col>{{ latestFlightLoc.heading }}</v-col>
                 <v-col>{{ latestFlightLoc.cord }}</v-col>
               </v-row>

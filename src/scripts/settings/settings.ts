@@ -1,14 +1,19 @@
 import type { Aircraft } from '../aircraft'
 import { getSimpleDataByKey, setSimpleDataByKey } from '../database'
-import { defaultTrackingInterval } from '../flight/tracking'
+import {
+  defaultMinimumDistance,
+  defaultTrackingDecimal,
+  defaultTrackingInterval,
+} from '@/scripts/flight/tracking/trackingConstants'
 import type { ThemeType } from '../utils/themes'
+import { defaultAircraft } from '../defaults'
 
 export const getWeatherApiKey = async (): Promise<string | null> => {
   return await getSimpleDataByKey('settings_weather_api_key')
 }
 
 export const setWeatherApiKey = async (apiKey: string) => {
-  await setSimpleDataByKey('settings_weather_api_key', apiKey)
+  await setSimpleDataByKey('settings_weather_api_key', apiKey, true)
 }
 
 export const getTheme = async (): Promise<ThemeType> => {
@@ -16,7 +21,7 @@ export const getTheme = async (): Promise<ThemeType> => {
   return t
 }
 export const setTheme = async (theme: string) => {
-  await setSimpleDataByKey('settings_theme', theme)
+  await setSimpleDataByKey('settings_theme', theme, true)
 }
 
 export const getAircraft = async (): Promise<Aircraft | null> => {
@@ -24,7 +29,10 @@ export const getAircraft = async (): Promise<Aircraft | null> => {
   if (aircraft == null) {
     return null
   }
-  return JSON.parse(aircraft)
+  const returnData = defaultAircraft()
+  Object.assign(returnData, JSON.parse(aircraft))
+
+  return returnData
 }
 
 export const setAircraft = async (aircraft: Aircraft) => {
@@ -52,9 +60,35 @@ export const getTrackingInterval = async (): Promise<number> => {
   if (trackingInterval == null) {
     return defaultTrackingInterval
   }
-  return parseInt(trackingInterval)
+  return parseFloat(trackingInterval)
 }
 
 export const setTrackingInterval = async (trackingInterval: number) => {
   await setSimpleDataByKey('settings_tracking_interval', trackingInterval)
+}
+
+export const getTrackingDecimal = async (): Promise<number> => {
+  const trackingDecimal = await getSimpleDataByKey('settings_tracking_decimal')
+  if (trackingDecimal == null) {
+    return defaultTrackingDecimal
+  }
+  return parseInt(trackingDecimal)
+}
+
+export const setTrackingDecimal = async (trackingDecimal: number) => {
+  await setSimpleDataByKey('settings_tracking_decimal', trackingDecimal)
+}
+
+export const getMinimumDistance = async (): Promise<number> => {
+  const minimumDistance = await getSimpleDataByKey(
+    'settings_tracking_min_distance'
+  )
+  if (minimumDistance == null) {
+    return defaultMinimumDistance
+  }
+  return parseInt(minimumDistance)
+}
+
+export const setMinimumDistance = async (minimumDistance: number) => {
+  await setSimpleDataByKey('settings_tracking_min_distance', minimumDistance)
 }

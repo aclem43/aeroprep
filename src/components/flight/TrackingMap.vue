@@ -1,42 +1,30 @@
 <script setup lang="ts">
-  import type { Flight } from '@/models/Flight'
-  import { computed, ref } from 'vue'
+  import { ref } from 'vue'
 
   import 'leaflet/dist/leaflet.css'
-  import { LMap, LTileLayer, LPolyline } from '@vue-leaflet/vue-leaflet'
+  import {
+    LMap,
+    LTileLayer,
+    LPolyline,
+    LControlScale,
+  } from '@vue-leaflet/vue-leaflet'
+  import { generateLine } from '@/scripts/flight/tracking/map'
 
-  const props = defineProps<{ flight: Flight | null }>()
   const zoom = ref(2)
-  const generateLineFromFlight = computed(() => {
-    const line: number[][] = []
 
-    if (props.flight == null) {
-      return line
-    }
-    props.flight.flightPath.forEach((d) => {
-      line.push([
-        parseFloat(d.cord.lattitude.toFixed(4)),
-        parseFloat(d.cord.longitude.toFixed(4)),
-      ])
-    })
-    console.log(line)
-    return line
-  })
+  const mapRef = ref()
 </script>
 
 <template>
   <div style="height: 100%; width: 100%">
-    <l-map ref="map" v-model:zoom="zoom" :center="[47.41322, -1.219482]">
+    <l-map ref="mapRef" v-model:zoom="zoom" :center="[47.41322, -1.219482]">
       <l-tile-layer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         layer-type="base"
         name="OpenStreetMap"
       ></l-tile-layer>
-      <l-polyline :lat-lngs="generateLineFromFlight" color="green"></l-polyline>
+      <l-polyline :lat-lngs="generateLine" color="green"></l-polyline>
+      <l-control-scale></l-control-scale>
     </l-map>
-    <div v-if="generateLineFromFlight.length > 0">
-      test
-      {{ generateLineFromFlight }}
-    </div>
   </div>
 </template>

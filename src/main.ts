@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-
+import { VueClipboard } from '@soerenmartius/vue3-clipboard'
 // Vuetify
 import '@mdi/font/css/materialdesignicons.css'
 
@@ -27,4 +27,5 @@ const app = createApp(App)
 
 app.use(router)
 app.use(vuetify)
+app.use(VueClipboard)
 app.mount('#app')

@@ -3,8 +3,8 @@
   import { getAllAircraft, getCurrentAircraft } from '@/scripts/aircraft'
   import { getNetworkStatus } from '@/scripts/network'
   import { setAircraft, getAircraft } from '@/scripts/settings/settings'
-  import { computed } from 'vue'
-  import { onMounted } from 'vue'
+  import { getKeepAwakeIcon, toggleKeepAwake } from '@/scripts/utils/awake'
+  import { computed, onMounted, ref } from 'vue'
   const aircraft = getAllAircraft()
 
   const currentAircraft = getCurrentAircraft()
@@ -40,31 +40,19 @@
     }
     return 'mdi-web'
   })
+
+  const keepAwakeIcon = computed(() => {
+    return getKeepAwakeIcon()
+  })
+  const navDrawer = ref(false)
 </script>
 <template>
   <v-app-bar class="">
-    <v-app-bar-title>
-      <v-btn variant="plain" icon @click="goTo('/')">
-        <v-icon>mdi-home</v-icon>
-      </v-btn>
-      <v-btn variant="plain" icon disabled>
-        <v-icon>{{ networkIcon }}</v-icon>
-      </v-btn>
-      <v-btn variant="plain" icon @click="goTo('/settings')">
-        <v-icon>mdi-cog</v-icon>
-      </v-btn>
-      <v-btn
-        variant="plain"
-        icon
-        @click="goTo('/prep')"
-        style="margin-left: 10px"
-      >
-        <v-icon>mdi-clipboard</v-icon>
-      </v-btn>
-      <v-btn variant="plain" icon @click="goTo('/fly')">
-        <v-icon>mdi-airplane-takeoff</v-icon>
-      </v-btn>
-    </v-app-bar-title>
+    <v-app-bar-nav-icon
+      variant="text"
+      @click.stop="navDrawer = !navDrawer"
+    ></v-app-bar-nav-icon>
+    <v-app-bar-title> AeroPrep </v-app-bar-title>
     <v-select
       class="aircraftSelect"
       variant="solo"
@@ -77,6 +65,26 @@
       @update:model-value="onAircraftChange"
     ></v-select>
   </v-app-bar>
+  <v-navigation-drawer v-model="navDrawer" rail temporary>
+    <v-btn variant="plain" icon disabled>
+      <v-icon>{{ networkIcon }}</v-icon>
+    </v-btn>
+    <v-divider></v-divider>
+    <v-btn variant="plain" icon @click="goTo('/prep')">
+      <v-icon>mdi-clipboard</v-icon>
+    </v-btn>
+    <v-btn variant="plain" icon @click="goTo('/fly')">
+      <v-icon>mdi-airplane-takeoff</v-icon>
+    </v-btn>
+    <v-divider></v-divider>
+    <v-btn variant="plain" icon @click="goTo('/settings')">
+      <v-icon>mdi-cog</v-icon>
+    </v-btn>
+    <v-divider></v-divider>
+    <v-btn class="align-bottom" variant="plain" icon @click="toggleKeepAwake()">
+      <v-icon>{{ keepAwakeIcon }}</v-icon>
+    </v-btn>
+  </v-navigation-drawer>
 </template>
 
 <style>

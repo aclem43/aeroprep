@@ -1,6 +1,6 @@
 {
   "name": "aeroprep",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -11,6 +11,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@capacitor-community/keep-awake": "^3.0.0",
     "@capacitor/android": "^4.6.3",
     "@capacitor/app": "^4.1.1",
     "@capacitor/core": "^4.6.3",
@@ -19,8 +20,11 @@
     "@capacitor/network": "^4.1.0",
     "@capacitor/preferences": "^4.0.2",
     "@capacitor/splash-screen": "^4.1.4",
-    "@vue-leaflet/vue-leaflet": "^0.8.2",
+    "@soerenmartius/vue3-clipboard": "^0.1.2",
+    "@vue-leaflet/vue-leaflet": "^0.8.3",
+    "cordova-plugin-screen-orientation": "^3.0.2",
     "cordova-res": "^0.15.4",
+    "es6-promise-plugin": "^4.2.2",
     "leaflet": "^1.9.3",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6",
@@ -35,7 +39,7 @@
     "@vue/eslint-config-prettier": "^7.0.0",
     "@vue/eslint-config-typescript": "^11.0.2",
     "@vue/tsconfig": "^0.1.3",
-    "eslint": "^8.33.0",
+    "eslint": "^8.34.0",
     "eslint-plugin-vue": "^9.9.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.8.4",

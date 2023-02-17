@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import { page } from '@/scripts/prep/actionpage'
+  import { getPage } from '@/scripts/prep/actionpage'
   import { ref } from 'vue'
-
+  const page = getPage()
   const props = defineProps<{
     title: string
     description: string

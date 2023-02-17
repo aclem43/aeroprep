@@ -4,10 +4,10 @@
 
   const defaultRisk = getDefualtRiskList()
   const currentFlight = getCurrentFlight()
-  const dual = currentFlight.dual
+  const dual = currentFlight.value.dual
 
   const getScore = (risk: Risk) => {
-    if (dual.value && risk.score.dual != null) {
+    if (dual && risk.score.dual != null) {
       return risk.score.dual
     } else return risk.score.solo
   }

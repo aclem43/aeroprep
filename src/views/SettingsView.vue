@@ -3,17 +3,15 @@
   import { openAlert } from '@/scripts/utils/alert'
   import {
     getDefaultPilotWeight,
-    getTrackingInterval,
     getWeatherApiKey,
     setDefaultPilotWeight,
     setTheme,
-    setTrackingInterval,
     setWeatherApiKey,
   } from '@/scripts/settings/settings'
   import { getCurrentTheme } from '@/scripts/utils/themes'
   import { computed, onMounted, ref, watch, type Ref } from 'vue'
-  import AircraftCreationOverlay from '@/components/settings/AircraftCreationOverlay.vue'
-  import AirportAdditionOverlay from '@/components/settings/AirportAdditionOverlay.vue'
+  import AircraftCreationOverlay from '@/components/settings/overlays/AircraftCreationOverlay.vue'
+  import AirportAdditionOverlay from '@/components/settings/overlays/AirportAdditionOverlay.vue'
   import { Dialog } from '@capacitor/dialog'
   import {
     deleteAircraft,
@@ -26,26 +24,59 @@
     getAirportsRef,
     type Airport,
   } from '@/scripts/airport'
+  import {
+    removeAllExceptSaves,
+    removeAllSaves,
+    removeAllStorage,
+  } from '@/scripts/database'
+  import TrackingSettings from '@/components/settings/TrackingSettings.vue'
+  import DevSettings from '@/components/settings/DevSettings.vue'
 
+  // Main Settings
   const weatherApiKey = ref()
   const defaultPilotWeight = ref()
-  const trackingInterval = ref()
   const saveWeatherApiKey = async () => {
     await setWeatherApiKey(weatherApiKey.value)
-    openAlert('Api Key Saved', 2000)
+    openAlert('Api Key Saved')
   }
   const saveDefaultPilotWeight = async () => {
     await setDefaultPilotWeight(defaultPilotWeight.value)
-    openAlert('Pilot Weight Saved', 2000)
+    openAlert('Pilot Weight Saved')
   }
-  const saveTrackingInterval = async () => {
-    await setTrackingInterval(trackingInterval.value * 1000)
-    openAlert('Tracking Interval Saved', 2000)
+  const deleteAllData = async () => {
+    const { value } = await Dialog.confirm({
+      title: 'Confirm',
+      message: 'Are you sure that you want to delete ALL of the saved data',
+    })
+    if (value) {
+      await removeAllStorage()
+      openAlert('All Data Deleted')
+    } else openAlert('Canceled')
+  }
+  const deleteAllButSaves = async () => {
+    const { value } = await Dialog.confirm({
+      title: 'Confirm',
+      message:
+        'Are you sure that you want to delete ALL but the Saved Flights of the saved data',
+    })
+    if (value) {
+      await removeAllExceptSaves()
+      openAlert('All Data Except For Saves Deleted')
+    } else openAlert('Canceled')
+  }
+  const deleteAllSaves = async () => {
+    const { value } = await Dialog.confirm({
+      title: 'Confirm',
+      message: 'Are you sure that you want to delete ALL the saves',
+    })
+    if (value) {
+      await removeAllSaves()
+      openAlert('All the saves deleted')
+    } else openAlert('Canceled')
   }
   onMounted(async () => {
     defaultPilotWeight.value = await getDefaultPilotWeight()
     weatherApiKey.value = await getWeatherApiKey()
-    trackingInterval.value = (await getTrackingInterval()) / 1000
   })
 
   const theme = getCurrentTheme()
@@ -62,7 +93,7 @@
     })
     if (value) {
       await deleteAircraft(aircraft)
-      openAlert('Aircraft Deleted', 2000)
+      openAlert('Aircraft Deleted')
     }
   }
   const removeAirport = async (airport: Airport) => {
@@ -72,7 +103,7 @@
     })
     if (value) {
       await deleteAirport(airport)
-      openAlert('Airport Deleted', 2000)
+      openAlert('Airport Deleted')
     }
   }
 
@@ -166,27 +197,30 @@
           </div>
           <v-btn @click="airportAdditionOverlay.open()">Add Airport</v-btn>
         </div>
-        <v-card-subtitle>Tracking</v-card-subtitle>
-        <v-card-item>
-          <div class="settings_input_row">
-            <v-text-field
-              v-model="trackingInterval"
-              label="Tracking"
-              hint="Time between getting GPS points"
-              suffix="Seconds"
-              variant="underlined"
-              type="number"
-              pattern="[0-9]*"
-              inputmode="numeric"
-            ></v-text-field>
-            <v-btn
-              prepend-icon="mdi-content-save"
-              @click="saveTrackingInterval()"
-            >
-              Save
-            </v-btn>
-          </div>
-        </v-card-item>
+      </v-card-item>
+      <v-card-subtitle
+        ><v-icon>mdi-crosshairs-gps</v-icon>Tracking</v-card-subtitle
+      >
+      <v-card-item>
+        <TrackingSettings></TrackingSettings>
+      </v-card-item>
+      <v-card-subtitle><v-icon>mdi-alert</v-icon>Danger Zone</v-card-subtitle>
+      <v-card-item>
+        <div class="settings_input_row">
+          <v-btn color="warning" @click="deleteAllData()"
+            ><v-icon>mdi-alert</v-icon> Delete All Stored Data</v-btn
+          >
+          <v-btn color="warning" @click="deleteAllSaves()"
+            ><v-icon>mdi-alert</v-icon> Delete All Flight Saves</v-btn
+          >
+          <v-btn color="warning" @click="deleteAllButSaves()"
+            ><v-icon>mdi-alert</v-icon> Delete All But Flight Saves</v-btn
+          >
+        </div>
+      </v-card-item>
+      <v-card-subtitle><v-icon>mdi-tools</v-icon>Dev Tools </v-card-subtitle>
+      <v-card-item>
+        <DevSettings></DevSettings>
       </v-card-item>
     </v-card>
   </v-main>

@@ -13,10 +13,10 @@ export interface Flight {
 export interface FlightLocation {
   time: number
   cord: {
-    lattitude: number
+    latitude: number
     longitude: number
   }
   speed: number | null
-  alitude: number | null
+  altitude: number | null
   heading: number | null
 }

@@ -12,6 +12,7 @@ export const lightTheme: ThemeDefinition = {
     'primary-darken-1': '#3700B3',
     secondary: '#12a60d',
     'secondary-darken-1': '#018786',
+    'gray-variant': '#474747',
     error: '#B00020',
     info: '#2196F3',
     success: '#4CAF50',
@@ -28,6 +29,7 @@ export const darkTheme: ThemeDefinition = {
     'primary-darken-1': '#3700B3',
     secondary: '#12a60d',
     'secondary-darken-1': '#018786',
+    'gray-variant': '#212121',
     error: '#B00020',
     info: '#2196F3',
     success: '#4CAF50',
@@ -38,7 +40,7 @@ export type ThemeType = 'darkTheme' | 'lightTheme'
 
 const currentTheme: Ref<ThemeType> = ref('darkTheme')
 
-export const getCurrentTheme = () => {
+export const getCurrentTheme = (): Ref<ThemeType> => {
   return currentTheme
 }
 

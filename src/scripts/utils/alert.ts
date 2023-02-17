@@ -1,8 +1,12 @@
 import { ref } from 'vue'
 
-export const openAlert = (message: string, timeout: number) => {
+export const openAlert = (message: string, timeout?: number) => {
   alert.value.message = message
-  alert.value.timeout = timeout
+  if (timeout == null) {
+    alert.value.timeout = 2000
+  } else {
+    alert.value.timeout = timeout
+  }
   alertRef.value = true
 }
 
