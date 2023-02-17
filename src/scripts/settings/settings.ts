@@ -6,13 +6,14 @@ import {
   defaultTrackingInterval,
 } from '@/scripts/flight/tracking/trackingConstants'
 import type { ThemeType } from '../utils/themes'
+import { defaultAircraft } from '../defaults'
 
 export const getWeatherApiKey = async (): Promise<string | null> => {
   return await getSimpleDataByKey('settings_weather_api_key')
 }
 
 export const setWeatherApiKey = async (apiKey: string) => {
-  await setSimpleDataByKey('settings_weather_api_key', apiKey)
+  await setSimpleDataByKey('settings_weather_api_key', apiKey, true)
 }
 
 export const getTheme = async (): Promise<ThemeType> => {
@@ -28,7 +29,10 @@ export const getAircraft = async (): Promise<Aircraft | null> => {
   if (aircraft == null) {
     return null
   }
-  return JSON.parse(aircraft)
+  const returnData = defaultAircraft()
+  Object.assign(returnData, JSON.parse(aircraft))
+
+  return returnData
 }
 
 export const setAircraft = async (aircraft: Aircraft) => {

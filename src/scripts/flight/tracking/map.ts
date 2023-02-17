@@ -22,7 +22,7 @@ const generateBasicLine = (flight: Flight) => {
   const currentTrackingDecimal = getCurrentTrackingDecimal()
   currentFlight.value.flightPath.forEach((d) => {
     line.push([
-      parseFloat(d.cord.lattitude.toFixed(currentTrackingDecimal)),
+      parseFloat(d.cord.latitude.toFixed(currentTrackingDecimal)),
       parseFloat(d.cord.longitude.toFixed(currentTrackingDecimal)),
     ])
   })

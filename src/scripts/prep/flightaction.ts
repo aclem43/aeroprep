@@ -34,7 +34,7 @@ export const resetCurrentFlight = () => {
   }
 }
 
-export const initFlight = async () => {
+export const initFlight = async (): PrepFlight => {
   const data = await getSimpleDataByKey('action_flight_data')
   if (!data) {
     resetCurrentFlight()

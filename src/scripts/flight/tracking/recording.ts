@@ -2,7 +2,7 @@ import type { Flight, FlightLocation } from '@/models/Flight'
 import { getCurrentAircraft } from '@/scripts/aircraft'
 import { setSimpleDataByKey } from '@/scripts/database'
 import { getTrackingInterval } from '@/scripts/settings/settings'
-import { KeepAwake } from '@capacitor-community/keep-awake'
+import { turnOffKeepAwake, turnOnKeepAwake } from '@/scripts/utils/awake'
 import { Geolocation } from '@capacitor/geolocation'
 import { type Ref, ref } from 'vue'
 import { verifyFlightLocation } from './datapoint'
@@ -52,9 +52,7 @@ export const startFlight = async () => {
   const interval = await getTrackingInterval()
   currentFlightInterval = setInterval(recordFlightData, interval)
 
-  if (await KeepAwake.isSupported()) {
-    await KeepAwake.keepAwake()
-  }
+  await turnOnKeepAwake()
 }
 
 export const stopFlight = async () => {
@@ -64,9 +62,7 @@ export const stopFlight = async () => {
   currentFlightData.value.running = false
   currentFlightData.value.time.endTime = new Date().getTime()
   saveFlight()
-  if (await KeepAwake.isSupported()) {
-    await KeepAwake.allowSleep()
-  }
+  await turnOffKeepAwake()
 }
 
 const saveFlight = async () => {
@@ -88,12 +84,12 @@ const getCurrentFlightLocation = async (): Promise<FlightLocation> => {
     enableHighAccuracy: true,
   })
   const flightLoc: FlightLocation = {
-    alitude: geoLoc.coords.altitude ?? 0,
+    altitude: geoLoc.coords.altitude ?? 0,
     speed: geoLoc.coords.speed ?? 0,
     heading: geoLoc.coords.heading ?? 0,
     time: geoLoc.timestamp,
     cord: {
-      lattitude: geoLoc.coords.latitude,
+      latitude: geoLoc.coords.latitude,
       longitude: geoLoc.coords.longitude,
     },
   }

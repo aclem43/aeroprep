@@ -6,6 +6,15 @@ export interface Airport {
   home: boolean
   code: string
 }
+// name: 'Airport',
+// icao: 'ICAO',
+// iata: 'IATA',
+// location: {
+//   latitude: 0,
+//   longitude: 0,
+// },
+// elevation: 0,
+// runways: [],
 
 const reactiveAirports: Ref<Airport[]> = ref([])
 
