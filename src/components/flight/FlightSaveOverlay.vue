@@ -67,7 +67,9 @@
           :variant="isCurrentFlight(flight) ? 'tonal' : 'flat'"
         >
           <v-list-item-title class="d-flex justify-space-between">
-            {{ getDateInfo(flight) }}
+            <p class="flightDate">
+              {{ getDateInfo(flight) }}
+            </p>
             <div class="btn_group">
               <v-btn
                 @click="loadSave(flight)"
@@ -93,5 +95,11 @@
   .btn_group {
     display: flex;
     gap: 10px;
+  }
+  @media (max-width: 768px) {
+    .flightDate {
+      max-width: 200px;
+      overflow-wrap: break-word;
+    }
   }
 </style>

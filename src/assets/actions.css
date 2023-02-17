@@ -1,0 +1,85 @@
+
+/* Flight Action */
+.flight_action {
+padding: 5px 15px;
+}
+.flight_action_dual_switch {
+max-width: max-content;
+}
+.flight_action_flight_row {
+display: flex;
+gap: 10px;
+min-height: 24px;
+}
+@media  (max-width: 768px){ 
+.flight_action_flight_row  {
+    display: flex;
+    gap: 10px;
+    min-height: 24px;
+    flex-direction: column;
+}
+}
+.flight_action_input {
+max-width: 300px;
+}
+
+/* Fuel Action */
+@media (max-width: 768px) {
+.fuel_table thead th {
+    padding: 5px 5px;
+}
+
+.fuel_container {
+    display: flex;
+    flex-direction: column;
+    }
+.fuel_table td {
+    border: black solid 2px;
+    padding: 0px 10px;
+    text-align: left;
+    max-width: 100px;
+    word-wrap: normal;
+    overflow: hidden;
+}
+
+}
+
+.fuel_container {
+display: flex;
+justify-content: space-between;
+}
+.fuel_table {
+border-collapse: collapse;
+border: black solid 2px;
+text-align: center;
+font-size: larger;
+}
+
+.fuel_table thead tr {
+border: black solid 2px;
+}
+.fuel_table thead th {
+padding: 20px 20px;
+}
+
+.fuel_table td {
+border: black solid 2px;
+width: max-content;
+padding: 0px 20px;
+white-space: nowrap;
+text-align: left;
+}
+
+.fuel_table input {
+outline: none;
+width: 70px;
+line-height: 30px;
+margin: 0;
+appearance: texfield;
+-moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+-webkit-appearance: none;
+}
