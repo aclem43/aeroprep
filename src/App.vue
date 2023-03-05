@@ -4,7 +4,6 @@
   import { initialize } from './scripts/initialize'
   import { getAlert, getAlertRef } from './scripts/utils/alert'
   import { getCurrentTheme } from './scripts/utils/themes'
-  import { SplashScreen } from '@capacitor/splash-screen'
 
   setupListeners()
   const currentTheme = getCurrentTheme()
@@ -13,8 +12,7 @@
   const alertRef = getAlertRef()
 
   onMounted(async () => {
-    initialize()
-    await SplashScreen.hide()
+    await initialize()
   })
 </script>
 
