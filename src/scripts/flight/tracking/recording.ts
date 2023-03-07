@@ -1,6 +1,8 @@
 import type { Flight, FlightLocation } from '@/models/Flight'
 import { getCurrentAircraft } from '@/scripts/aircraft'
 import { setSimpleDataByKey } from '@/scripts/database'
+import { defaultFlightLocation } from '@/scripts/defaults'
+import { logger } from '@/scripts/utils/logger'
 import { getTrackingInterval } from '@/scripts/settings/settings'
 import { turnOffKeepAwake, turnOnKeepAwake } from '@/scripts/utils/awake'
 import { Geolocation } from '@capacitor/geolocation'
@@ -29,12 +31,20 @@ const recordFlightData = async () => {
     clearInterval(currentFlightInterval)
     return
   }
-  const currentFlightLocation = await getCurrentFlightLocation()
+  let currentFlightLocation = defaultFlightLocation()
+  try {
+    currentFlightLocation = await getCurrentFlightLocation()
+  } catch (error) {
+    logger.error(`Error When Recording Flight - ${error}`)
+    return
+  }
+
   if (!verifyFlightLocation(currentFlightLocation)) {
     return
   }
   currentFlightData.value.flightPath.push(currentFlightLocation)
   await autoSave()
+  logger.log(`Flight Recording - Point Added`)
 }
 
 export const startFlight = async () => {
@@ -53,6 +63,9 @@ export const startFlight = async () => {
   currentFlightInterval = setInterval(recordFlightData, interval)
 
   await turnOnKeepAwake()
+  logger.log(
+    `Flight Started Recording-${currentFlightData.value.time.startTime}`
+  )
 }
 
 export const stopFlight = async () => {
@@ -63,6 +76,9 @@ export const stopFlight = async () => {
   currentFlightData.value.time.endTime = new Date().getTime()
   saveFlight()
   await turnOffKeepAwake()
+  logger.log(
+    `Flight Stoped Recording-${currentFlightData.value.time.startTime}`
+  )
 }
 
 const saveFlight = async () => {
@@ -73,6 +89,7 @@ const saveFlight = async () => {
     `flight_save-${currentFlightData.value.time.startTime}`,
     currentFlightData.value
   )
+  logger.log(`Flight Saved-${currentFlightData.value.time.startTime}`)
 }
 
 export const getCurrentFlightData = () => {

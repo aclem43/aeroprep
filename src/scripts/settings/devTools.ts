@@ -1,5 +1,16 @@
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import { getAllSimpleDataKeys, getSimpleDataByKey } from '../database'
+
+const checkIfDevMOde = () => {
+  return process.env.NODE_ENV === 'development'
+}
+export const devMode = checkIfDevMOde()
+
+const enabled = ref(devMode)
+
+export const getDevToolEnabled = (): Ref<boolean> => {
+  return enabled
+}
 
 const storageInfo = ref('')
 export const loadStorageInfo = async () => {
@@ -20,8 +31,3 @@ declare const process: {
     NODE_ENV: string
   }
 }
-
-const checkIfDevMOde = () => {
-  return process.env.NODE_ENV === 'development'
-}
-export const devMode = checkIfDevMOde()

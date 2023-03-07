@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import AppBar from '@/components/AppBar.vue'
+  import DevConsole from '@/components/dev/DevConsole.vue'
   import FlightSaveOverlay from '@/components/flight/FlightSaveOverlay.vue'
   import TrackingMap from '@/components/flight/TrackingMap.vue'
   import type { FlightLocation } from '@/models/Flight'
@@ -9,6 +10,7 @@
     stopFlight,
   } from '@/scripts/flight/tracking/recording'
   import { getNetworkStatus } from '@/scripts/network'
+
   import { computed, ref } from 'vue'
 
   const currentFlightData = getCurrentFlightData()
@@ -103,6 +105,9 @@
               </v-row>
             </v-card-item>
           </v-card>
+        </v-card-item>
+        <v-card-item>
+          <DevConsole></DevConsole>
         </v-card-item>
       </v-card>
     </div>
