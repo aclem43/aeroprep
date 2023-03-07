@@ -106,7 +106,7 @@ const getCurrentFlightLocation = async (): Promise<FlightLocation> => {
     heading: geoLoc.coords.heading ?? 0,
     time: geoLoc.timestamp,
     cord: {
-      latitude: geoLoc.coords.latitude,
+      lattitude: geoLoc.coords.latitude,
       longitude: geoLoc.coords.longitude,
     },
   }

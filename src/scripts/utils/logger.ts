@@ -57,3 +57,9 @@ export const getClasses = (log: Log): string => {
 
   return 'text-red'
 }
+
+const oldLog = console.log
+console.log = function (msg) {
+  log(`[WEB CONSOLE] ${msg}`)
+  oldLog(msg)
+}
