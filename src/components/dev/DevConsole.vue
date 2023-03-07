@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { getDevToolEnabled } from '@/scripts/settings/devTools'
   import { getConsoleText, getClasses } from '@/scripts/utils/logger'
-  import { computed } from 'vue'
 
   const devToolEnabled = getDevToolEnabled()
   const logData = getConsoleText()
