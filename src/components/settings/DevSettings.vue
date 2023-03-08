@@ -3,7 +3,7 @@
     loadStorageInfo,
     getStorageInfo,
     getDevToolEnabled,
-  } from '@/scripts/settings/devTools'
+  } from '@/scripts/dev/devTools'
   import { ref } from 'vue'
 
   const devTools = getDevToolEnabled()

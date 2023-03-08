@@ -1,5 +1,5 @@
 import { ref, type Ref } from 'vue'
-import { getDevToolEnabled } from '../settings/devTools'
+import { getDevToolEnabled } from '../dev/devTools'
 
 type Level = 'INFO' | 'WARN' | 'ERROR'
 
@@ -62,4 +62,16 @@ const oldLog = console.log
 console.log = function (msg) {
   log(`[WEB CONSOLE] ${msg}`)
   oldLog(msg)
+}
+
+const oldWarn = console.warn
+console.warn = function (msg) {
+  log(`[WEB CONSOLE] ${msg}`)
+  oldWarn(msg)
+}
+
+const oldError = console.error
+console.error = function (msg) {
+  log(`[WEB CONSOLE] ${msg}`)
+  oldError(msg)
 }

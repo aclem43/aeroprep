@@ -1,5 +1,5 @@
 import { ref, type Ref } from 'vue'
-import { getAllSimpleDataKeys, getSimpleDataByKey } from '../database'
+import { getAllSimpleDataKeys, getSimpleDataByKey } from '@/scripts/database'
 
 const checkIfDevMOde = () => {
   return process.env.NODE_ENV === 'development'

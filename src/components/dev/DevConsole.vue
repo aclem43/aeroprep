@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { getDevToolEnabled } from '@/scripts/settings/devTools'
+  import { getDevToolEnabled } from '@/scripts/dev/devTools'
   import { getConsoleText, getClasses } from '@/scripts/utils/logger'
 
   const devToolEnabled = getDevToolEnabled()

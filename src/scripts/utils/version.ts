@@ -1,4 +1,4 @@
-import { devMode } from '../settings/devTools'
+import { devMode } from '../dev/devTools'
 
 const version: string = APP_VERSION
 
