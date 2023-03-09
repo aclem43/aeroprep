@@ -8,11 +8,14 @@ export const isMobile = (): boolean => {
   return false
 }
 
-const initMobile = () => {
+const initMobile = async () => {
+  console.log(isMobile())
   if (isMobile()) {
-    window.screen.orientation.lock('portrait')
+    await window.screen.orientation.lock('portrait')
   } else {
-    window.screen.orientation.lock('landscape')
+    if (window.screen.orientation.type.includes('portrait')) {
+      await window.screen.orientation.lock('landscape')
+    }
   }
 }
 

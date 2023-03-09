@@ -1,11 +1,17 @@
 <script setup lang="ts">
   import { getCurrentFlight } from '@/scripts/prep/flightaction'
   import { getDefualtRiskList, type Risk } from '@/scripts/prep/riskaction'
+  import RiskActionOverlay from '../overlays/RiskActionOverlay.vue'
+  import { ref } from 'vue'
 
   const defaultRisk = getDefualtRiskList()
   const currentFlight = getCurrentFlight()
   const dual = currentFlight.value.dual
+  const riskActionOverlay = ref()
 
+  const openRiskActionOverlay = () => {
+    riskActionOverlay.value.open()
+  }
   const getScore = (risk: Risk) => {
     if (dual && risk.score.dual != null) {
       return risk.score.dual
@@ -30,5 +36,7 @@
         </tr>
       </tbody>
     </v-table>
+    <v-btn variant="outlined" @click="openRiskActionOverlay">Open Editor</v-btn>
+    <RiskActionOverlay ref="riskActionOverlay" />
   </div>
 </template>

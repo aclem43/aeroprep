@@ -1,8 +1,12 @@
 <script setup lang="ts">
-  import { loadStorageInfo, getStorageInfo } from '@/scripts/settings/devTools'
+  import {
+    loadStorageInfo,
+    getStorageInfo,
+    getDevToolEnabled,
+  } from '@/scripts/dev/devTools'
   import { ref } from 'vue'
 
-  const devTools = ref(false)
+  const devTools = getDevToolEnabled()
   const storageInfo = getStorageInfo()
 </script>
 

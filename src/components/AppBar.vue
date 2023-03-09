@@ -2,12 +2,17 @@
   import router from '@/router'
   import { getAllAircraft, getCurrentAircraft } from '@/scripts/aircraft'
   import { getNetworkStatus } from '@/scripts/network'
+  import { getDevToolEnabled } from '@/scripts/dev/devTools'
+  import { openDevOverlay } from '@/scripts/dev/devOverlay'
   import { setAircraft, getAircraft } from '@/scripts/settings/settings'
   import { getKeepAwakeIcon, toggleKeepAwake } from '@/scripts/utils/awake'
   import { computed, onMounted, ref } from 'vue'
   const aircraft = getAllAircraft()
 
   const currentAircraft = getCurrentAircraft()
+
+  const devToolEnabled = getDevToolEnabled()
+
   const goTo = (route: string) => {
     router.push(route)
   }
@@ -84,6 +89,12 @@
     <v-btn class="align-bottom" variant="plain" icon @click="toggleKeepAwake()">
       <v-icon>{{ keepAwakeIcon }}</v-icon>
     </v-btn>
+    <div v-if="devToolEnabled">
+      <v-divider></v-divider>
+      <v-btn variant="plain" icon @click="openDevOverlay">
+        <v-icon>mdi-tools</v-icon>
+      </v-btn>
+    </div>
   </v-navigation-drawer>
 </template>
 

@@ -9,6 +9,7 @@
     stopFlight,
   } from '@/scripts/flight/tracking/recording'
   import { getNetworkStatus } from '@/scripts/network'
+
   import { computed, ref } from 'vue'
 
   const currentFlightData = getCurrentFlightData()
@@ -27,7 +28,7 @@
     if (!currentFlightData.value) {
       return {
         altitude: 0,
-        cord: { latitude: 0, longitude: 0 },
+        cord: { lattitude: 0, longitude: 0 },
         heading: 0,
         speed: 0,
         time: 0,
@@ -35,7 +36,7 @@
     } else if (currentFlightData.value.flightPath.length == 0) {
       return {
         altitude: 0,
-        cord: { latitude: 0, longitude: 0 },
+        cord: { lattitude: 0, longitude: 0 },
         heading: 0,
         speed: 0,
         time: 0,

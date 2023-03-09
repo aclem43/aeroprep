@@ -7,6 +7,7 @@ import {
 } from '@/scripts/flight/tracking/trackingConstants'
 import type { ThemeType } from '../utils/themes'
 import { defaultAircraft } from '../defaults'
+import { logger } from '../utils/logger'
 
 export const getWeatherApiKey = async (): Promise<string | null> => {
   return await getSimpleDataByKey('settings_weather_api_key')
@@ -37,6 +38,7 @@ export const getAircraft = async (): Promise<Aircraft | null> => {
 
 export const setAircraft = async (aircraft: Aircraft) => {
   await setSimpleDataByKey('settings_current_aircraft', aircraft)
+  logger.log(`Current Aircraft Set (${aircraft.name})`)
 }
 
 export const getDefaultPilotWeight = async (): Promise<number> => {
