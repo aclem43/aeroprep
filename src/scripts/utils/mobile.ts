@@ -13,7 +13,7 @@ const initMobile = async () => {
   if (isMobile()) {
     await window.screen.orientation.lock('portrait')
   } else {
-    if (window.screen.orientation.type.includes('portrait')) {
+    if (window.screen.orientation.type.includes('landscape')) {
       await window.screen.orientation.lock('landscape')
     }
   }
