@@ -58,20 +58,25 @@ export const getClasses = (log: Log): string => {
   return 'text-red'
 }
 
+const oldInfo = console.info
+console.info = (msg) => {
+  log(`[WEB CONSOLE] ${msg}`)
+  oldInfo(msg)
+}
 const oldLog = console.log
-console.log = function (msg) {
+console.log = (msg) => {
   log(`[WEB CONSOLE] ${msg}`)
   oldLog(msg)
 }
 
 const oldWarn = console.warn
-console.warn = function (msg) {
-  log(`[WEB CONSOLE] ${msg}`)
+console.warn = (msg) => {
+  warn(`[WEB CONSOLE] ${msg}`)
   oldWarn(msg)
 }
 
 const oldError = console.error
-console.error = function (msg) {
-  log(`[WEB CONSOLE] ${msg}`)
+console.error = (msg) => {
+  error(`[WEB CONSOLE] ${msg}`)
   oldError(msg)
 }
