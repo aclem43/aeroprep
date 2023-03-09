@@ -1,22 +1,26 @@
 <script setup lang="ts">
   import { getCurrentFlight } from '@/scripts/prep/flightaction'
-  import { getDefualtRiskList, type Risk } from '@/scripts/prep/riskaction'
+  import { getRiskList, type Risk } from '@/scripts/prep/riskaction'
   import RiskActionOverlay from '../overlays/RiskActionOverlay.vue'
-  import { ref } from 'vue'
+  import { ref, onMounted, type Ref } from 'vue'
 
-  const defaultRisk = getDefualtRiskList()
+  const riskList: Ref<Risk[]> = ref([])
   const currentFlight = getCurrentFlight()
   const dual = currentFlight.value.dual
   const riskActionOverlay = ref()
 
-  const openRiskActionOverlay = () => {
-    riskActionOverlay.value.open()
+  const openRiskActionOverlay = async () => {
+    await riskActionOverlay.value.open()
   }
   const getScore = (risk: Risk) => {
     if (dual && risk.score.dual != null) {
       return risk.score.dual
     } else return risk.score.solo
   }
+
+  onMounted(async () => {
+    riskList.value = await getRiskList()
+  })
 </script>
 
 <template>
@@ -30,7 +34,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="risk in defaultRisk" :key="risk.name">
+        <tr v-for="risk in riskList" :key="risk.name">
           <td>{{ risk.name }}</td>
           <td>{{ getScore(risk) }}</td>
         </tr>
