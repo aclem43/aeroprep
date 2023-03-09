@@ -22,6 +22,7 @@
     "@capacitor/splash-screen": "^4.2.0",
     "@soerenmartius/vue3-clipboard": "^0.1.2",
     "@vue-leaflet/vue-leaflet": "0.8.3",
+    "@vueuse/core": "^9.13.0",
     "cordova-plugin-screen-orientation": "^3.0.3",
     "cordova-res": "^0.15.4",
     "es6-promise-plugin": "^4.2.2",

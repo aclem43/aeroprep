@@ -1,5 +1,10 @@
 import { addInitializer } from '../initialize'
 import { getPhyiscalScreenSize } from './phyiscalInfo'
+import { useScreenOrientation } from '@vueuse/core'
+import { logger } from './logger'
+
+const { isSupported, orientation, angle, lockOrientation, unlockOrientation } =
+  useScreenOrientation()
 
 export const isMobile = (): boolean => {
   if (getPhyiscalScreenSize().width < 768) {
@@ -9,12 +14,15 @@ export const isMobile = (): boolean => {
 }
 
 const initMobile = async () => {
-  console.log(isMobile())
   if (isMobile()) {
-    await window.screen.orientation.lock('portrait')
+    if (isSupported.value) {
+      await lockOrientation('portrait')
+      logger.log('Mobile orientation locked to portrait')
+    }
   } else {
-    if (window.screen.orientation.type.includes('landscape')) {
-      await window.screen.orientation.lock('landscape')
+    if (isSupported.value) {
+      await lockOrientation('landscape')
+      logger.log('Orientation locked to landscape')
     }
   }
 }
