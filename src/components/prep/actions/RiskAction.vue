@@ -1,26 +1,22 @@
 <script setup lang="ts">
   import { getCurrentFlight } from '@/scripts/prep/flightaction'
-  import { getRiskList, type Risk } from '@/scripts/prep/riskaction'
+  import { getCurrentRiskList, type Risk } from '@/scripts/prep/riskaction'
   import RiskActionOverlay from '../overlays/RiskActionOverlay.vue'
-  import { ref, onMounted, type Ref } from 'vue'
+  import { ref, type Ref } from 'vue'
 
-  const riskList: Ref<Risk[]> = ref([])
+  const riskList: Ref<Risk[]> = getCurrentRiskList()
   const currentFlight = getCurrentFlight()
   const dual = currentFlight.value.dual
   const riskActionOverlay = ref()
 
-  const openRiskActionOverlay = async () => {
-    await riskActionOverlay.value.open()
+  const openRiskActionOverlay = () => {
+    riskActionOverlay.value.open()
   }
   const getScore = (risk: Risk) => {
     if (dual && risk.score.dual != null) {
       return risk.score.dual
     } else return risk.score.solo
   }
-
-  onMounted(async () => {
-    riskList.value = await getRiskList()
-  })
 </script>
 
 <template>

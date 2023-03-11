@@ -1,4 +1,6 @@
+import { ref, type Ref } from 'vue'
 import { getSimpleDataByKey, setSimpleDataByKey } from '../database'
+import { addInitializer } from '../initialize'
 
 export interface Risk {
   name: string
@@ -8,6 +10,11 @@ export interface Risk {
   }
 }
 
+const currentRiskList: Ref<Risk[]> = ref([])
+
+addInitializer(async () => {
+  currentRiskList.value = await getRiskList()
+})
 const defualtRisk: Risk[] = [
   { name: 'Less than 10 Hours on type', score: { solo: 2 } },
   { name: 'Unfamiliar destination', score: { solo: 1 } },
@@ -39,4 +46,9 @@ export const getRiskList = async (): Promise<Risk[]> => {
 
 export const saveRiskList = async (riskList: Risk[]) => {
   await setSimpleDataByKey('action_risk_data', riskList)
+  currentRiskList.value = riskList
+}
+
+export const getCurrentRiskList = (): Ref<Risk[]> => {
+  return currentRiskList
 }
