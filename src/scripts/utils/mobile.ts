@@ -3,7 +3,7 @@ import { getPhyiscalScreenSize } from './phyiscalInfo'
 import { useScreenOrientation } from '@vueuse/core'
 import { logger } from './logger'
 
-const { isSupported, orientation, angle, lockOrientation, unlockOrientation } =
+const { isSupported, lockOrientation, unlockOrientation } =
   useScreenOrientation()
 
 export const isMobile = (): boolean => {
@@ -23,8 +23,10 @@ const initMobile = async () => {
     if (isSupported.value) {
       await lockOrientation('landscape')
       logger.log('Orientation locked to landscape')
+    } else {
+      unlockOrientation()
     }
   }
 }
 
-addInitializer(initMobile)
+addInitializer(initMobile, 'Mobile/Screen Orientation')
