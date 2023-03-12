@@ -4,6 +4,8 @@
     saveRiskList,
     type Risk,
   } from '@/scripts/prep/riskaction'
+  import { openAlert } from '@/scripts/utils/alert'
+  import { logger } from '@/scripts/utils/logger'
   import { ref, type Ref } from 'vue'
   import draggable from 'vuedraggable'
   const dialog = ref()
@@ -14,8 +16,21 @@
     dialog.value = true
   }
 
+  const addRisk = () => {
+    riskList.value.push({
+      name: 'New Risk',
+      score: { solo: 0, dual: 0 },
+    })
+    logger.log('New Risk Added')
+  }
+  const deleteRisk = (index: number) => {
+    riskList.value.splice(index, 1)
+    logger.log('Risk Deleted')
+  }
   const save = () => {
     saveRiskList(riskList.value)
+    openAlert('Risk List Saved')
+    dialog.value = false
   }
   defineExpose({ open })
 </script>
@@ -23,19 +38,23 @@
   <v-dialog v-model="dialog" persistent>
     <v-card>
       <v-card-title>Risk Assesment Editor</v-card-title>
-      <v-card-item
-        ><v-radio-group inline mandatory v-model="solo">
-          <v-radio label="Solo" value="1"></v-radio>
-          <v-radio label="Dual" value="2"></v-radio> </v-radio-group
-      ></v-card-item>
       <v-card-item>
+        <div class="d-flex">
+          <v-radio-group hide-details inline mandatory v-model="solo">
+            <v-radio label="Solo" value="1"></v-radio>
+            <v-radio label="Dual" value="2"></v-radio>
+          </v-radio-group>
+          <div class="mr-12">
+            <v-btn icon @click="addRisk"><v-icon>mdi-plus</v-icon></v-btn>
+          </div>
+        </div>
         <v-table density="compact" fixed-header height="400px">
           <thead>
             <tr>
               <th></th>
               <th class="text-left">Risk</th>
               <th class="text-left">Score</th>
-              <th class="text-left"></th>
+              <th class="text-left">Delete</th>
             </tr>
           </thead>
           <draggable
@@ -45,10 +64,10 @@
             item-key="name"
             handle=".handle"
           >
-            <template #item="{ element }">
+            <template #item="{ element, index }">
               <tr>
                 <td width="5%" class="handle">
-                  <v-icon>mdi-menu</v-icon>
+                  <v-icon size="40">mdi-menu</v-icon>
                 </td>
                 <td width="75%">
                   <v-text-field
@@ -73,7 +92,9 @@
                   ></v-text-field>
                 </td>
                 <td width="5%" style="padding: 2px 0px">
-                  <v-btn icon><v-icon>mdi-delete</v-icon></v-btn>
+                  <v-btn icon @click="deleteRisk(index)"
+                    ><v-icon>mdi-delete</v-icon></v-btn
+                  >
                 </td>
               </tr>
             </template>
