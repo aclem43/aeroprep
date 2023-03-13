@@ -59,24 +59,32 @@ export const getClasses = (log: Log): string => {
 }
 
 const oldInfo = console.info
-console.info = (msg) => {
-  log(`[WEB CONSOLE] ${msg}`)
-  oldInfo(msg)
+console.info = (...data: any[]) => {
+  log(`[WEB CONSOLE] ${data}`)
+  oldInfo(data)
 }
 const oldLog = console.log
-console.log = (msg) => {
-  log(`[WEB CONSOLE] ${msg}`)
-  oldLog(msg)
+console.log = (...data: any[]) => {
+  log(`[WEB CONSOLE] ${data}`)
+  oldLog(data)
 }
 
 const oldWarn = console.warn
-console.warn = (msg) => {
-  warn(`[WEB CONSOLE] ${msg}`)
-  oldWarn(msg)
+console.warn = (...data: any[]) => {
+  warn(`[WEB CONSOLE] ${data}`)
+  try {
+    oldWarn(data)
+  } catch (e: any) {
+    error(e)
+  }
 }
 
 const oldError = console.error
-console.error = (msg) => {
-  error(`[WEB CONSOLE] ${msg}`)
-  oldError(msg)
+console.error = (...data: any[]) => {
+  error(`[WEB CONSOLE] ${data}`)
+  try {
+    oldError(data)
+  } catch (e: any) {
+    error(e)
+  }
 }

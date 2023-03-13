@@ -20,7 +20,7 @@ export const initNotes = async () => {
 
 export const setNotes = async (note: string) => {
   notes.value = note
-  await setSimpleDataByKey('action_note', note)
+  await setSimpleDataByKey('action_note', note, true)
 }
 
 addInitializer(initNotes)
