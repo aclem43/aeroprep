@@ -31,6 +31,7 @@
   } from '@/scripts/database'
   import TrackingSettings from '@/components/settings/TrackingSettings.vue'
   import DevSettings from '@/components/settings/DevSettings.vue'
+  import RiskSettings from '@/components/settings/RiskSettings.vue'
 
   // Main Settings
   const weatherApiKey = ref()
@@ -203,6 +204,10 @@
       >
       <v-card-item>
         <TrackingSettings></TrackingSettings>
+      </v-card-item>
+      <v-card-subtitle>Risk Action</v-card-subtitle>
+      <v-card-item>
+        <RiskSettings></RiskSettings>
       </v-card-item>
       <v-card-subtitle><v-icon>mdi-alert</v-icon>Danger Zone</v-card-subtitle>
       <v-card-item>

@@ -2,7 +2,11 @@
   import { getCurrentFlight } from '@/scripts/prep/flightaction'
   import { getCurrentRiskList, type Risk } from '@/scripts/prep/riskaction'
   import RiskActionOverlay from '../overlays/RiskActionOverlay.vue'
-  import { ref, type Ref, computed } from 'vue'
+  import { ref, type Ref, computed, onMounted } from 'vue'
+  import {
+    getMaxRiskScore,
+    getWarnRiskScore,
+  } from '@/scripts/settings/risksettings'
 
   const riskList: Ref<Risk[]> = getCurrentRiskList()
 
@@ -26,6 +30,22 @@
       return risk.score.dual
     } else return risk.score.solo
   }
+  let maxRiskScore = 0
+  let warnRiskScore = 0
+
+  onMounted(async () => {
+    maxRiskScore = await getMaxRiskScore()
+    warnRiskScore = await getWarnRiskScore()
+  })
+
+  const totalScoreDynClass = computed(() => {
+    if (riskScore.value > maxRiskScore) {
+      return 'text-red'
+    } else if (riskScore.value > warnRiskScore) {
+      return 'text-yellow'
+    }
+    return 'text-green'
+  })
 </script>
 
 <template>
@@ -59,7 +79,7 @@
         </tr>
         <tr>
           <td>Total</td>
-          <td>{{ riskScore }}</td>
+          <td :class="totalScoreDynClass">{{ riskScore }}</td>
         </tr>
       </tbody>
     </v-table>
