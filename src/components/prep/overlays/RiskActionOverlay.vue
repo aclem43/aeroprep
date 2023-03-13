@@ -10,7 +10,6 @@
   import draggable from 'vuedraggable'
   const dialog = ref()
   const riskList: Ref<Risk[]> = ref(getCurrentRiskList().value)
-  const solo = ref('1')
 
   const open = () => {
     dialog.value = true
@@ -40,13 +39,7 @@
       <v-card-title>Risk Assesment Editor</v-card-title>
       <v-card-item>
         <div class="d-flex">
-          <v-radio-group hide-details inline mandatory v-model="solo">
-            <v-radio label="Solo" value="1"></v-radio>
-            <v-radio label="Dual" value="2"></v-radio>
-          </v-radio-group>
-          <div class="mr-12">
-            <v-btn icon @click="addRisk"><v-icon>mdi-plus</v-icon></v-btn>
-          </div>
+          <v-btn icon @click="addRisk"><v-icon>mdi-plus</v-icon></v-btn>
         </div>
         <v-table density="compact" fixed-header height="400px">
           <thead>

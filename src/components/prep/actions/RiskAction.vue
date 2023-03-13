@@ -2,18 +2,27 @@
   import { getCurrentFlight } from '@/scripts/prep/flightaction'
   import { getCurrentRiskList, type Risk } from '@/scripts/prep/riskaction'
   import RiskActionOverlay from '../overlays/RiskActionOverlay.vue'
-  import { ref, type Ref } from 'vue'
+  import { ref, type Ref, computed } from 'vue'
 
   const riskList: Ref<Risk[]> = getCurrentRiskList()
-  const currentFlight = getCurrentFlight()
-  const dual = currentFlight.value.dual
-  const riskActionOverlay = ref()
 
+  const riskScore = ref(0)
+  const currentFlight = getCurrentFlight()
+  const riskActionOverlay = ref()
   const openRiskActionOverlay = () => {
     riskActionOverlay.value.open()
   }
+
+  const onCheckClick = (event: Event, risk: Risk) => {
+    const checkBox = event.target as HTMLInputElement
+    if (checkBox.checked) {
+      riskScore.value += getScore(risk)
+    } else {
+      riskScore.value -= getScore(risk)
+    }
+  }
   const getScore = (risk: Risk) => {
-    if (dual && risk.score.dual != null) {
+    if (currentFlight.value.dual && risk.score.dual != null) {
       return risk.score.dual
     } else return risk.score.solo
   }
@@ -21,7 +30,14 @@
 
 <template>
   <div>
-    <v-table density="compact">
+    <v-switch
+      class="flight_action_dual_switch"
+      v-model="currentFlight.dual"
+      :label="currentFlight.dual ? 'Dual' : 'Solo'"
+      hide-details
+      density="compact"
+    ></v-switch>
+    <v-table density="compact" fixed-header height="400px">
       <thead>
         <tr>
           <th class="text-left">Risk</th>
@@ -33,6 +49,17 @@
         <tr v-for="risk in riskList" :key="risk.name">
           <td>{{ risk.name }}</td>
           <td>{{ getScore(risk) }}</td>
+          <td>
+            <v-checkbox
+              hide-details
+              density="compact"
+              @click="onCheckClick($event, risk)"
+            ></v-checkbox>
+          </td>
+        </tr>
+        <tr>
+          <td>Total</td>
+          <td>{{ riskScore }}</td>
         </tr>
       </tbody>
     </v-table>
