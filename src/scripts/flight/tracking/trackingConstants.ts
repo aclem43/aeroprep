@@ -3,7 +3,7 @@ import {
   getMinimumDistance,
   getTrackingDecimal,
   getTrackingInterval,
-} from '@/scripts/settings/settings'
+} from '@/scripts/settings/trackingsettings'
 import { ref } from 'vue'
 
 export const defaultTrackingInterval = 1000

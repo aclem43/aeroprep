@@ -6,7 +6,7 @@
     getTrackingInterval,
     getTrackingDecimal,
     getMinimumDistance,
-  } from '@/scripts/settings/settings'
+  } from '@/scripts/settings/trackingsettings'
   import { openAlert } from '@/scripts/utils/alert'
   import { ref, onMounted } from 'vue'
 
