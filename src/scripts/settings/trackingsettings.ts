@@ -1,6 +1,7 @@
 import { getSimpleDataByKey, setSimpleDataByKey } from '../database'
 import {
   defaultMinimumDistance,
+  defaultRateOfClimb,
   defaultTrackingDecimal,
   defaultTrackingInterval,
 } from '../flight/tracking/trackingConstants'
@@ -43,4 +44,18 @@ export const getMinimumDistance = async (): Promise<number> => {
 
 export const setMinimumDistance = async (minimumDistance: number) => {
   await setSimpleDataByKey('settings_tracking_min_distance', minimumDistance)
+}
+
+export const getRateOfClimb = async (): Promise<number> => {
+  const rateOfClimb = await getSimpleDataByKey(
+    'settings_tracking_rate_of_climb'
+  )
+  if (rateOfClimb == null) {
+    return defaultRateOfClimb
+  }
+  return parseInt(rateOfClimb)
+}
+
+export const setRateOfClimb = async (rateOfClimb: number) => {
+  await setSimpleDataByKey('settings_tracking_rate_of_climb', rateOfClimb)
 }

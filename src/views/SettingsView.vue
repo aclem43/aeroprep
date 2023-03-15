@@ -206,7 +206,7 @@
       <v-card-item>
         <TrackingSettings></TrackingSettings>
       </v-card-item>
-      <v-card-subtitle>Unit Sttings</v-card-subtitle>
+      <v-card-subtitle><v-icon>mdi-ruler</v-icon>Unit Sttings</v-card-subtitle>
       <v-card-item>
         <UnitSettings></UnitSettings>
       </v-card-item>

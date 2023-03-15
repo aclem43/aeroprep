@@ -10,7 +10,7 @@ export const defaultTrackingInterval = 1000
 export const defaultTrackingDecimal = 4
 export const defaultMinimumDistance = 0.5 // NM
 export const defaultHeadingChange = 5
-
+export const defaultRateOfClimb = 100 // Feet a minute
 const currentTrackingInterval = ref(defaultMinimumDistance)
 export const getCurrentTrackingInterval = () => {
   return currentTrackingInterval.value
@@ -29,6 +29,11 @@ export const getCurrentMinimumDistance = () => {
 const currentHeadingChange = ref(defaultHeadingChange)
 export const getCurrentHeadingChange = () => {
   return currentHeadingChange.value
+}
+
+const currentRateOfClimb = ref(defaultRateOfClimb)
+export const getCurrentRateOfClimb = () => {
+  return currentRateOfClimb.value
 }
 export const updateTrackingConstants = async () => {
   currentTrackingInterval.value = await getTrackingInterval()
