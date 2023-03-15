@@ -4,7 +4,7 @@ import {
   getTrackingDecimal,
   getTrackingInterval,
 } from '@/scripts/settings/trackingsettings'
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 
 export const defaultTrackingInterval = 1000
 export const defaultTrackingDecimal = 4
@@ -34,6 +34,14 @@ export const getCurrentHeadingChange = () => {
 const currentRateOfClimb = ref(defaultRateOfClimb)
 export const getCurrentRateOfClimb = () => {
   return currentRateOfClimb.value
+}
+export type LineMode = 'basic' | 'altitude'
+const lineMode: Ref<LineMode> = ref('altitude')
+export const getLineModeRef = () => {
+  return lineMode
+}
+export const getLineMode = () => {
+  return lineMode.value
 }
 export const updateTrackingConstants = async () => {
   currentTrackingInterval.value = await getTrackingInterval()

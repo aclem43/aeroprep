@@ -6,18 +6,42 @@
     LMap,
     LTileLayer,
     LPolyline,
-    LControlScale,
+    LControlScale, // @ts-expect-error
   } from '@vue-leaflet/vue-leaflet'
-  import { generateLine } from '@/scripts/flight/tracking/map'
+  import {
+    generateLine,
+    type AltitudeLine,
+  } from '@/scripts/flight/tracking/map'
+  import {
+    getLineMode,
+    getLineModeRef,
+  } from '@/scripts/flight/tracking/trackingConstants'
 
   const zoom = ref(2)
+  const lineMode = getLineModeRef()
   const center = computed(() => {
-    if (generateLine.value.length == 0) {
-      return [0, 0]
+    let line = generateLine.value
+    const lineMode = getLineMode()
+    if (lineMode == 'basic') {
+      line = line as number[][]
+      if (line[0] != null) {
+        return line[0]
+      } else {
+        return [0, 0]
+      }
     } else {
-      return generateLine.value[0]
+      line = line as AltitudeLine
+      if (line.lines[0] == null) {
+        return [0, 0]
+      }
+      if (line.lines[0].line[0] != null) {
+        return line.lines[0].line[0]
+      } else {
+        return [0, 0]
+      }
     }
   })
+
   const mapRef = ref()
 </script>
 
@@ -29,7 +53,19 @@
         layer-type="base"
         name="OpenStreetMap"
       ></l-tile-layer>
-      <l-polyline :lat-lngs="generateLine" color="green"></l-polyline>
+      <div v-if="lineMode == 'basic'">
+        <l-polyline :lat-lngs="generateLine" color="green"></l-polyline>
+      </div>
+      <div
+        v-else
+        v-for="(altLine,index) in (generateLine as AltitudeLine).lines"
+        v-bind:key="index"
+      >
+        <l-polyline
+          :lat-lngs="altLine.line"
+          :color="altLine.color"
+        ></l-polyline>
+      </div>
       <l-control-scale />
     </l-map>
   </div>
