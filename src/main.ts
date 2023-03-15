@@ -7,13 +7,9 @@ import '@mdi/font/css/materialdesignicons.css'
 
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
 import { lightTheme, darkTheme } from '@/scripts/utils/themes'
 
 const vuetify = createVuetify({
-  components,
-  directives,
   theme: {
     themes: {
       lightTheme,
