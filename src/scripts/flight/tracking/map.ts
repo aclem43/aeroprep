@@ -5,13 +5,14 @@ import { getCurrentFlightData } from './recording'
 import {
   getCurrentRateOfClimb,
   getCurrentTrackingDecimal,
-  getLineMode,
+  getCurrentLineModeRef,
+  getCurrentLineColor,
 } from './trackingConstants'
 
 export const generateLine = computed((): number[][] | AltitudeLine => {
   const flight = getCurrentFlightData().value
-  const lineMode = getLineMode()
-  if (lineMode == 'basic') {
+  const lineMode = getCurrentLineModeRef()
+  if (lineMode.value == 'basic') {
     const line = generateBasicLine(flight)
     logger.log('Generated line: ' + line.toString())
     return line
@@ -38,11 +39,11 @@ const generateBasicLine = (flight: Flight): number[][] => {
   })
   return line
 }
-
+type Direction = 'cruise' | 'ascending' | 'descending'
 export interface AltitudeLine {
   lines: {
     color?: string
-    climbing: boolean
+    direction: Direction
     line: number[][]
   }[]
 }
@@ -57,31 +58,41 @@ const generateAltitudeLines = (flight: Flight): AltitudeLine => {
 
   const currentTrackingDecimal = getCurrentTrackingDecimal()
   const currentRateOfClimb = getCurrentRateOfClimb()
+  const colors = getCurrentLineColor()
   if (flight.flightPath.length == 0) {
     logger.log('No Points Recorded Yet')
     return altitudeLines
   }
   let lastPoint = flight.flightPath[0]
   let currentLineIndex = 0
-  altitudeLines.lines.push({ climbing: false, color: 'green', line: [] })
+  altitudeLines.lines.push({
+    direction: 'cruise',
+    color: colors.cruise,
+    line: [],
+  })
   flight.flightPath.forEach((d: FlightLocation) => {
     checkIfNull(d)
-    const rateOfClimb = calculateRateOfClimb(lastPoint, d)
-    if (rateOfClimb > currentRateOfClimb) {
-      if (!altitudeLines.lines[currentLineIndex].climbing) {
+    const rateInfo = calculateRateOfClimb(lastPoint, d)
+    if (Math.abs(rateInfo.rate) > currentRateOfClimb) {
+      if (
+        altitudeLines.lines[currentLineIndex].direction != rateInfo.direction
+      ) {
         currentLineIndex =
           altitudeLines.lines.push({
-            climbing: true,
-            color: 'red',
+            direction: rateInfo.direction,
+            color:
+              rateInfo.direction == 'descending'
+                ? colors.descending
+                : colors.ascending,
             line: [pointToCord(lastPoint, currentTrackingDecimal)],
           }) - 1
       }
     } else {
-      if (altitudeLines.lines[currentLineIndex].climbing) {
+      if (altitudeLines.lines[currentLineIndex].direction) {
         currentLineIndex =
           altitudeLines.lines.push({
-            climbing: false,
-            color: 'green',
+            direction: 'cruise',
+            color: colors.cruise,
             line: [pointToCord(lastPoint, currentTrackingDecimal)],
           }) - 1
       }
@@ -97,18 +108,21 @@ const generateAltitudeLines = (flight: Flight): AltitudeLine => {
 const calculateRateOfClimb = (
   point1: FlightLocation,
   point2: FlightLocation
-): number => {
+): { rate: number; direction: Direction } => {
   const time = point2.time - point1.time
   if (point1.altitude == null || point2.altitude == null) {
     logger.warn('Altitude Is Null')
-    return 0
+    return { rate: 0, direction: 'ascending' }
   }
   const altitude = point2.altitude - point1.altitude
   const rateOfClimb = altitude / new Date(time).getMinutes()
 
-  return Math.abs(rateOfClimb)
+  if (rateOfClimb < 0) {
+    return { rate: rateOfClimb, direction: 'descending' }
+  } else {
+    return { rate: rateOfClimb, direction: 'ascending' }
+  }
 }
-
 const checkIfNull = (d: FlightLocation) => {
   if (d.cord == null) {
     logger.warn('Cord is null')

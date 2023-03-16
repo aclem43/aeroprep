@@ -12,16 +12,13 @@
     generateLine,
     type AltitudeLine,
   } from '@/scripts/flight/tracking/map'
-  import {
-    getLineMode,
-    getLineModeRef,
-  } from '@/scripts/flight/tracking/trackingConstants'
+  import { getCurrentLineModeRef } from '@/scripts/flight/tracking/trackingConstants'
 
   const zoom = ref(2)
-  const lineMode = getLineModeRef()
+  const lineMode = getCurrentLineModeRef()
   const center = computed(() => {
     let line = generateLine.value
-    const lineMode = getLineMode()
+    const lineMode = getCurrentLineModeRef().value
     if (lineMode == 'basic') {
       line = line as number[][]
       if (line[0] != null) {
@@ -54,7 +51,7 @@
         name="OpenStreetMap"
       ></l-tile-layer>
       <div v-if="lineMode == 'basic'">
-        <l-polyline :lat-lngs="generateLine" color="green"></l-polyline>
+        <l-polyline :lat-lngs="generateLine" color="#fcba03"></l-polyline>
       </div>
       <div
         v-else

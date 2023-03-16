@@ -1,16 +1,26 @@
 import { addInitializer } from '@/scripts/initialize'
 import {
+  getLineColors,
+  getLineMode,
   getMinimumDistance,
   getTrackingDecimal,
   getTrackingInterval,
+  type LineColors,
 } from '@/scripts/settings/trackingsettings'
 import { ref, type Ref } from 'vue'
 
+// Defaults
 export const defaultTrackingInterval = 1000
 export const defaultTrackingDecimal = 4
 export const defaultMinimumDistance = 0.5 // NM
 export const defaultHeadingChange = 5
 export const defaultRateOfClimb = 100 // Feet a minute
+export const defaultLineColors: LineColors = {
+  ascending: 'blue',
+  cruise: 'green',
+  descending: 'red',
+}
+
 const currentTrackingInterval = ref(defaultMinimumDistance)
 export const getCurrentTrackingInterval = () => {
   return currentTrackingInterval.value
@@ -36,17 +46,24 @@ export const getCurrentRateOfClimb = () => {
   return currentRateOfClimb.value
 }
 export type LineMode = 'basic' | 'altitude'
-const lineMode: Ref<LineMode> = ref('altitude')
-export const getLineModeRef = () => {
-  return lineMode
+const currentLineMode: Ref<LineMode> = ref('altitude')
+export const getCurrentLineModeRef = () => {
+  return currentLineMode
 }
-export const getLineMode = () => {
-  return lineMode.value
+export const getCurrentLineMode = () => {
+  return currentLineMode.value
 }
+const currentLineColor = ref(defaultLineColors)
+export const getCurrentLineColor = () => {
+  return currentLineColor.value
+}
+
 export const updateTrackingConstants = async () => {
   currentTrackingInterval.value = await getTrackingInterval()
   currentTrackingDecimal.value = await getTrackingDecimal()
   currentMinimumDistance.value = await getMinimumDistance()
+  currentLineMode.value = await getLineMode()
+  currentLineColor.value = await getLineColors()
 }
 
 addInitializer(updateTrackingConstants)
