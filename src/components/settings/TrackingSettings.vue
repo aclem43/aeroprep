@@ -1,5 +1,8 @@
 <script setup lang="ts">
-  import type { LineMode } from '@/scripts/flight/tracking/trackingConstants'
+  import {
+    defaultLineColors,
+    type LineMode,
+  } from '@/scripts/flight/tracking/trackingConstants'
   import {
     setTrackingInterval,
     setTrackingDecimal,
@@ -9,6 +12,9 @@
     getMinimumDistance,
     getLineMode,
     setLineMode,
+    type LineColors,
+    getLineColors,
+    setLineColors,
   } from '@/scripts/settings/trackingsettings'
   import { openAlert } from '@/scripts/utils/alert'
   import { ref, type Ref, onMounted } from 'vue'
@@ -17,6 +23,7 @@
   const trackingDecimal = ref()
   const minimumDistance = ref()
   const lineMode: Ref<LineMode> = ref('basic')
+  const lineColors: Ref<LineColors> = ref(defaultLineColors)
 
   const saveTrackingInterval = async () => {
     await setTrackingInterval(trackingInterval.value)
@@ -34,11 +41,16 @@
     await setLineMode(lineMode.value)
     openAlert('Line Mode Saved')
   }
+  const saveLineColor = async () => {
+    await setLineColors(lineColors.value)
+    openAlert('Line Colors Saved')
+  }
   onMounted(async () => {
     trackingInterval.value = await getTrackingInterval()
     trackingDecimal.value = await getTrackingDecimal()
     minimumDistance.value = await getMinimumDistance()
     lineMode.value = await getLineMode()
+    lineColors.value = await getLineColors()
   })
 </script>
 
@@ -98,18 +110,26 @@
   <div class="settings_input_row pb-2">
     <div>
       <div class="text-center">Acsending Line Color</div>
-      <v-color-picker hide-inputs></v-color-picker>
+      <v-color-picker
+        hide-inputs
+        v-model="lineColors.ascending"
+      ></v-color-picker>
     </div>
     <div>
       <div class="text-center">Cruise Line Color</div>
-      <v-color-picker hide-inputs></v-color-picker>
+      <v-color-picker hide-inputs v-model="lineColors.cruise"></v-color-picker>
     </div>
     <div>
       <div class="text-center">Descending Line Color</div>
-      <v-color-picker hide-inputs></v-color-picker>
+      <v-color-picker
+        hide-inputs
+        v-model="lineColors.descending"
+      ></v-color-picker>
     </div>
   </div>
-  <div class="p-2">
-    <v-btn prepend-icon="mdi-content-save">Save</v-btn>
+  <div class="p-4">
+    <v-btn prepend-icon="mdi-content-save" @click="saveLineColor"
+      >Save Colors</v-btn
+    >
   </div>
 </template>
