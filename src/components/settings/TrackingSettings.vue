@@ -1,18 +1,29 @@
 <script setup lang="ts">
   import {
+    defaultLineColors,
+    type LineMode,
+  } from '@/scripts/flight/tracking/trackingConstants'
+  import {
     setTrackingInterval,
     setTrackingDecimal,
     setMinimumDistance,
     getTrackingInterval,
     getTrackingDecimal,
     getMinimumDistance,
-  } from '@/scripts/settings/settings'
+    getLineMode,
+    setLineMode,
+    type LineColors,
+    getLineColors,
+    setLineColors,
+  } from '@/scripts/settings/trackingsettings'
   import { openAlert } from '@/scripts/utils/alert'
-  import { ref, onMounted } from 'vue'
+  import { ref, type Ref, onMounted } from 'vue'
 
   const trackingInterval = ref()
   const trackingDecimal = ref()
   const minimumDistance = ref()
+  const lineMode: Ref<LineMode> = ref('basic')
+  const lineColors: Ref<LineColors> = ref(defaultLineColors)
 
   const saveTrackingInterval = async () => {
     await setTrackingInterval(trackingInterval.value)
@@ -26,14 +37,31 @@
     await setMinimumDistance(minimumDistance.value)
     openAlert('Minimum Distance Saved')
   }
+  const saveLineMode = async () => {
+    await setLineMode(lineMode.value)
+    openAlert('Line Mode Saved')
+  }
+  const saveLineColor = async () => {
+    await setLineColors(lineColors.value)
+    openAlert('Line Colors Saved')
+  }
   onMounted(async () => {
     trackingInterval.value = await getTrackingInterval()
     trackingDecimal.value = await getTrackingDecimal()
     minimumDistance.value = await getMinimumDistance()
+    lineMode.value = await getLineMode()
+    lineColors.value = await getLineColors()
   })
 </script>
 
 <template>
+  <div class="settings_input_row">
+    <v-radio-group label="Map Line Mode" inline v-model="lineMode">
+      <v-radio label="Basic" value="basic"></v-radio>
+      <v-radio label="Altitude" value="altitude"></v-radio>
+    </v-radio-group>
+    <v-btn prepend-icon="mdi-content-save" @click="saveLineMode">Save</v-btn>
+  </div>
   <div class="settings_input_row">
     <v-text-field
       v-model="trackingInterval"
@@ -78,5 +106,30 @@
     <v-btn prepend-icon="mdi-content-save" @click="saveMinimumDistance()">
       Save
     </v-btn>
+  </div>
+  <div class="settings_input_row pb-2">
+    <div>
+      <div class="text-center">Acsending Line Color</div>
+      <v-color-picker
+        hide-inputs
+        v-model="lineColors.ascending"
+      ></v-color-picker>
+    </div>
+    <div>
+      <div class="text-center">Cruise Line Color</div>
+      <v-color-picker hide-inputs v-model="lineColors.cruise"></v-color-picker>
+    </div>
+    <div>
+      <div class="text-center">Descending Line Color</div>
+      <v-color-picker
+        hide-inputs
+        v-model="lineColors.descending"
+      ></v-color-picker>
+    </div>
+  </div>
+  <div class="p-4">
+    <v-btn prepend-icon="mdi-content-save" @click="saveLineColor"
+      >Save Colors</v-btn
+    >
   </div>
 </template>
