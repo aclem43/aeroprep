@@ -8,6 +8,7 @@ An app designed to assist pilots to preflight more effeciently and accurately. I
 
 1. [Technology Used](#technology-used)
 2. [Features](#features)
+3. [Links](#links)
 
 ## Technology Used
 
@@ -55,3 +56,6 @@ Inflight Page
 - Add acceleromater triggered events to record more data points in turns
 - Tapping a point on the line shows the data (Speed,altitude,heading) for the nearest point
 - Different coloured parts of the line for climbing decending and cruise
+
+## Links
+- Trello Page [Link](https://trello.com/b/gHvEGh3C/aeroprep)
