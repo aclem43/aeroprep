@@ -67,6 +67,87 @@ export const convertDistanceFromM = (
   return value
 }
 
+// Export a function that converts from any distance unit to any other distance unit
+export const convertDistance = (
+  value: number,
+  fromUnit: DistanceUnits,
+  toUnit: DistanceUnits
+) => {
+  if (fromUnit == 'NM') {
+    if (toUnit == 'KM') {
+      return value * 1.852
+    }
+    if (toUnit == 'M') {
+      return value * 1852
+    }
+    if (toUnit == 'Mi') {
+      return value * 1.15078
+    }
+    if (toUnit == 'FT') {
+      return value * 6076.12
+    }
+  }
+  if (fromUnit == 'KM') {
+    if (toUnit == 'NM') {
+      return value * 0.539957
+    }
+    if (toUnit == 'M') {
+      return value * 1000
+    }
+    if (toUnit == 'Mi') {
+      return value * 0.621371
+    }
+    if (toUnit == 'FT') {
+      return value * 3280.84
+    }
+  }
+  if (fromUnit == 'M') {
+    if (toUnit == 'NM') {
+      return value * 0.00054
+    }
+    if (toUnit == 'KM') {
+      return value * 0.001
+    }
+    if (toUnit == 'Mi') {
+      return value * 0.000621
+    }
+    if (toUnit == 'FT') {
+      return value * 3.28084
+    }
+  }
+  if (fromUnit == 'Mi') {
+    if (toUnit == 'NM') {
+      return value * 0.868976
+    }
+
+    if (toUnit == 'KM') {
+      return value * 1.60934
+    }
+    if (toUnit == 'M') {
+      return value * 1609.34
+    }
+    if (toUnit == 'FT') {
+      return value * 5280
+    }
+  }
+  if (fromUnit == 'FT') {
+    if (toUnit == 'NM') {
+      return value * 0.000164579
+    }
+    if (toUnit == 'KM') {
+      return value * 0.0003048
+    }
+
+    if (toUnit == 'M') {
+      return value * 0.3048
+    }
+    if (toUnit == 'Mi') {
+      return value * 0.000189394
+    }
+  }
+  return value
+}
+
 export const convertSpeedFromMS = (value: number, unit: SpeedUnits) => {
   if (unit == 'KMPH') {
     return value * 3.6

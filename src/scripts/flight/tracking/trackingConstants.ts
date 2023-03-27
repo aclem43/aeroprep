@@ -14,7 +14,7 @@ export const defaultTrackingInterval = 1000
 export const defaultTrackingDecimal = 4
 export const defaultMinimumDistance = 0.5 // NM
 export const defaultHeadingChange = 5
-export const defaultRateOfClimb = 100 // Feet a minute
+export const defaultRateOfClimb = 100 // Units a minute
 export const defaultLineColors: LineColors = {
   ascending: '#0062ff',
   cruise: '#48ff00',
