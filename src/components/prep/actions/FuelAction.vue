@@ -8,6 +8,7 @@
   } from '@/scripts/prep/fuelaction'
   import { openAlert } from '@/scripts/utils/alert'
   import { isMobile } from '@/scripts/utils/mobile'
+  import { convertToCurrentLiquid } from '@/scripts/utils/units/units'
   import { computed } from 'vue'
   import { onMounted, reactive, ref } from 'vue'
 
@@ -119,14 +120,16 @@
           <td v-if="!mobile">H</td>
           <td>Fuel Required</td>
           <td class="text-surface-variant">{{ totalMin }}</td>
-          <td class="text-surface-variant">{{ totalLitre }}</td>
+          <td class="text-surface-variant">
+            {{ convertToCurrentLiquid(totalLitre, 'L') }}
+          </td>
         </tr>
         <tr>
           <td v-if="!mobile">I</td>
           <td>Endurance</td>
           <td class="text-surface-variant">{{ endurance }}</td>
           <td class="text-surface-variant">
-            {{ currentFlight.currentFuel }}
+            {{ convertToCurrentLiquid(currentFlight.currentFuel, 'L') }}
           </td>
         </tr>
         <tr>
@@ -136,7 +139,12 @@
             {{ endurance - totalMin }}
           </td>
           <td :class="fuelMarginClass">
-            {{ currentFlight.currentFuel - totalLitre }}
+            {{
+              convertToCurrentLiquid(
+                currentFlight.currentFuel - totalLitre,
+                'L'
+              )
+            }}
           </td>
         </tr>
       </tbody>

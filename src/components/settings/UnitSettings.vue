@@ -1,21 +1,28 @@
 <script setup lang="ts">
   import {
-    distanceUnits,
     getCurrentDistanceUnitRef,
     getCurrentSpeedUnitRef,
-    saveUnits,
-    speedUnits,
-    liquidUnits,
-    weightUnits,
     getCurrentHeightUnitRef,
     getCurrentWeightUnitRef,
     getCurrentLiquidUnitRef,
+    saveUnits,
   } from '@/scripts/settings/unitsettings'
+  import type {
+    DistanceUnit,
+    LiquidUnit,
+    SpeedUnit,
+    WeightUnit,
+  } from '@/scripts/utils/units/unitstypes'
   const speedUnit = getCurrentSpeedUnitRef()
   const heightUnit = getCurrentHeightUnitRef()
   const distanceUnit = getCurrentDistanceUnitRef()
   const weightUnit = getCurrentWeightUnitRef()
   const liquidUnit = getCurrentLiquidUnitRef()
+
+  const speedUnits: SpeedUnit[] = ['KMH', 'KTS', 'MPH']
+  const distanceUnits: DistanceUnit[] = ['KM', 'NM', 'FT', 'M']
+  const weightUnits: WeightUnit[] = ['kg', 'lbs']
+  const liquidUnits: LiquidUnit[] = ['L', 'gal(UK)', 'gal(US)']
 </script>
 
 <template>

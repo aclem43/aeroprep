@@ -8,7 +8,7 @@ import {
   getCurrentLineModeRef,
   getCurrentLineColor,
 } from './trackingConstants'
-import { convertToCurrentHeight } from '@/scripts/settings/unitsettings'
+import { convertToCurrentDistance } from '@/scripts/utils/units/units'
 
 export const generateLine = computed((): number[][] | AltitudeLine => {
   const flight = getCurrentFlightData().value
@@ -115,7 +115,10 @@ const calculateRateOfClimb = (
     logger.warn('Altitude Is Null')
     return { rate: 0, direction: 'ascending' }
   }
-  const altitude = convertToCurrentHeight(point2.altitude - point1.altitude)
+  const altitude = convertToCurrentDistance(
+    point2.altitude - point1.altitude,
+    'M'
+  )
   const rateOfClimb = altitude / new Date(time).getMinutes()
 
   if (rateOfClimb < 0) {
