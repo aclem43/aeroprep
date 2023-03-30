@@ -9,6 +9,14 @@
     stopFlight,
   } from '@/scripts/flight/tracking/recording'
   import { getNetworkStatus } from '@/scripts/network'
+  import {
+    getCurrentHeightUnit,
+    getCurrentSpeedUnit,
+  } from '@/scripts/settings/unitsettings'
+  import {
+    convertToCurrentHeight,
+    convertToCurrentSpeed,
+  } from '@/scripts/utils/units/units'
 
   import { computed, ref } from 'vue'
 
@@ -97,8 +105,20 @@
                 <v-col>Location</v-col>
               </v-row>
               <v-row no-gutters>
-                <v-col>{{ latestFlightLoc.speed }}</v-col>
-                <v-col>{{ latestFlightLoc.altitude }}</v-col>
+                <v-col>
+                  {{
+                    convertToCurrentSpeed(latestFlightLoc.speed ?? 0, 'MPS') +
+                    ' ' +
+                    getCurrentSpeedUnit()
+                  }}
+                </v-col>
+                <v-col>
+                  {{
+                    convertToCurrentHeight(latestFlightLoc.altitude ?? 0, 'M') +
+                    ' ' +
+                    getCurrentHeightUnit()
+                  }}
+                </v-col>
                 <v-col>{{ latestFlightLoc.heading }}</v-col>
                 <v-col>{{ latestFlightLoc.cord }}</v-col>
               </v-row>
