@@ -1,5 +1,6 @@
 import type { FlightLocation } from '@/models/Flight'
 import { getDistanceFromLatLonInNm } from '@/scripts/utils/gps'
+import { logger } from '@/scripts/utils/logger'
 import { getCurrentFlightData } from './recording'
 import {
   getCurrentHeadingChange,
@@ -24,6 +25,7 @@ export const verifyFlightLocation = (
     currentFlightLocation.cord.latitude,
     currentFlightLocation.cord.longitude
   )
+  logger.log('Distance: ' + distance)
   const currentMinimumDistance = getCurrentMinimumDistance()
   const currentHeadingChange = getCurrentHeadingChange()
   if (distance > currentMinimumDistance) {

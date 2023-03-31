@@ -2,48 +2,18 @@ import { type Ref, ref } from 'vue'
 import { getSimpleDataByKey, setSimpleDataByKey } from '../database'
 import { addInitializer } from '../initialize'
 import { openAlert } from '../utils/alert'
+import type {
+  SpeedUnit,
+  DistanceUnit,
+  LiquidUnit,
+  WeightUnit,
+} from '@/scripts/utils/units/unitstypes'
 
-export type DistanceUnits = 'NM' | 'KM' | 'M' | 'Mi' | 'FT'
-export type SpeedUnits = 'KTS' | 'KMPH' | 'MPH' | 'M/S'
-
-export const distanceUnits: DistanceUnits[] = ['NM', 'KM', 'M', 'Mi', 'FT']
-export const speedUnits: SpeedUnits[] = ['KTS', 'KMPH', 'MPH', 'M/S']
-
-export const convertDistanceFromM = (
-  value: number,
-  unit: DistanceUnits
-): number => {
-  if (unit == 'NM') {
-    return value * 0.00054
-  }
-  if (unit == 'KM') {
-    return value * 0.001
-  }
-  if (unit == 'FT') {
-    return value * 3.28084
-  }
-  if (unit == 'Mi') {
-    return value * 0.000621
-  }
-  return value
-}
-
-export const convertSpeedFromMS = (value: number, unit: SpeedUnits) => {
-  if (unit == 'KMPH') {
-    return value * 3.6
-  }
-  if (unit == 'KTS') {
-    return value * 1.944012
-  }
-  if (unit == 'MPH') {
-    return value * 2.237136
-  }
-  return value
-}
-
-const currentSpeedUnit: Ref<SpeedUnits> = ref('KTS')
-const currentDistanceUnit: Ref<DistanceUnits> = ref('NM')
-const currentHeightUnit: Ref<DistanceUnits> = ref('FT')
+const currentSpeedUnit: Ref<SpeedUnit> = ref('KTS')
+const currentDistanceUnit: Ref<DistanceUnit> = ref('NM')
+const currentHeightUnit: Ref<DistanceUnit> = ref('FT')
+const currentWeightUnit: Ref<WeightUnit> = ref('kg')
+const currentLiquidUnit: Ref<LiquidUnit> = ref('L')
 // Speed
 export const getCurrentSpeedUnit = () => {
   return currentSpeedUnit.value
@@ -66,22 +36,36 @@ export const getCurrentDistanceUnit = () => {
 export const getCurrentDistanceUnitRef = () => {
   return currentDistanceUnit
 }
+// Weight
+export const getCurrentWeightUnit = () => {
+  return currentWeightUnit.value
+}
+export const getCurrentWeightUnitRef = () => {
+  return currentWeightUnit
+}
+// Liquid
+export const getCurrentLiquidUnit = () => {
+  return currentLiquidUnit.value
+}
+export const getCurrentLiquidUnitRef = () => {
+  return currentLiquidUnit
+}
 // ALL
 
 const initUnits = async () => {
   const speedUnit = await getSimpleDataByKey('settings_units_speed')
   if (speedUnit != null) {
-    currentSpeedUnit.value = speedUnit as SpeedUnits
+    currentSpeedUnit.value = speedUnit as SpeedUnit
   }
 
   const heightUnit = await getSimpleDataByKey('settings_units_height')
   if (heightUnit != null) {
-    currentHeightUnit.value = heightUnit as DistanceUnits
+    currentHeightUnit.value = heightUnit as DistanceUnit
   }
 
   const distanceUnit = await getSimpleDataByKey('settings_units_distance')
   if (distanceUnit != null) {
-    currentDistanceUnit.value = distanceUnit as DistanceUnits
+    currentDistanceUnit.value = distanceUnit as DistanceUnit
   }
 }
 
@@ -95,6 +79,16 @@ export const saveUnits = async () => {
   await setSimpleDataByKey(
     'settings_units_distance',
     currentDistanceUnit.value,
+    true
+  )
+  await setSimpleDataByKey(
+    'settings_units_weight',
+    currentWeightUnit.value,
+    true
+  )
+  await setSimpleDataByKey(
+    'settings_units_liquid',
+    currentLiquidUnit.value,
     true
   )
   openAlert('Units Saved')
