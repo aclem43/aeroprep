@@ -1,5 +1,6 @@
 import { KeepAwake } from '@capacitor-community/keep-awake'
 import { ref } from 'vue'
+import { logger } from './logger'
 
 const keepAwake = ref(false)
 
@@ -10,6 +11,7 @@ export const turnOnKeepAwake = async () => {
   if (await KeepAwake.isSupported()) {
     await KeepAwake.keepAwake()
     keepAwake.value = true
+    logger.log(`Keep Awake ON`)
   }
 }
 export const turnOffKeepAwake = async () => {
@@ -19,6 +21,7 @@ export const turnOffKeepAwake = async () => {
   if (await KeepAwake.isSupported()) {
     await KeepAwake.allowSleep()
     keepAwake.value = false
+    logger.log(`Keep Awake Off`)
   }
 }
 

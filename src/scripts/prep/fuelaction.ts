@@ -1,4 +1,9 @@
 import { getSimpleDataByKey, setSimpleDataByKey } from '../database'
+import {
+  getCurrentDistanceUnit,
+  getCurrentLiquidUnit,
+} from '../settings/unitsettings'
+import { convertLiquidUnit } from '../utils/units/units'
 
 export interface FuelRow {
   item: string
@@ -35,10 +40,44 @@ export const initFuelRows = async (): Promise<FuelRow[]> => {
       { item: 'G', name: 'Holding Fuel', fuelData: initFuelData() },
     ]
   } else {
+    const metricFuelRows: FuelRow[] = JSON.parse(data)
+    const currentFuelRows: FuelRow[] = []
+    for (const row of metricFuelRows) {
+      convertLiquidUnit
+      getCurrentDistanceUnit
+      currentFuelRows.push({
+        ...row,
+        fuelData: {
+          litre: convertLiquidUnit(
+            row.fuelData.litre,
+
+            'L',
+            getCurrentLiquidUnit()
+          ),
+          min: row.fuelData.min,
+        },
+      })
+    }
     return JSON.parse(data)
   }
 }
 
 export const saveFuelRows = async (fuelRows: FuelRow[]) => {
-  await setSimpleDataByKey('action_fuel_data', fuelRows)
+  const metricFuelRows: FuelRow[] = []
+  for (const row of fuelRows) {
+    convertLiquidUnit
+    getCurrentDistanceUnit
+    metricFuelRows.push({
+      ...row,
+      fuelData: {
+        litre: convertLiquidUnit(
+          row.fuelData.litre,
+          getCurrentLiquidUnit(),
+          'L'
+        ),
+        min: row.fuelData.min,
+      },
+    })
+  }
+  await setSimpleDataByKey('action_fuel_data', metricFuelRows)
 }

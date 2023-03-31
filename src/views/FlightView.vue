@@ -9,17 +9,39 @@
     stopFlight,
   } from '@/scripts/flight/tracking/recording'
   import { getNetworkStatus } from '@/scripts/network'
+  import {
+    getCurrentHeightUnit,
+    getCurrentSpeedUnit,
+  } from '@/scripts/settings/unitsettings'
+  import {
+    convertToCurrentHeight,
+    convertToCurrentSpeed,
+  } from '@/scripts/utils/units/units'
+
   import { computed, ref } from 'vue'
 
   const currentFlightData = getCurrentFlightData()
   const connection = getNetworkStatus()
   const flightSaveOverlay = ref()
+  const fullscreen = ref(false)
 
   const running = computed(() => {
     if (currentFlightData.value == null) {
       return false
     } else return currentFlightData.value.running
   })
+
+  const toggleFullScreen = () => {
+    fullscreen.value = !fullscreen.value
+  }
+  const mapSize = computed(() => {
+    if (fullscreen.value) {
+      return 'flight_card_map_fullscreen'
+    } else {
+      return 'flight_card_map_normal'
+    }
+  })
+
   const openFlightSaveOverlay = async () => {
     await flightSaveOverlay.value.open()
   }
@@ -27,7 +49,7 @@
     if (!currentFlightData.value) {
       return {
         altitude: 0,
-        cord: { latitude: 0, longitude: 0 },
+        cord: { lattitude: 0, longitude: 0 },
         heading: 0,
         speed: 0,
         time: 0,
@@ -35,7 +57,7 @@
     } else if (currentFlightData.value.flightPath.length == 0) {
       return {
         altitude: 0,
-        cord: { latitude: 0, longitude: 0 },
+        cord: { lattitude: 0, longitude: 0 },
         heading: 0,
         speed: 0,
         time: 0,
@@ -54,7 +76,7 @@
     <div class="container">
       <v-card class="flight_card">
         <v-card-item>
-          <div v-if="connection.connected" class="flight_card_map">
+          <div v-if="connection.connected" :class="mapSize">
             <TrackingMap></TrackingMap>
           </div>
           <div v-else class="flight_card_map">
@@ -81,14 +103,18 @@
                     >Stop</v-btn
                   >
                 </div>
-                <div>
+                <div style="display: flex; gap: 10px">
+                  <v-btn variant="tonal" @click="toggleFullScreen">
+                    <v-icon v-if="!fullscreen">mdi-fullscreen</v-icon>
+                    <v-icon v-else>mdi-fullscreen-exit</v-icon>
+                  </v-btn>
                   <v-btn variant="tonal" @click="openFlightSaveOverlay()"
                     ><v-icon>mdi-menu</v-icon></v-btn
                   >
                 </div>
               </div>
             </v-card-item>
-            <v-card-item>
+            <v-card-item v-if="!fullscreen">
               <v-row no-gutters>
                 <v-col>Speed</v-col>
                 <v-col>Altitude</v-col>
@@ -96,8 +122,20 @@
                 <v-col>Location</v-col>
               </v-row>
               <v-row no-gutters>
-                <v-col>{{ latestFlightLoc.speed }}</v-col>
-                <v-col>{{ latestFlightLoc.altitude }}</v-col>
+                <v-col>
+                  {{
+                    convertToCurrentSpeed(latestFlightLoc.speed ?? 0, 'MPS') +
+                    ' ' +
+                    getCurrentSpeedUnit()
+                  }}
+                </v-col>
+                <v-col>
+                  {{
+                    convertToCurrentHeight(latestFlightLoc.altitude ?? 0, 'M') +
+                    ' ' +
+                    getCurrentHeightUnit()
+                  }}
+                </v-col>
                 <v-col>{{ latestFlightLoc.heading }}</v-col>
                 <v-col>{{ latestFlightLoc.cord }}</v-col>
               </v-row>
@@ -117,8 +155,11 @@
     gap: 10px;
   }
 
-  .flight_card_map {
-    height: 400px;
+  .flight_card_map_normal {
+    height: 50vh;
+  }
+  .flight_card_map_fullscreen {
+    height: 70vh;
   }
   .container {
     height: 100%;

@@ -1,6 +1,7 @@
 import { ref, type Ref } from 'vue'
 import { getSimpleDataByKey, setSimpleDataByKey } from './database'
 import { addInitializer } from './initialize'
+import { logger } from './utils/logger'
 import { openAlert } from './utils/alert'
 
 export interface Aircraft {
@@ -21,6 +22,7 @@ export const getCurrentAircraft = (): Ref<Aircraft | null> => {
 
 export const setCurrentAircarft = (aircraft: Aircraft) => {
   currentAircraft.value = aircraft
+  logger.log(`Current Aircraft Set (${aircraft.name})`)
 }
 
 export const initAircraft = async (): Promise<Aircraft[]> => {
@@ -44,6 +46,7 @@ addInitializer(initializeAircraft)
 export const addAircraft = async (aircraft: Aircraft) => {
   allAircraft.value.push(aircraft)
   await setSimpleDataByKey('aircraft_all', allAircraft.value)
+  logger.log(`Aircraft Added (${aircraft.name})`)
 }
 
 export const deleteAircraft = async (aircraft: Aircraft) => {
@@ -52,4 +55,5 @@ export const deleteAircraft = async (aircraft: Aircraft) => {
     allAircraft.value.splice(index)
   }
   await setSimpleDataByKey('aircraft_all', allAircraft.value)
+  logger.log(`Aircraft Removed (${aircraft.name})`)
 }
