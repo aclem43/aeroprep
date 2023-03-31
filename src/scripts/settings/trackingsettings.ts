@@ -59,7 +59,7 @@ export const getRateOfClimb = async (): Promise<number> => {
 }
 
 export const setRateOfClimb = async (rateOfClimb: number) => {
-  await setSimpleDataByKey('settings_tracking_rate_of_climb', rateOfClimb)
+  await setSimpleDataByKey('settings_tracking_rate_of_climb', rateOfClimb, true)
 }
 
 export interface LineColors {

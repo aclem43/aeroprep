@@ -6,6 +6,7 @@
     initFuelRows,
     saveFuelRows,
   } from '@/scripts/prep/fuelaction'
+  import { getCurrentLiquidUnit } from '@/scripts/settings/unitsettings'
   import { openAlert } from '@/scripts/utils/alert'
   import { isMobile } from '@/scripts/utils/mobile'
   import { convertToCurrentLiquid } from '@/scripts/utils/units/units'
@@ -88,7 +89,7 @@
           <th v-if="!mobile">Item</th>
           <th>Fuel Calculation</th>
           <th>Min</th>
-          <th>L</th>
+          <th>{{ getCurrentLiquidUnit() }}</th>
         </tr>
       </thead>
       <tbody>
@@ -121,7 +122,7 @@
           <td>Fuel Required</td>
           <td class="text-surface-variant">{{ totalMin }}</td>
           <td class="text-surface-variant">
-            {{ convertToCurrentLiquid(totalLitre, 'L') }}
+            {{ totalLitre }}
           </td>
         </tr>
         <tr>
@@ -129,7 +130,7 @@
           <td>Endurance</td>
           <td class="text-surface-variant">{{ endurance }}</td>
           <td class="text-surface-variant">
-            {{ convertToCurrentLiquid(currentFlight.currentFuel, 'L') }}
+            {{ currentFlight.currentFuel }}
           </td>
         </tr>
         <tr>

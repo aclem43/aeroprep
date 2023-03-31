@@ -15,6 +15,8 @@
     type LineColors,
     getLineColors,
     setLineColors,
+    setRateOfClimb,
+    getRateOfClimb,
   } from '@/scripts/settings/trackingsettings'
   import { openAlert } from '@/scripts/utils/alert'
   import { ref, type Ref, onMounted } from 'vue'
@@ -24,6 +26,7 @@
   const minimumDistance = ref()
   const lineMode: Ref<LineMode> = ref('basic')
   const lineColors: Ref<LineColors> = ref(defaultLineColors)
+  const rateOfClimb = ref()
 
   const saveTrackingInterval = async () => {
     await setTrackingInterval(trackingInterval.value)
@@ -45,12 +48,17 @@
     await setLineColors(lineColors.value)
     openAlert('Line Colors Saved')
   }
+  const saveRateOfClimb = async () => {
+    await setRateOfClimb(rateOfClimb.value)
+    openAlert('Rate of Climb Saved')
+  }
   onMounted(async () => {
     trackingInterval.value = await getTrackingInterval()
     trackingDecimal.value = await getTrackingDecimal()
     minimumDistance.value = await getMinimumDistance()
     lineMode.value = await getLineMode()
     lineColors.value = await getLineColors()
+    rateOfClimb.value = await getRateOfClimb()
   })
 </script>
 
@@ -131,5 +139,18 @@
     <v-btn prepend-icon="mdi-content-save" @click="saveLineColor"
       >Save Colors</v-btn
     >
+  </div>
+  <div class="settings_input_row">
+    <v-text-field
+      v-model="rateOfClimb"
+      label="Rate of Climb"
+      hint="Rate of Climb"
+      suffix="ft/min"
+      variant="underlined"
+      type="number"
+      pattern="[0-9]*"
+      inputmode="numeric"
+    ></v-text-field>
+    <v-btn prepend-icon="mdi-content-save" @click="saveRateOfClimb">Save</v-btn>
   </div>
 </template>
