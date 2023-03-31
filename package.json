@@ -12,9 +12,9 @@
   },
   "dependencies": {
     "@capacitor-community/keep-awake": "^3.0.0",
-    "@capacitor/android": "^4.7.0",
+    "@capacitor/android": "^4.7.1",
     "@capacitor/app": "^4.1.1",
-    "@capacitor/core": "^4.7.0",
+    "@capacitor/core": "^4.7.1",
     "@capacitor/dialog": "^4.1.0",
     "@capacitor/geolocation": "^4.1.0",
     "@capacitor/network": "^4.1.0",
@@ -31,25 +31,25 @@
     "vue": "^3.2.47",
     "vue-router": "^4.1.6",
     "vuedraggable": "next",
-    "vuetify": "3.1.7"
+    "vuetify": "3.1.12"
   },
   "devDependencies": {
-    "@capacitor/cli": "^4.7.0",
-    "@mdi/font": "^7.1.96",
+    "@capacitor/cli": "^4.7.1",
+    "@mdi/font": "^7.2.96",
     "@rushstack/eslint-patch": "^1.2.0",
-    "@types/node": "^18.14.6",
-    "@vitejs/plugin-vue": "^4.0.0",
+    "@types/node": "^18.15.11",
+    "@vitejs/plugin-vue": "^4.1.0",
     "@vue/eslint-config-prettier": "^7.1.0",
     "@vue/eslint-config-typescript": "^11.0.2",
     "@vue/tsconfig": "^0.1.3",
-    "eslint": "^8.35.0",
-    "eslint-plugin-vue": "^9.9.0",
+    "eslint": "^8.37.0",
+    "eslint-plugin-vue": "^9.10.0",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.8.4",
-    "typescript": "~4.9.5",
-    "vite": "^4.1.4",
-    "vue-eslint-parser": "^9.1.0",
-    "vue-tsc": "^1.2.1"
+    "prettier": "^2.8.7",
+    "typescript": "~5.0.3",
+    "vite": "^4.2.1",
+    "vue-eslint-parser": "^9.1.1",
+    "vue-tsc": "^1.3.8"
   },
   "packageManager": "yarn@3.3.1"
 }
