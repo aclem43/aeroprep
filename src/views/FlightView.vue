@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import AppBar from '@/components/AppBar.vue'
   import FlightSaveOverlay from '@/components/flight/FlightSaveOverlay.vue'
+  import FlightDetailsOverlay from '@/components/flight/FlightDetailsOverlay.vue'
   import TrackingMap from '@/components/flight/TrackingMap.vue'
   import type { FlightLocation } from '@/models/Flight'
   import {
@@ -23,6 +24,7 @@
   const currentFlightData = getCurrentFlightData()
   const connection = getNetworkStatus()
   const flightSaveOverlay = ref()
+  const flightDetailsOverlay = ref()
   const fullscreen = ref(false)
 
   const running = computed(() => {
@@ -44,6 +46,9 @@
 
   const openFlightSaveOverlay = async () => {
     await flightSaveOverlay.value.open()
+  }
+  const openFlightDetailsOverlay = async () => {
+    await flightDetailsOverlay.value.open()
   }
   const latestFlightLoc = computed((): FlightLocation => {
     if (!currentFlightData.value) {
@@ -71,6 +76,7 @@
 </script>
 <template>
   <FlightSaveOverlay ref="flightSaveOverlay"></FlightSaveOverlay>
+  <FlightDetailsOverlay ref="flightDetailsOverlay"></FlightDetailsOverlay>
   <AppBar />
   <v-main>
     <div class="container">
@@ -104,13 +110,16 @@
                   >
                 </div>
                 <div style="display: flex; gap: 10px">
+                  <v-btn variant="tonal" @click="openFlightDetailsOverlay()">
+                    <v-icon>mdi-information-box</v-icon>
+                  </v-btn>
                   <v-btn variant="tonal" @click="toggleFullScreen">
                     <v-icon v-if="!fullscreen">mdi-fullscreen</v-icon>
                     <v-icon v-else>mdi-fullscreen-exit</v-icon>
                   </v-btn>
-                  <v-btn variant="tonal" @click="openFlightSaveOverlay()"
-                    ><v-icon>mdi-menu</v-icon></v-btn
-                  >
+                  <v-btn variant="tonal" @click="openFlightSaveOverlay()">
+                    <v-icon>mdi-menu</v-icon>
+                  </v-btn>
                 </div>
               </div>
             </v-card-item>
