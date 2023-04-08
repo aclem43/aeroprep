@@ -91,7 +91,7 @@
   </v-dialog>
 </template>
 
-<style>
+<style scoped>
   .btn_group {
     display: flex;
     gap: 10px;
