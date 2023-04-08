@@ -11,6 +11,8 @@ interface FlightDetails {
   averageAltitude: number
   totalDistance: number
   totalDuration: number
+  maxSpeed: number
+  maxAltitude: number
 }
 
 export const calculateFlightDetails = (flight: Flight): FlightDetails => {
@@ -19,6 +21,8 @@ export const calculateFlightDetails = (flight: Flight): FlightDetails => {
   let totalAltitude = 0
   let totalDistance = 0
   let totalTime = 0
+  let maxSpeed = 0
+  let maxAltitude = 0
   let lastPoint: FlightLocation | null = null
   for (const point of flight.flightPath) {
     if (lastPoint) {
@@ -34,9 +38,11 @@ export const calculateFlightDetails = (flight: Flight): FlightDetails => {
     }
     if (point.speed) {
       totalSpeed += point.speed
+      maxSpeed = Math.max(maxSpeed, point.speed)
     }
     if (point.altitude) {
       totalAltitude += point.altitude
+      maxAltitude = Math.max(maxAltitude, point.altitude)
     }
     totalPoints++
     lastPoint = point
@@ -50,5 +56,7 @@ export const calculateFlightDetails = (flight: Flight): FlightDetails => {
     averageAltitude: convertToCurrentHeight(totalAltitude / totalPoints, 'M'),
     totalDistance: totalDistance, // Already in current units
     totalDuration: totalTime,
+    maxSpeed: convertToCurrentSpeed(maxSpeed, 'MPS'),
+    maxAltitude: convertToCurrentHeight(maxAltitude, 'M'),
   }
 }
