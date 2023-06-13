@@ -6,7 +6,7 @@
     LMap,
     LTileLayer,
     LPolyline,
-    LControlScale, // @ts-expect-error
+    LControlScale,
   } from '@vue-leaflet/vue-leaflet'
   import {
     generateLine,
@@ -44,14 +44,22 @@
 
 <template>
   <div style="height: 100%; width: 100%">
-    <l-map ref="mapRef" v-model:zoom="zoom" :center="center">
+    <l-map
+      ref="mapRef"
+      v-model:zoom="zoom"
+      :center="center"
+      :use-global-leaflet="false"
+    >
       <l-tile-layer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         layer-type="base"
         name="OpenStreetMap"
       ></l-tile-layer>
       <div v-if="lineMode == 'basic'">
-        <l-polyline :lat-lngs="generateLine" color="#fcba03"></l-polyline>
+        <l-polyline
+          :lat-lngs="generateLine as number[][]"
+          color="#fcba03"
+        ></l-polyline>
       </div>
       <div
         v-else
