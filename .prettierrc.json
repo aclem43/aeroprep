@@ -1,5 +1,8 @@
 {
-    "singleQuote": true,
-    "semi": false,
-    "vueIndentScriptAndStyle": true
+  "singleQuote": true,
+  "semi": false,
+  "vueIndentScriptAndStyle": true,
+  "importOrder": ["^components/(.*)$", "^[./]"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }
