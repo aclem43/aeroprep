@@ -7,13 +7,21 @@
     LTileLayer,
     LPolyline,
     LControlScale,
+    LPolygon,
+    LPopup,
   } from '@vue-leaflet/vue-leaflet'
   import {
     generateLine,
     type AltitudeLine,
   } from '@/scripts/flight/tracking/map'
   import { getCurrentLineModeRef } from '@/scripts/flight/tracking/trackingConstants'
-
+  import {
+    airspaceTypes,
+    flipCoordinates,
+    getAirspaces,
+  } from '@/scripts/flight/openaip'
+  import { onMounted } from 'vue'
+  import { getMapAirspace } from '@/scripts/settings/mapsettings'
   const zoom = ref(2)
   const lineMode = getCurrentLineModeRef()
   const center = computed(() => {
@@ -40,6 +48,12 @@
   })
 
   const mapRef = ref()
+
+  const airspaces = getAirspaces()
+  const airspaceEnabled = ref(false)
+  onMounted(async () => {
+    airspaceEnabled.value = await getMapAirspace()
+  })
 </script>
 
 <template>
@@ -55,13 +69,13 @@
         layer-type="base"
         name="OpenStreetMap"
       ></l-tile-layer>
-      <div v-if="lineMode == 'basic'">
+      <template v-if="lineMode == 'basic'">
         <l-polyline
           :lat-lngs="generateLine as number[][]"
           color="#fcba03"
         ></l-polyline>
-      </div>
-      <div
+      </template>
+      <template
         v-else
         v-for="(altLine,index) in (generateLine as AltitudeLine).lines"
         v-bind:key="index"
@@ -70,8 +84,25 @@
           :lat-lngs="altLine.line"
           :color="altLine.color"
         ></l-polyline>
-      </div>
+      </template>
+      <template v-if="airspaceEnabled">
+        <div v-for="airspace in airspaces" v-bind:key="airspace.id">
+          <l-polygon
+            :lat-lngs="flipCoordinates(airspace.geometry.coordinates)"
+            color="#41b782"
+            :fill="true"
+            :fillOpacity="0.01"
+            fillColor="#41b782"
+          >
+            <l-popup> {{ airspaceTypes[airspace.icaoClass] }} </l-popup>
+          </l-polygon>
+        </div>
+      </template>
+
       <l-control-scale />
     </l-map>
+  </div>
+  <div>
+    {{ airspaces }}
   </div>
 </template>

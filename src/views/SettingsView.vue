@@ -33,6 +33,7 @@
   import DevSettings from '@/components/settings/DevSettings.vue'
   import RiskSettings from '@/components/settings/RiskSettings.vue'
   import UnitSettings from '@/components/settings/UnitSettings.vue'
+  import MapSettings from '@/components/settings/MapSettings.vue'
 
   // Main Settings
   const weatherApiKey = ref()
@@ -209,6 +210,13 @@
       <v-card-subtitle><v-icon>mdi-ruler</v-icon>Unit Sttings</v-card-subtitle>
       <v-card-item>
         <UnitSettings></UnitSettings>
+      </v-card-item>
+      <v-card-subtitle><v-icon>mdi-map</v-icon> Settings</v-card-subtitle>
+      <v-card-item>
+        <MapSettings></MapSettings>
+      </v-card-item>
+      <v-card-item>
+        <RiskSettings></RiskSettings>
       </v-card-item>
       <v-card-subtitle>Risk Action</v-card-subtitle>
       <v-card-item>
