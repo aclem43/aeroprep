@@ -1,13 +1,19 @@
 import { ref } from 'vue'
+
 import { addInitializer } from '../initialize'
 import { getOpenAipApiKey } from '../settings/mapsettings'
 
 const airspaces = ref<Airspace[]>([])
+const icaoClassIncluded = ref([0, 1, 2, 3, 4, 5, 6])
 
 export const loadAirspaces = async () => {
   const apiKey = await getOpenAipApiKey()
+  let icaoClassQueryString = ''
+  icaoClassIncluded.value.forEach((icaoClass) => {
+    icaoClassQueryString = icaoClassQueryString + `&icaoClass=${icaoClass}`
+  })
   const json = await fetch(
-    `https://api.core.openaip.net/api/airspaces?apiKey=${apiKey}&country=AU&limit=200`
+    `https://api.core.openaip.net/api/airspaces?apiKey=${apiKey}&country=AU&limit=200${icaoClassQueryString}`
   )
   const data = await json.json()
   airspaces.value = data.items
@@ -30,18 +36,31 @@ export const flipCoordinates = (coordinates: number[][][]): number[][][] => {
 export const getAirspaces = () => {
   return airspaces
 }
+export const getIcaoClassIncluded = () => {
+  return icaoClassIncluded
+}
 
-export const airspaceTypes = [
-  'A',
-  'B',
-  'C',
-  'D',
-  'E',
-  'F',
-  'G',
-  'UNCLASSIFIED / SUA (Special Use Airspace)',
-  'Other',
+const airspaceIcaoClasses = [
+  { id: 0, name: 'A' },
+  { id: 1, name: 'B' },
+  { id: 2, name: 'C' },
+  { id: 3, name: 'D' },
+  { id: 4, name: 'E' },
+  { id: 5, name: 'F' },
+  { id: 6, name: 'G' },
+  { id: 7, name: 'UNCLASSIFIED / SUA (Special Use Airspace)' },
+  { id: 8, name: 'Other' },
 ]
+export const getAirspaceIcaoClasses = () => {
+  return airspaceIcaoClasses
+}
+export const getIcaoClassNameById = (id: number) => {
+  const icaoClass = airspaceIcaoClasses.find((c) => c.id === id)
+  if (icaoClass) {
+    return icaoClass.name
+  }
+  return ''
+}
 
 addInitializer(loadAirspaces, 'loadAirspaces')
 

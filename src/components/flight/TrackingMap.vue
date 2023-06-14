@@ -1,27 +1,27 @@
 <script setup lang="ts">
-  import { ref, computed } from 'vue'
-
-  import 'leaflet/dist/leaflet.css'
   import {
-    LMap,
-    LTileLayer,
-    LPolyline,
-    LControlScale,
-    LPolygon,
-    LPopup,
-  } from '@vue-leaflet/vue-leaflet'
-  import {
-    generateLine,
-    type AltitudeLine,
-  } from '@/scripts/flight/tracking/map'
-  import { getCurrentLineModeRef } from '@/scripts/flight/tracking/trackingConstants'
-  import {
-    airspaceTypes,
     flipCoordinates,
     getAirspaces,
+    getIcaoClassNameById,
   } from '@/scripts/flight/openaip'
-  import { onMounted } from 'vue'
+  import {
+    type AltitudeLine,
+    generateLine,
+  } from '@/scripts/flight/tracking/map'
+  import { getCurrentLineModeRef } from '@/scripts/flight/tracking/trackingConstants'
   import { getMapAirspace } from '@/scripts/settings/mapsettings'
+  import {
+    LControlScale,
+    LMap,
+    LPolygon,
+    LPolyline,
+    LPopup,
+    LTileLayer,
+  } from '@vue-leaflet/vue-leaflet'
+  import 'leaflet/dist/leaflet.css'
+  import { computed, ref } from 'vue'
+  import { onMounted } from 'vue'
+
   const zoom = ref(2)
   const lineMode = getCurrentLineModeRef()
   const center = computed(() => {
@@ -94,7 +94,7 @@
             :fillOpacity="0.01"
             fillColor="#41b782"
           >
-            <l-popup> {{ airspaceTypes[airspace.icaoClass] }} </l-popup>
+            <l-popup> {{ getIcaoClassNameById(airspace.icaoClass) }} </l-popup>
           </l-polygon>
         </div>
       </template>
