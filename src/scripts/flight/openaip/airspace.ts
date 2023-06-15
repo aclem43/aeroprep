@@ -1,7 +1,10 @@
 import { addInitializer } from '@/scripts/initialize'
 import { getOpenAipApiKey } from '@/scripts/settings/mapsettings'
 import { calcluatePolygonArea } from '@/scripts/utils/area'
+import { getCachedData } from '@/scripts/utils/cache'
+import { logger } from '@/scripts/utils/logger'
 import { isEmpty } from '@/scripts/utils/utils'
+import { stringify } from 'querystring'
 import { ref } from 'vue'
 
 const airspaces = ref<Airspace[]>([])
@@ -18,10 +21,10 @@ export const loadAirspaces = async () => {
   icaoClassIncluded.value.forEach((icaoClass) => {
     icaoClassQueryString = icaoClassQueryString + `&icaoClass=${icaoClass}`
   })
-  const json = await fetch(
+  const json = await getCachedData(
     `https://api.core.openaip.net/api/airspaces?apiKey=${apiKey}&country=AU&limit=${airspaceLimit.value}${icaoClassQueryString}`
   )
-  const data = await json.json()
+  const data = JSON.parse(json)
   airspaces.value = data.items
   airspaces.value.sort(sortAirspaces)
 }
@@ -50,15 +53,15 @@ export const getAirspaceLimit = () => {
 }
 
 const airspaceIcaoClasses: { id: number; name: string; colour: string }[] = [
-  { id: 1, name: 'A', colour: '#2c1ce6' },
-  { id: 2, name: 'B', colour: '#2c1ce6' },
-  { id: 3, name: 'C', colour: '#1cb3e6' },
-  { id: 4, name: 'D', colour: '#e6991c' },
-  { id: 5, name: 'E', colour: '#7112b5' },
-  { id: 6, name: 'F', colour: '#7cb550' },
-  { id: 7, name: 'G', colour: '#07b340' },
-  { id: 7, name: 'UNCLASSIFIED / SUA (Special Use Airspace)', colour: 'red' },
-  { id: 8, name: 'Other', colour: 'red' },
+  { id: 0, name: 'A', colour: '#2c1ce6' },
+  { id: 1, name: 'B', colour: '#2c1ce6' },
+  { id: 2, name: 'C', colour: '#1cb3e6' },
+  { id: 3, name: 'D', colour: '#e6991c' },
+  { id: 4, name: 'E', colour: '#7112b5' },
+  { id: 5, name: 'F', colour: '#7cb550' },
+  { id: 6, name: 'G', colour: '#07b340' },
+  { id: 8, name: 'UNCLASSIFIED / SUA (Special Use Airspace)', colour: 'red' },
+  { id: 9, name: 'Other', colour: 'red' },
 ]
 export const getAirspaceIcaoClasses = () => {
   return airspaceIcaoClasses

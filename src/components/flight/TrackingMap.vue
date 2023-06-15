@@ -1,10 +1,8 @@
 <script setup lang="ts">
   import {
     flipCoordinates,
-    getAirspaceIcaoClasses,
     getAirspaces,
     getClassColour,
-    getIcaoClassNameById,
   } from '@/scripts/flight/openaip/airspace'
   import {
     type AltitudeLine,
@@ -70,6 +68,7 @@
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         layer-type="base"
         name="OpenStreetMap"
+        no-wrap
       ></l-tile-layer>
       <template v-if="lineMode == 'basic'">
         <l-polyline
