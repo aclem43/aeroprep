@@ -1,12 +1,17 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import FlightView from '@/views/FlightView.vue'
+import PlanView from '@/views/PlanView.vue'
 import PrepView from '@/views/PrepView.vue'
 import SettingsView from '@/views/SettingsView.vue'
-import FlightView from '@/views/FlightView.vue'
+import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: '/:pathMatch(.*)*', name: 'NotFound', redirect: { name: 'prep' } },
+    {
+      path: '/plan',
+      name: 'plan',
+      component: PlanView,
+    },
     {
       path: '/prep',
       name: 'prep',
@@ -22,6 +27,7 @@ const router = createRouter({
       name: 'fly',
       component: FlightView,
     },
+    { path: '/:pathMatch(.*)*', name: 'NotFound', redirect: { name: 'prep' } },
   ],
 })
 

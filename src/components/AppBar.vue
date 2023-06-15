@@ -1,12 +1,13 @@
 <script setup lang="ts">
   import router from '@/router'
   import { getAllAircraft, getCurrentAircraft } from '@/scripts/aircraft'
-  import { getNetworkStatus } from '@/scripts/network'
-  import { getDevToolEnabled } from '@/scripts/dev/devTools'
   import { openDevOverlay } from '@/scripts/dev/devOverlay'
-  import { setAircraft, getAircraft } from '@/scripts/settings/settings'
+  import { getDevToolEnabled } from '@/scripts/dev/devTools'
+  import { getNetworkStatus } from '@/scripts/network'
+  import { getAircraft, setAircraft } from '@/scripts/settings/settings'
   import { getKeepAwakeIcon, toggleKeepAwake } from '@/scripts/utils/awake'
   import { computed, onMounted, ref } from 'vue'
+
   const aircraft = getAllAircraft()
 
   const currentAircraft = getCurrentAircraft()
@@ -75,6 +76,10 @@
       <v-icon>{{ networkIcon }}</v-icon>
     </v-btn>
     <v-divider></v-divider>
+    <v-btn variant="plain" icon @click="goTo('/plan')">
+      <v-icon>mdi-map</v-icon></v-btn
+    >
+
     <v-btn variant="plain" icon @click="goTo('/prep')">
       <v-icon>mdi-clipboard</v-icon>
     </v-btn>
