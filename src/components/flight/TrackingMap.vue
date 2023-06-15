@@ -1,9 +1,11 @@
 <script setup lang="ts">
   import {
     flipCoordinates,
+    getAirspaceIcaoClasses,
     getAirspaces,
+    getClassColour,
     getIcaoClassNameById,
-  } from '@/scripts/flight/openaip'
+  } from '@/scripts/flight/openaip/airspace'
   import {
     type AltitudeLine,
     generateLine,
@@ -89,12 +91,12 @@
         <div v-for="airspace in airspaces" v-bind:key="airspace.id">
           <l-polygon
             :lat-lngs="flipCoordinates(airspace.geometry.coordinates)"
-            color="#41b782"
+            :color="getClassColour(airspace.icaoClass)"
             :fill="true"
-            :fillOpacity="0.01"
-            fillColor="#41b782"
+            :fillOpacity="0.05"
+            :fillColor="getClassColour(airspace.icaoClass)"
           >
-            <l-popup> {{ getIcaoClassNameById(airspace.icaoClass) }} </l-popup>
+            <l-popup> {{ airspace.name }}</l-popup>
           </l-polygon>
         </div>
       </template>

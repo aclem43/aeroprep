@@ -1,9 +1,10 @@
 <script setup lang="ts">
   import {
     getAirspaceIcaoClasses,
+    getAirspaceLimit,
     getIcaoClassIncluded,
     loadAirspaces,
-  } from '@/scripts/flight/openaip'
+  } from '@/scripts/flight/openaip/airspace'
   import { type Ref, ref } from 'vue'
 
   import MapSettings from '../settings/MapSettings.vue'
@@ -11,7 +12,7 @@
   const dialog = ref()
   const airspaceOptions = getAirspaceIcaoClasses()
   const enabledAirspaces: Ref<number[]> = getIcaoClassIncluded()
-
+  const airspaceLimit = getAirspaceLimit()
   const open = async () => {
     dialog.value = true
   }
@@ -27,20 +28,34 @@
       </v-card-item>
       <v-card-subtitle>Airspace Settings</v-card-subtitle>
       <v-card-item>
-        <div class="settings_input_row">
-          <v-select
-            v-model="enabledAirspaces"
-            :items="airspaceOptions"
-            label="Enabled Airspaces"
-            density="compact"
-            item-title="name"
-            item-value="id"
-            multiple
-            hide-details
-          ></v-select>
-          <v-btn color="primary" @click="loadAirspaces()"
-            >Reload Airspaces</v-btn
-          >
+        <div style="padding: 5px">
+          <div class="settings_input_row">
+            <v-text-field
+              v-model="airspaceLimit"
+              label="Max Number of airspaces Shown"
+              variant="underlined"
+              type="number"
+              pattern="[0-9]*"
+              inputmode="numeric"
+            ></v-text-field>
+          </div>
+
+          <div class="settings_input_row">
+            <v-select
+              v-model="enabledAirspaces"
+              :items="airspaceOptions"
+              label="Enabled Airspaces"
+              density="compact"
+              item-title="name"
+              item-value="id"
+              variant="solo-filled"
+              multiple
+              hide-details
+            ></v-select>
+            <v-btn color="primary" @click="loadAirspaces()"
+              >Reload Airspaces</v-btn
+            >
+          </div>
         </div>
       </v-card-item>
       <v-card-actions class="flex-row-reverse mx-4">
