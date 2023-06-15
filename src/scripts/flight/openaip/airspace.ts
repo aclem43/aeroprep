@@ -2,9 +2,7 @@ import { addInitializer } from '@/scripts/initialize'
 import { getOpenAipApiKey } from '@/scripts/settings/mapsettings'
 import { calcluatePolygonArea } from '@/scripts/utils/area'
 import { getCachedData } from '@/scripts/utils/cache'
-import { logger } from '@/scripts/utils/logger'
 import { isEmpty } from '@/scripts/utils/utils'
-import { stringify } from 'querystring'
 import { ref } from 'vue'
 
 const airspaces = ref<Airspace[]>([])
