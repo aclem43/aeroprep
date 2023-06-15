@@ -1,6 +1,7 @@
 import { addInitializer } from '@/scripts/initialize'
 import { getOpenAipApiKey } from '@/scripts/settings/mapsettings'
 import { calcluatePolygonArea } from '@/scripts/utils/area'
+import { isEmpty } from '@/scripts/utils/utils'
 import { ref } from 'vue'
 
 const airspaces = ref<Airspace[]>([])
@@ -9,6 +10,10 @@ const icaoClassIncluded = ref([0, 1, 2, 3, 4, 5, 6])
 
 export const loadAirspaces = async () => {
   const apiKey = await getOpenAipApiKey()
+  if (isEmpty(apiKey)) {
+    return
+  }
+
   let icaoClassQueryString = ''
   icaoClassIncluded.value.forEach((icaoClass) => {
     icaoClassQueryString = icaoClassQueryString + `&icaoClass=${icaoClass}`
