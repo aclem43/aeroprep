@@ -21,3 +21,19 @@ export const getDistanceFromLatLonInNm = (
 function deg2rad(deg: number): number {
   return deg * (Math.PI / 180)
 }
+
+export const flipCoordinates = (coordinates: number[][][]): number[][][] => {
+  const flippedCoordinates: number[][][] = []
+  coordinates.forEach((c) => {
+    const flipped: number[][] = []
+    c.forEach((c2) => {
+      flipped.push([c2[1], c2[0]])
+    })
+    flippedCoordinates.push(flipped)
+  })
+
+  return flippedCoordinates
+}
+export const flipCoordinate = (coordinate: number[]): number[] => {
+  return [coordinate[1], coordinate[0]]
+}

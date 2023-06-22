@@ -1,7 +1,9 @@
 <script setup lang="ts">
   import {
+    getMapAirports,
     getMapAirspace,
     getOpenAipApiKey,
+    setMapAirports,
     setMapAirspace,
     setOpenAipApiKey,
   } from '@/scripts/settings/mapsettings'
@@ -10,11 +12,18 @@
 
   const openAipApiKey = ref('')
   const mapAirspace = ref(false)
+  const mapAirports = ref(false)
 
   const onChangeMapAirspace = async (value: unknown) => {
     const bool: boolean = value as boolean
     mapAirspace.value = bool
     setMapAirspace(bool)
+  }
+
+  const onChangeMapAirports = async (value: unknown) => {
+    const bool: boolean = value as boolean
+    mapAirports.value = bool
+    setMapAirports(bool)
   }
 
   const saveOpenAipApiKey = async () => {
@@ -25,10 +34,20 @@
   onMounted(async () => {
     openAipApiKey.value = await getOpenAipApiKey()
     mapAirspace.value = await getMapAirspace()
+    mapAirports.value = await getMapAirports()
   })
 </script>
 
 <template>
+  <div class="settings_input_row">
+    <v-switch
+      @update:model-value="onChangeMapAirports"
+      :model-value="mapAirports"
+      label="Show Map Airports"
+      color="primary"
+      hide-details
+    ></v-switch>
+  </div>
   <div class="settings_input_row">
     <v-switch
       @update:model-value="onChangeMapAirspace"

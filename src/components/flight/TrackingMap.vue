@@ -1,6 +1,6 @@
 <script setup lang="ts">
+  import { getAirports } from '@/scripts/flight/openaip/airports'
   import {
-    flipCoordinates,
     getAirspaces,
     getClassColour,
   } from '@/scripts/flight/openaip/airspace'
@@ -9,10 +9,17 @@
     generateLine,
   } from '@/scripts/flight/tracking/map'
   import { getCurrentLineModeRef } from '@/scripts/flight/tracking/trackingConstants'
-  import { getMapAirspace } from '@/scripts/settings/mapsettings'
+  import {
+    mapAirportsEnabledRef,
+    mapAirspaceEnabledRef,
+  } from '@/scripts/settings/mapsettings'
+  import { flipCoordinate, flipCoordinates } from '@/scripts/utils/gps'
   import {
     LControlScale,
+    LFeatureGroup,
+    LIcon,
     LMap,
+    LMarker,
     LPolygon,
     LPolyline,
     LPopup,
@@ -20,7 +27,6 @@
   } from '@vue-leaflet/vue-leaflet'
   import 'leaflet/dist/leaflet.css'
   import { computed, ref } from 'vue'
-  import { onMounted } from 'vue'
 
   const zoom = ref(2)
   const lineMode = getCurrentLineModeRef()
@@ -50,10 +56,7 @@
   const mapRef = ref()
 
   const airspaces = getAirspaces()
-  const airspaceEnabled = ref(false)
-  onMounted(async () => {
-    airspaceEnabled.value = await getMapAirspace()
-  })
+  const airports = getAirports()
 </script>
 
 <template>
@@ -86,18 +89,30 @@
           :color="altLine.color"
         ></l-polyline>
       </template>
-      <template v-if="airspaceEnabled">
-        <div v-for="airspace in airspaces" v-bind:key="airspace.id">
-          <l-polygon
-            :lat-lngs="flipCoordinates(airspace.geometry.coordinates)"
-            :color="getClassColour(airspace.icaoClass)"
-            :fill="true"
-            :fillOpacity="0.05"
-            :fillColor="getClassColour(airspace.icaoClass)"
-          >
-            <l-popup> {{ airspace.name }}</l-popup>
-          </l-polygon>
-        </div>
+      <template v-if="mapAirportsEnabledRef">
+        <template v-for="airport in airports" v-bind:key="airport.id">
+          <l-marker :lat-lng="flipCoordinate(airport.geometry.coordinates)">
+            <l-icon
+              ><img src="/airport.svg" alt="Airport" height="16" />
+            </l-icon>
+            <l-popup> {{ airport.name }}</l-popup>
+          </l-marker>
+        </template>
+      </template>
+      <template v-if="mapAirspaceEnabledRef">
+        <l-feature-group>
+          <div v-for="airspace in airspaces" v-bind:key="airspace.id">
+            <l-polygon
+              :lat-lngs="flipCoordinates(airspace.geometry.coordinates)"
+              :color="getClassColour(airspace.icaoClass)"
+              :fill="true"
+              :fillOpacity="0.05"
+              :fillColor="getClassColour(airspace.icaoClass)"
+            >
+              <l-popup> {{ airspace.name }}</l-popup>
+            </l-polygon>
+          </div>
+        </l-feature-group>
       </template>
 
       <l-control-scale />
@@ -107,3 +122,9 @@
     {{ airspaces }}
   </div>
 </template>
+<style>
+  .leaflet-div-icon {
+    background: none;
+    border: none;
+  }
+</style>
