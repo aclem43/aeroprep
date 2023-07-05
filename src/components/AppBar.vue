@@ -76,10 +76,9 @@
       <v-icon>{{ networkIcon }}</v-icon>
     </v-btn>
     <v-divider></v-divider>
-    <v-btn variant="plain" icon @click="goTo('/plan')">
+    <!-- <v-btn variant="plain" icon @click="goTo('/plan')">
       <v-icon>mdi-map</v-icon></v-btn
-    >
-
+    > -->
     <v-btn variant="plain" icon @click="goTo('/prep')">
       <v-icon>mdi-clipboard</v-icon>
     </v-btn>
