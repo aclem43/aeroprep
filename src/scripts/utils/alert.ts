@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+
 import { logger } from './logger'
 
 export const openAlert = (message: string, timeout?: number) => {

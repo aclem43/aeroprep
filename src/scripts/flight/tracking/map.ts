@@ -1,14 +1,15 @@
 import type { Flight, FlightLocation } from '@/models/Flight'
-import { computed } from 'vue'
 import { logger } from '@/scripts/utils/logger'
+import { convertToCurrentDistance } from '@/scripts/utils/units/units'
+import { computed } from 'vue'
+
 import { getCurrentFlightData } from './recording'
 import {
+  getCurrentLineColor,
+  getCurrentLineModeRef,
   getCurrentRateOfClimb,
   getCurrentTrackingDecimal,
-  getCurrentLineModeRef,
-  getCurrentLineColor,
 } from './trackingConstants'
-import { convertToCurrentDistance } from '@/scripts/utils/units/units'
 
 export const generateLine = computed((): number[][] | AltitudeLine => {
   const flight = getCurrentFlightData().value
@@ -19,7 +20,6 @@ export const generateLine = computed((): number[][] | AltitudeLine => {
     return line
   }
   const line = generateAltitudeLines(flight)
-  console.log(line)
   return line
 })
 
