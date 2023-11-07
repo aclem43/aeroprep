@@ -29,3 +29,7 @@ coverage
 yarn.lock
 .yarn/
 package-lock.json
+.VScodeCounter
+
+# Env File
+.env

@@ -1,6 +1,27 @@
 <script setup lang="ts">
   import AppBar from '@/components/AppBar.vue'
-  import { openAlert } from '@/scripts/utils/alert'
+  import DevSettings from '@/components/settings/DevSettings.vue'
+  import MapSettings from '@/components/settings/MapSettings.vue'
+  import RiskSettings from '@/components/settings/RiskSettings.vue'
+  import TrackingSettings from '@/components/settings/TrackingSettings.vue'
+  import UnitSettings from '@/components/settings/UnitSettings.vue'
+  import AircraftCreationOverlay from '@/components/settings/overlays/AircraftCreationOverlay.vue'
+  import AirportAdditionOverlay from '@/components/settings/overlays/AirportAdditionOverlay.vue'
+  import {
+    type Aircraft,
+    deleteAircraft,
+    getAllAircraft,
+  } from '@/scripts/aircraft'
+  import {
+    type Airport,
+    deleteAirport,
+    getAirportsRef,
+  } from '@/scripts/airport'
+  import {
+    removeAllExceptSaves,
+    removeAllSaves,
+    removeAllStorage,
+  } from '@/scripts/database'
   import {
     getDefaultPilotWeight,
     getWeatherApiKey,
@@ -8,31 +29,12 @@
     setTheme,
     setWeatherApiKey,
   } from '@/scripts/settings/settings'
+  import { openAlert } from '@/scripts/utils/alert'
+  import { clearCache } from '@/scripts/utils/cache'
   import { getCurrentTheme } from '@/scripts/utils/themes'
-  import { computed, onMounted, ref, watch, type Ref } from 'vue'
-  import AircraftCreationOverlay from '@/components/settings/overlays/AircraftCreationOverlay.vue'
-  import AirportAdditionOverlay from '@/components/settings/overlays/AirportAdditionOverlay.vue'
-  import { Dialog } from '@capacitor/dialog'
-  import {
-    deleteAircraft,
-    getAllAircraft,
-    type Aircraft,
-  } from '@/scripts/aircraft'
   import { getVersion } from '@/scripts/utils/version'
-  import {
-    deleteAirport,
-    getAirportsRef,
-    type Airport,
-  } from '@/scripts/airport'
-  import {
-    removeAllExceptSaves,
-    removeAllSaves,
-    removeAllStorage,
-  } from '@/scripts/database'
-  import TrackingSettings from '@/components/settings/TrackingSettings.vue'
-  import DevSettings from '@/components/settings/DevSettings.vue'
-  import RiskSettings from '@/components/settings/RiskSettings.vue'
-  import UnitSettings from '@/components/settings/UnitSettings.vue'
+  import { Dialog } from '@capacitor/dialog'
+  import { type Ref, computed, onMounted, ref, watch } from 'vue'
 
   // Main Settings
   const weatherApiKey = ref()
@@ -210,6 +212,13 @@
       <v-card-item>
         <UnitSettings></UnitSettings>
       </v-card-item>
+      <v-card-subtitle><v-icon>mdi-map</v-icon> Settings</v-card-subtitle>
+      <v-card-item>
+        <MapSettings></MapSettings>
+      </v-card-item>
+      <v-card-item>
+        <RiskSettings></RiskSettings>
+      </v-card-item>
       <v-card-subtitle>Risk Action</v-card-subtitle>
       <v-card-item>
         <RiskSettings></RiskSettings>
@@ -217,6 +226,7 @@
       <v-card-subtitle><v-icon>mdi-alert</v-icon>Danger Zone</v-card-subtitle>
       <v-card-item>
         <div class="settings_input_row">
+          <v-btn color="warning" @click="clearCache()">Clear Cache</v-btn>
           <v-btn color="warning" @click="deleteAllData()"
             ><v-icon>mdi-alert</v-icon> Delete All Stored Data</v-btn
           >

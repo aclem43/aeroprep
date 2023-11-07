@@ -1,6 +1,8 @@
 <script setup lang="ts">
   import AppBar from '@/components/AppBar.vue'
+  import FlightDetailsOverlay from '@/components/flight/FlightDetailsOverlay.vue'
   import FlightSaveOverlay from '@/components/flight/FlightSaveOverlay.vue'
+  import MapOptionsOverlay from '@/components/flight/MapOptionsOverlay.vue'
   import TrackingMap from '@/components/flight/TrackingMap.vue'
   import type { FlightLocation } from '@/models/Flight'
   import {
@@ -17,12 +19,13 @@
     convertToCurrentHeight,
     convertToCurrentSpeed,
   } from '@/scripts/utils/units/units'
-
   import { computed, ref } from 'vue'
 
   const currentFlightData = getCurrentFlightData()
   const connection = getNetworkStatus()
   const flightSaveOverlay = ref()
+  const flightDetailsOverlay = ref()
+  const mapOptionsOverlay = ref()
   const fullscreen = ref(false)
 
   const running = computed(() => {
@@ -45,6 +48,13 @@
   const openFlightSaveOverlay = async () => {
     await flightSaveOverlay.value.open()
   }
+  const openFlightDetailsOverlay = async () => {
+    await flightDetailsOverlay.value.open()
+  }
+  const openMapOptionsOverlay = async () => {
+    await mapOptionsOverlay.value.open()
+  }
+
   const latestFlightLoc = computed((): FlightLocation => {
     if (!currentFlightData.value) {
       return {
@@ -71,6 +81,8 @@
 </script>
 <template>
   <FlightSaveOverlay ref="flightSaveOverlay"></FlightSaveOverlay>
+  <FlightDetailsOverlay ref="flightDetailsOverlay"></FlightDetailsOverlay>
+  <MapOptionsOverlay ref="mapOptionsOverlay"></MapOptionsOverlay>
   <AppBar />
   <v-main>
     <div class="container">
@@ -104,13 +116,28 @@
                   >
                 </div>
                 <div style="display: flex; gap: 10px">
+                  <v-btn variant="tonal" @click="openFlightDetailsOverlay()">
+                    <v-icon>mdi-information-box</v-icon>
+                  </v-btn>
                   <v-btn variant="tonal" @click="toggleFullScreen">
                     <v-icon v-if="!fullscreen">mdi-fullscreen</v-icon>
                     <v-icon v-else>mdi-fullscreen-exit</v-icon>
                   </v-btn>
-                  <v-btn variant="tonal" @click="openFlightSaveOverlay()"
-                    ><v-icon>mdi-menu</v-icon></v-btn
-                  >
+                  <v-menu>
+                    <template v-slot:activator="{ props }">
+                      <v-btn variant="tonal" v-bind="props">
+                        <v-icon>mdi-menu</v-icon>
+                      </v-btn>
+                    </template>
+                    <v-list>
+                      <v-list-item @click="openFlightSaveOverlay()">
+                        <v-list-item-title>Flight Saves</v-list-item-title>
+                      </v-list-item>
+                      <v-list-item @click="openMapOptionsOverlay()">
+                        <v-list-item-title>Map Options</v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
                 </div>
               </div>
             </v-card-item>

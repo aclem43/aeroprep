@@ -27,8 +27,8 @@
   }
   const getScore = (risk: Risk) => {
     if (currentFlight.value.dual && risk.score.dual != null) {
-      return risk.score.dual
-    } else return risk.score.solo
+      return parseInt(risk.score.dual as unknown as string)
+    } else return parseInt(risk.score.solo as unknown as string)
   }
   let maxRiskScore = 0
   let warnRiskScore = 0

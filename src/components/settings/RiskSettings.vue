@@ -6,7 +6,7 @@
     setWarnRiskScore,
   } from '@/scripts/settings/risksettings'
   import { openAlert } from '@/scripts/utils/alert'
-  import { ref, onMounted } from 'vue'
+  import { onMounted, ref } from 'vue'
 
   const maxRiskScore = ref(0)
   const warnRiskScore = ref(0)

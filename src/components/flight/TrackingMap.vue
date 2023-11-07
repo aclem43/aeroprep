@@ -1,18 +1,32 @@
 <script setup lang="ts">
-  import { ref, computed } from 'vue'
-
-  import 'leaflet/dist/leaflet.css'
+  import { getAirports } from '@/scripts/flight/openaip/airports'
   import {
-    LMap,
-    LTileLayer,
-    LPolyline,
-    LControlScale, // @ts-expect-error
-  } from '@vue-leaflet/vue-leaflet'
+    getAirspaces,
+    getClassColour,
+  } from '@/scripts/flight/openaip/airspace'
   import {
-    generateLine,
     type AltitudeLine,
+    generateLine,
   } from '@/scripts/flight/tracking/map'
   import { getCurrentLineModeRef } from '@/scripts/flight/tracking/trackingConstants'
+  import {
+    mapAirportsEnabledRef,
+    mapAirspaceEnabledRef,
+  } from '@/scripts/settings/mapsettings'
+  import { flipCoordinate, flipCoordinates } from '@/scripts/utils/gps'
+  import {
+    LControlScale,
+    LFeatureGroup,
+    LIcon,
+    LMap,
+    LMarker,
+    LPolygon,
+    LPolyline,
+    LPopup,
+    LTileLayer,
+  } from '@vue-leaflet/vue-leaflet'
+  import 'leaflet/dist/leaflet.css'
+  import { computed, ref } from 'vue'
 
   const zoom = ref(2)
   const lineMode = getCurrentLineModeRef()
@@ -40,20 +54,32 @@
   })
 
   const mapRef = ref()
+
+  const airspaces = getAirspaces()
+  const airports = getAirports()
 </script>
 
 <template>
   <div style="height: 100%; width: 100%">
-    <l-map ref="mapRef" v-model:zoom="zoom" :center="center">
+    <l-map
+      ref="mapRef"
+      v-model:zoom="zoom"
+      :center="center"
+      :use-global-leaflet="false"
+    >
       <l-tile-layer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         layer-type="base"
         name="OpenStreetMap"
+        no-wrap
       ></l-tile-layer>
-      <div v-if="lineMode == 'basic'">
-        <l-polyline :lat-lngs="generateLine" color="#fcba03"></l-polyline>
-      </div>
-      <div
+      <template v-if="lineMode == 'basic'">
+        <l-polyline
+          :lat-lngs="generateLine as number[][]"
+          color="#fcba03"
+        ></l-polyline>
+      </template>
+      <template
         v-else
         v-for="(altLine,index) in (generateLine as AltitudeLine).lines"
         v-bind:key="index"
@@ -62,8 +88,43 @@
           :lat-lngs="altLine.line"
           :color="altLine.color"
         ></l-polyline>
-      </div>
+      </template>
+      <template v-if="mapAirportsEnabledRef">
+        <template v-for="airport in airports" v-bind:key="airport.id">
+          <l-marker :lat-lng="flipCoordinate(airport.geometry.coordinates)">
+            <l-icon
+              ><img src="/airport.svg" alt="Airport" height="16" />
+            </l-icon>
+            <l-popup> {{ airport.name }}</l-popup>
+          </l-marker>
+        </template>
+      </template>
+      <template v-if="mapAirspaceEnabledRef">
+        <l-feature-group>
+          <div v-for="airspace in airspaces" v-bind:key="airspace.id">
+            <l-polygon
+              :lat-lngs="flipCoordinates(airspace.geometry.coordinates)"
+              :color="getClassColour(airspace.icaoClass)"
+              :fill="true"
+              :fillOpacity="0.05"
+              :fillColor="getClassColour(airspace.icaoClass)"
+            >
+              <l-popup> {{ airspace.name }}</l-popup>
+            </l-polygon>
+          </div>
+        </l-feature-group>
+      </template>
+
       <l-control-scale />
     </l-map>
   </div>
+  <div>
+    {{ airspaces }}
+  </div>
 </template>
+<style>
+  .leaflet-div-icon {
+    background: none;
+    border: none;
+  }
+</style>
