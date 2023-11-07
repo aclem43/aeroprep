@@ -8,7 +8,7 @@ The following will be explored before deciding on a technology
 
 ## Now
 All issues have been closed
-The branches will be moved to a new parent branch called "version-1"
+The branches will be moved to a new parent branch called "version-one"
 
 ## Version 2 
 With a complete restart the project goals have changed 
