@@ -1,61 +1,15 @@
-# AeroPrep
+# Complete Restart 
+Aeroprep will be restarted from scratch with native mobile technologies. This is primarily to improve the apps performance in important functions such as the map page and geolocation. This will also enable features to be better integrated with the OS.
 
-An app designed to assist pilots to preflight more effeciently and accurately. It also inlcudes features to record the flight
+## Technology Ideas
+The following will be explored before deciding on a technology
+- [Flutter](https://flutter.dev)
+- Android
 
-**WARNING** The app is not designed to be used if flight, rather just left to record data out of sight
+## Now
+All issues have been closed
+The branches will be moved to a new parent branch called "version-1"
 
-## Contents
-
-1. [Technology Used](#technology-used)
-2. [Features](#features)
-3. [Links](#links)
-
-## Technology Used
-
-The app uses Java Script with the following libraries/frameworks
-
-- CapacitorJs - [Capacitor Docs](https://capacitorjs.com/docs/getting-started)
-- VueJs - [Vue](https://vuejs.org/)
-- VueRouter
-- Vuetify 3 - [Vuetify 3 Docs](https://next.vuetifyjs.com/en/components/grids/)
-- VueLeaflet - [Vue Leaflet Github](https://github.com/vue-leaflet/vue-leaflet)
-
-## Features
-
-### Current Features
-
-#### As of version 0.3.0
-
-Flight Preperation Page
-
-- Check list
-  - Very basic more features planned
-- Note Taking Tab
-  - Basic Markdown
-- Fuel Caclulation Page
-- Weather Page
-  - Taf and Metar for major airports
-- Risk Assesment
-  - Currently only visual but more features are planned
-
-Inflight Page
-
-- Flight recording with basic optimization algorithm
-- Flight record loading to view the flight path recorded
-
-### Planned Features
-
-Flight Preperation Page
-
-- Weight and Balance page
-- Finish Risk assesment
-- Further work on checklist
-
-Inflight Page
-
-- Add acceleromater triggered events to record more data points in turns
-- Tapping a point on the line shows the data (Speed,altitude,heading) for the nearest point
-- Different coloured parts of the line for climbing decending and cruise
-
-## Links
-- Trello Page [Link](https://trello.com/b/gHvEGh3C/aeroprep)
+## Version 2 
+With a complete restart the project goals have changed 
+The app will now mostly focus around the map, with better integration with airspace, aerodromes and your planned/recorded route
